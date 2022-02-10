@@ -14,7 +14,7 @@ class FacultyFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nama_faculty' => $this->faker->sentence(2),
         ];
     }
 }

@@ -1,48 +1,65 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        <form method="POST" action="{{ route('password.update') }}">
-            @csrf
-
-            <!-- Password Reset Token -->
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
-
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus />
-            </div>
-
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required />
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-full"
-                                    type="password"
-                                    name="password_confirmation" required />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Reset Password') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+@extends('layouts.auth')
+@section('content')
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
+            <form class="form" id="RegisterValidation" method="POST" action="{{ route('password.update') }}">
+                @csrf
+                <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                <div class="card card-login card-hidden">
+                    <div class="card-header card-header-rose text-center">
+                        <h4 class="card-title">Reset New Password</h4>
+                        <div class="social-line">
+                            <p>Silahkan buat password baru anda!</p>
+                        </div>
+                    </div>
+                    <div class="card-body ">
+                        <span class="form-group  bmd-form-group email-error ">
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $e)
+                                    <p class="
+                                description text-center text-danger">
+                                        {{ $e }}</p>
+                                @endforeach
+                            @endif
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="material-icons">email</i>
+                                    </span>
+                                </div>
+                                <input type="email" class="form-control err-email" id="email" name="email"
+                                    placeholder="Email" value="{{ old('email', $request->email) }}"
+                                    value="admin@material.com" required>
+                            </div>
+                        </span>
+                        <span class="form-group bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="material-icons">lock_outline</i>
+                                    </span>
+                                </div>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Password" required>
+                            </div>
+                            <span class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="material-icons">lock_outline</i>
+                                        </span>
+                                    </div>
+                                    <input type="password" class="form-control" id="password_confirmation"
+                                        name="password_confirmation" placeholder="Konfirmasi password" equalTo="#password"
+                                        required>
+                                </div>
+                            </span>
+                    </div>
+                    <div class="card-footer justify-content-center" id="login">
+                        <button type="submit" class="btn btn-rose btn-link btn-lg">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection

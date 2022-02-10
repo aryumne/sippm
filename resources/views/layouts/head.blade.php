@@ -92,6 +92,3 @@
  <!-- CSS Files -->
 
  <link href="{{ asset('/css/material-dashboard.css') }}" rel="stylesheet" />
- <link href="{{ asset('/css/bootstrap-tourist.css') }}" rel="stylesheet" />
- <!-- CSS File Bootstrap Tourist -->
- <link href="assets/css/bootstrap-tourist.css" rel="stylesheet" />

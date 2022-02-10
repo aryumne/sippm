@@ -14,7 +14,8 @@ class ProdiFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nama_prodi' => $this->faker->sentence(2),
+            'faculty_id' => $this->faker->numberBetween(1, 15),
         ];
     }
 }

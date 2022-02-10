@@ -1,39 +1,29 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
-
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-        </div>
-
-        @if (session('status') == 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-            </div>
-        @endif
-
-        <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('verification.send') }}">
-                @csrf
-
-                <div>
-                    <x-button>
-                        {{ __('Resend Verification Email') }}
-                    </x-button>
+@extends('layouts.auth')
+@section('content')
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header card-header-text card-header-info">
+                    <div class="card-text">
+                        <h4 class="card-title">Verification Email</h4>
+                    </div>
                 </div>
-            </form>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-
-                <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    {{ __('Log Out') }}
-                </button>
-            </form>
+                <div class="card-body">
+                    Terima kasih sudah bergabung. Sebelum itu, silahkan verifikasi email yang anda daftarkan dengan cara
+                    mengklik link verifikasi email yang kami kirim ke email anda. Belum mendapatkan email verifikasi?
+                    silahkan klik <strong>Resend Verification Email</strong> di bawah ini.
+                </div>
+                <div class="card-footer">
+                    <form method="POST" action="{{ route('verification.send') }}">
+                        @csrf
+                        <button class="btn btn-sm btn-rose btn-round">Resend Verification Email </button>
+                    </form>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="btn btn-sm btn-secondary btn-round">Kembali</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </x-auth-card>
-</x-guest-layout>
+    </div>
+@endsection
