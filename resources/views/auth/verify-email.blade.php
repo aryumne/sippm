@@ -9,18 +9,18 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    Terima kasih sudah bergabung. Sebelum itu, silahkan verifikasi email yang anda daftarkan dengan cara
+                    Terima kasih sudah bergabung. Sebelum lanjut, silahkan verifikasi email yang anda daftarkan dengan cara
                     mengklik link verifikasi email yang kami kirim ke email anda. Belum mendapatkan email verifikasi?
                     silahkan klik <strong>Resend Verification Email</strong> di bawah ini.
                 </div>
                 <div class="card-footer">
                     <form method="POST" action="{{ route('verification.send') }}">
                         @csrf
-                        <button class="btn btn-sm btn-rose btn-round">Resend Verification Email </button>
+                        <button class="btn btn-rose btn-round">Resend Verification Email </button>
                     </form>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button class="btn btn-sm btn-secondary btn-round">Kembali</button>
+                        <button class="btn btn-secondary btn-round">Kembali</button>
                     </form>
                 </div>
             </div>

@@ -66,22 +66,12 @@
  </script>
  <!-- End Google Tag Manager -->
  <meta charset="utf-8" />
- <link rel="apple-touch-icon" sizes="76x76"
-     href="https://material-dashboard-pro-laravel.creative-tim.com/material/img/apple-icon.png">
- <link rel="icon" type="image/png"
-     href="https://material-dashboard-pro-laravel.creative-tim.com/material/img/favicon.png">
+ <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/logo.png') }}">
+ <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
  <title>
-     SIPPM Universitas Papua
+     SIPPM UNIPA |
  </title>
-
- <!-- Schema.org markup for Google+ -->
- <meta itemprop="name" content="Material Dashboard Pro Laravel by Creative Tim & UPDIVISION">
- <meta itemprop="description"
-     content="Download Material Dashboard PRO Laravel, a Premium Frontend Preset for Laravel developed by Creative Tim and UPDIVISION. Over 200 components, see the live demo on our website and join over 700.000 creatives!">
-
- <meta itemprop="image"
-     content="https://s3.amazonaws.com/creativetim_bucket/products/158/thumb/opt_mdp_laravel_thumbnail.jpg">
 
  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
      name='viewport' />

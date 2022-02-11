@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -33,7 +32,18 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         Alert::toast('Login berhasil', 'success');
-        return redirect()->intended(RouteServiceProvider::HOME);
+        //return redirect()->intended(RouteServiceProvider::HOME);
+        if (Auth::user()->role_id == 1) {
+            return redirect()->intended('/admin');
+        } else if (Auth::user()->role_id == 2) {
+            return redirect()->intended('/pengusul');
+        } else if (Auth::user()->role_id == 3) {
+            return redirect()->intended('/reviewer');
+        } else {
+            Alert::toast("You don't have any access.!", 'error');
+            return redirect()->route('login');
+        }
+
     }
 
     /**
@@ -50,6 +60,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('login');
     }
 }

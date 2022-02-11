@@ -15,24 +15,12 @@ use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     *
-     * @return \Illuminate\View\View
-     */
+
     public function create()
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -40,6 +28,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
         $nidn = Dosen::where('nidn', $request->nidn)->get();
         if (count($nidn) > 0) {
             $user = User::create([
@@ -58,6 +47,5 @@ class RegisteredUserController extends Controller
             Alert::toast('NIDN tidak valid', 'error');
             return back();
         }
-
     }
 }

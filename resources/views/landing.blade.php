@@ -1,10 +1,9 @@
 @extends('layouts.auth')
 @section('content')
     <div class="row">
-        <div class="col-md-8 col-lg-7 col-xl-7s ml-auto mr-auto mb-1 text-center">
-            <h3 style="font-weight: 500;">SISTEM INFORMASI PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT
-            </h3>
-            <h4>LEMBAGA PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT</h4>
+        <div class="col-md-10 col-lg-9 col-xl-8 ml-auto mr-auto mb-1 text-center">
+            <h2 style="font-weight: 500; font-size: 1.85rem">SISTEM INFORMASI PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT
+            </h2>
             <strong class="text-lead text-light mt-3 mb-0">
                 UNIVERSITAS PAPUA
             </strong>

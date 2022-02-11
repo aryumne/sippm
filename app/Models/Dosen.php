@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\Prodi;
 use App\Models\Jabatan;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Prodi;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Dosen extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'nidn';
 
     protected $fillable = [
         'nidn',

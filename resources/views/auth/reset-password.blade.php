@@ -21,6 +21,8 @@
                                         {{ $e }}</p>
                                 @endforeach
                             @endif
+                        </span>
+                        <span class="form-group bmd-form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
@@ -42,18 +44,19 @@
                                 <input type="password" class="form-control" id="password" name="password"
                                     placeholder="Password" required>
                             </div>
-                            <span class="form-group bmd-form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="material-icons">lock_outline</i>
-                                        </span>
-                                    </div>
-                                    <input type="password" class="form-control" id="password_confirmation"
-                                        name="password_confirmation" placeholder="Konfirmasi password" equalTo="#password"
-                                        required>
+                        </span>
+                        <span class="form-group bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="material-icons">lock_outline</i>
+                                    </span>
                                 </div>
-                            </span>
+                                <input type="password" class="form-control" id="password_confirmation"
+                                    name="password_confirmation" placeholder="Konfirmasi password" equalTo="#password"
+                                    required>
+                            </div>
+                        </span>
                     </div>
                     <div class="card-footer justify-content-center" id="login">
                         <button type="submit" class="btn btn-rose btn-link btn-lg">Save</button>

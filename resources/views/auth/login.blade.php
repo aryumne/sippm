@@ -1,56 +1,69 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+@extends('layouts.auth')
+@section('content')
+    <div class="row">
+        <div class="col-md-10 col-lg-9 col-xl-8 ml-auto mr-auto mb-1 text-center">
+            <h2 style="font-weight: 500; font-size: 1.85rem">SISTEM INFORMASI PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT
+            </h2>
+            <strong class="text-lead text-light mt-3 mb-0">
+                UNIVERSITAS PAPUA
+            </strong>
+        </div>
+    </div>
+    <div class="row mt-4 justify-content-center">
+        <div class="col-lg-4 col-md-6 col-sm-7 ml-auto mr-auto">
+            <form class="form" id="RegisterValidation" method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="card card-login card-hidden">
+                    <div class="card-header card-header-rose text-center">
+                        <h4 class="card-title">Sign In</h4>
+                        <div class="social-line">
+                            <p>Pastikan email anda terdaftar!</p>
+                        </div>
+                    </div>
+                    <div class="card-body ">
+                        <span class="form-group bmd-form-group email-error ">
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $e)
+                                    <p class="
+                                description text-center text-danger">
+                                        {{ $e }}</p>
+                                @endforeach
+                            @endif
+                        </span>
+                        <span class="form-group bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="material-icons">email</i></div>
+                                </div>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email"
+                                    required autofocus value="{{ old('email') }}">
+                            </div>
+                        </span>
+                        <span class="form-group bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="material-icons">lock_outline</i>
+                                    </div>
+                                </div>
+                                <input type="password" id="password" name="password" placeholder="Password"
+                                    class="form-control" required>
+                            </div>
+                        </span>
+                        <span class="form-group bmd-form-group">
+                            <div class="input-group mt-3 d-flex justify-content-end">
+                                <label class="form-check-label">
+                                    <a href="{{ route('password.request') }}" class="text-dark">lupa
+                                        password?</a>
+                                </label>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="card-footer justify-content-center" id="login">
+                        <button type="submit" class="btn btn-rose btn-link btn-lg">Get Started</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
-            </div>
-
-            <!-- Remember Me -->
-            <div class="block mt-4">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-button class="ml-3">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+@endsection

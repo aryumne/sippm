@@ -20,8 +20,7 @@
     <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
         <div class="container">
             <div class="navbar-wrapper">
-                <a class="navbar-brand" style="font-weight: 400;"
-                    href="{{ route('landing') }}">SIPPM
+                <a class="navbar-brand" style="font-weight: 400;" href="{{ route('login') }}">SIPPM
                     UNIPA</a>
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
@@ -34,20 +33,20 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a href="https://lppm.unipa.ac.id" class="nav-link">
-                            <i class="material-icons">dashboard</i> tentang LPPM
+                        <a href="{{ route('login') }}" class="nav-link">
+                            <i class="material-icons">dashboard</i> Beranda
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="material-icons">notifications</i> Pengumuman
+                        <a href="https://lppm.unipa.ac.id" class="nav-link">
+                            <i class="material-icons">explore</i> Tentang LPPM
                         </a>
                     </li>
-                    <!-- <li class="nav-item active">
-                        <a href="https://material-dashboard-pro-laravel.creative-tim.com/login" class="nav-link">
-                            <i class="material-icons">fingerprint</i> Login
+                    <li class="nav-item active">
+                        <a href="{{ route('register') }}" class="nav-link">
+                            <i class="material-icons">app_registration</i> Sign Up
                         </a>
-                    </li> -->
+                    </li>
                 </ul>
             </div>
         </div>

@@ -64,7 +64,7 @@ class NewPasswordController extends Controller
         //                     ->withErrors(['email' => __($status)]);
         if ($status == Password::PASSWORD_RESET) {
             Alert::success('Success', 'Reset password berhasil! Silahkan login kembali.');
-            return redirect()->route('landing')->with('status', __($status));
+            return redirect()->route('login')->with('status', __($status));
         } else {
             return back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
         }

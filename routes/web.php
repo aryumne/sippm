@@ -14,11 +14,21 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
-    return view('landing');
-})->name('landing');
+    return view('auth.login');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'isAdmin', 'prevent-back-history'])->name('dashboard');
+
+Route::get('/pengusul', function () {
+    return view('pengusul.dashboard-pengusul');
+})->middleware(['auth', 'verified', 'isPengusul', 'prevent-back-history'])->name('pengusul.dashboard');
+Route::get('/admin', function () {
+    return view('admin.dashboard-admin');
+})->middleware(['auth', 'verified', 'isAdmin', 'prevent-back-history'])->name('admin.dashboard');
+Route::get('/reviewer', function () {
+    return view('reviewer.dashboard-reviewer');
+})->middleware(['auth', 'verified', 'isReviewer', 'prevent-back-history'])->name('reviewer.dashboard');
 
 require __DIR__ . '/auth.php';

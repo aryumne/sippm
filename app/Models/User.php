@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Dosen;
 use App\Models\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,5 +49,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'nidn');
     }
 }

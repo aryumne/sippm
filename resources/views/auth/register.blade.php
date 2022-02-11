@@ -1,59 +1,72 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <!-- Name -->
-            <div>
-                <x-label for="name" :value="__('Name')" />
-
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
-            </div>
-
-            <!-- Email Address -->
-            <div class="mt-4">
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
-            </div>
-
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="new-password" />
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ml-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+@extends('layouts.auth')
+@section('content')
+    <div class="row">
+        <div class="col-lg-5 col-md-6 col-sm-8 ml-auto mr-auto">
+            <form class="form" id="RegisterValidation" method="POST" action="{{ route('register') }}">
+                @csrf
+                <div class="card card-login card-hidden">
+                    <div class="card-header card-header-info text-center">
+                        <h4 class="card-title">SIGN UP</h4>
+                        <div class="social-line">
+                            <p>Pastikan NIDN anda terdaftar!</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="form-group  bmd-form-group email-error ">
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $e)
+                                    <p class="
+                                description text-center text-danger">
+                                        {{ $e }}</p>
+                                @endforeach
+                            @endif
+                        </span>
+                        <span class="form-group bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="material-icons">person</i>
+                                    </div>
+                                </div>
+                                <input type="number" class="form-control" name="nidn" id="nidn" placeholder="NIDN"
+                                    required value="{{ old('nidn') }}" number="true" minlength="10" maxlength="10">
+                            </div>
+                        </span>
+                        <span class="form-group bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="material-icons">email</i>
+                                    </div>
+                                </div>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email"
+                                    required value="{{ old('email') }}">
+                            </div>
+                        </span>
+                        <span class="form-group bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="material-icons">lock_outline</i>
+                                    </div>
+                                </div>
+                                <input type="password" id="password2" name="password" placeholder="Password"
+                                    class="form-control" required>
+                            </div>
+                        </span>
+                        <span class="form-group bmd-form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="material-icons">lock_outline</i>
+                                    </div>
+                                </div>
+                                <input type="password" id="password_confirmation" name="password_confirmation"
+                                    placeholder="Konfirmasi Password" equalTo="#password2" class="form-control" required>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="card-footer justify-content-center" id="login">
+                        <button type="submit" class="btn btn-rose btn-link btn-lg">Sign up</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
