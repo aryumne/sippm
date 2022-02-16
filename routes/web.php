@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAdminOrPengusul', 'prevent-back-history']], function () {
-    Route::resource('/usulan', ProposalController::class);
+    Route::resource('/usulan', ProposalController::class)->except(['create', 'destroy']);
     Route::resource('/laporan-kemajuan', LapKemajuanController::class);
     Route::resource('/laporan-akhir', LapAkhirController::class);
 

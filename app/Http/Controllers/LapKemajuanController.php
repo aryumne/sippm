@@ -16,6 +16,7 @@ class LapKemajuanController extends Controller
     {
         $title = "Laporan Kemajuan";
         $proposal = Proposal::all();
+        $kemajuans = LapKemajuan::all();
 
         //ambil tahun sekarang
         $getYear = date("Y");
