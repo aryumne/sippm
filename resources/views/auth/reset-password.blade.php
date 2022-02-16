@@ -2,7 +2,8 @@
 @section('content')
     <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
-            <form class="form" id="RegisterValidation" method="POST" action="{{ route('password.update') }}">
+            <form class="form" id="ResetPasswordValidation" method="POST"
+                action="{{ route('password.update') }}">
                 @csrf
                 <input type="hidden" name="token" value="{{ $request->route('token') }}">
                 <div class="card card-login card-hidden">

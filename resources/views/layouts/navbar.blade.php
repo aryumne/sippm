@@ -7,7 +7,15 @@
                     <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
                 </button>
             </div>
-            <a class="navbar-brand" href="{{ route('dashboard') }}">{{ Auth::user()->role->nama_role }}</a>
+            <a class="navbar-brand" href="
+              @if (Auth::user()->role_id == 1)
+                    {{ route('admin.dashboard') }}
+                @elseif (Auth::user()->role_id == 2)
+                    {{ route('pengusul.dashboard') }}
+                @elseif (Auth::user()->role_id == 3)
+                    {{ route('reviewer.dashboard') }}
+                    @endif
+            ">{{ Auth::user()->role->nama_role }}</a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
             aria-expanded="false" aria-label="Toggle navigation">

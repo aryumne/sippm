@@ -11,7 +11,7 @@
     </div>
     <div class="row mt-4 justify-content-center">
         <div class="col-lg-4 col-md-6 col-sm-7 ml-auto mr-auto">
-            <form class="form" id="RegisterValidation" method="POST" action="{{ route('login') }}">
+            <form class="form" id="LoginValidation" method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="card card-login card-hidden">
                     <div class="card-header card-header-rose text-center">

@@ -41,7 +41,17 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            return redirect(RouteServiceProvider::HOME);
+            if (Auth::user()->role_id == 1) {
+                return redirect()->intended('/admin');
+            } else if (Auth::user()->role_id == 2) {
+                return redirect()->intended('/pengusul');
+            } else if (Auth::user()->role_id == 3) {
+                return redirect()->intended('/reviewer');
+            } else {
+                Alert::toast("You don't have any access.!", 'error');
+                return redirect()->route('login');
+            }
+
 
         } else {
             Alert::toast('NIDN tidak valid', 'error');

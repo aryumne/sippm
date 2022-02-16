@@ -70,7 +70,11 @@
  <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
  <title>
-     SIPPM UNIPA |
+     @isset($title)
+         {{ $title }}
+     @else
+         SIPPM UNIPA
+     @endisset
  </title>
 
  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
@@ -82,3 +86,18 @@
  <!-- CSS Files -->
 
  <link href="{{ asset('/css/material-dashboard.css') }}" rel="stylesheet" />
+
+ <style>
+     .fw-300 {
+         font-weight: 300 !important;
+     }
+
+     .fw-400 {
+         font-weight: 400 !important;
+     }
+
+     .fw-500 {
+         font-weight: 500 !important;
+     }
+
+ </style>

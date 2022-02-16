@@ -40,6 +40,7 @@
     </div>
 
     <!-- Footer -->
+    @yield('modal')
     @include('sweetalert::alert')
     @include('layouts.footer')
     @yield('customSCript')

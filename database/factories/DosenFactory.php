@@ -17,7 +17,7 @@ class DosenFactory extends Factory
             'nidn' => $this->faker->numerify('##########'),
             'nama' => $this->faker->name(),
             'jabatan_id' => $this->faker->numberBetween(1, 2),
-            'prodi_id' => $this->faker->numberBetween(1, 10),
+            'prodi_id' => $this->faker->numberBetween(1, 25),
             'handphone' => $this->faker->numerify('############'),
             'email' => $this->faker->email(),
         ];

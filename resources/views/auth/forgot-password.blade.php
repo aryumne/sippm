@@ -3,7 +3,7 @@
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form id="RegisterValidation" method="POST" action="{{ route('password.email') }}">
+            <form id="ForgotPasswordValidation" method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="card ">
                     <div class="card-header card-header-rose card-header-icon">

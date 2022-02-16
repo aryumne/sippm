@@ -94,7 +94,10 @@
         }
 
         $(document).ready(function() {
+            setFormValidation('#LoginValidation');
             setFormValidation('#RegisterValidation');
+            setFormValidation('#ResetPasswordValidation');
+            setFormValidation('#ForgotPasswordValidation');
         });
     </script>
 
