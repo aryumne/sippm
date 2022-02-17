@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Models\Proposal;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class LapAkhir extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['proposal_id', 'user_id', 'tanggal_upload', 'path_akhir'];
+    protected $guarded = ['id'];
 
     public function proposal()
     {

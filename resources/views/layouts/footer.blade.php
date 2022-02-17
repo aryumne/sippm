@@ -124,5 +124,10 @@
 
         $(document).ready(function() {
             setFormValidation('#AddProposalValidation');
+            setFormValidation('#EditProposalValidation');
+            setFormValidation('#AddKemajuanValidation');
+            setFormValidation('#EditKemajuanValidation');
+            setFormValidation('#AddAkhirValidation');
+            setFormValidation('#EditAkhirValidation');
         });
     </script>

@@ -17,7 +17,8 @@
                     </div>
                     <div class="card-body">
                         <div class="pt-2 px-md-3">
-                            <form action="{{ route('usulan.update', $proposal->id) }}" method="POST"
+                            <form class="form" id="EditProposalValidation"
+                                action="{{ route('usulan.update', $proposal->id) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')

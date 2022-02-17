@@ -205,8 +205,7 @@ col-12 @endif
                         @if (Auth::user()->role_id == 1)
                             <div class="form-group mt-3">
                                 <input type="text" class="form-control datepicker" id="tanggal_usul" name="tanggal_usul"
-                                    placeholder="Tanggal Pengusulan" value="{{ now()->toDateString('Y-m-d') }}"
-                                    value="{{ old('tanggal_usul') }}" required>
+                                    placeholder="Tanggal Pengusulan" value="{{ old('tanggal_usul') }}" required>
                             </div>
                             @error('tanggal_usul')
                                 <span id="category_id-error" class="error text-danger" for="input-id"

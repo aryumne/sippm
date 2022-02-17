@@ -10,12 +10,12 @@
                         </div>
                         <div class="row card-title">
                             <div class="col-6">
-                                <h4 class="fw-400">Daftar Proposal</h4>
+                                <h4 class="fw-400">Laporan Akhir</h4>
                             </div>
                             <div class="col-6 text-right">
                                 <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
-                                    data-target="#formProposal">
-                                    <span class="material-icons">add</span> Laporan baru
+                                    data-target="#formAkhir">
+                                    <span class="material-icons">add</span> Laporan Baru
                                 </button>
                             </div>
                         </div>
@@ -29,40 +29,143 @@
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Date</th>
+                                        <th>Judul Proposal</th>
+                                        <th>tanggal Upload</th>
+                                        <th>File Laporan Akhir</th>
+                                        <th>File Laporan Keuangan</th>
                                         <th class="disabled-sorting text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
+                                        <th>Judul Proposal</th>
+                                        <th>tanggal Upload</th>
+                                        <th>File Laporan Akhir</th>
+                                        <th>File Laporan Keuangan</th>
                                         <th class="text-right">Actions</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td class="text-right">
-                                            <a href="#" class="btn btn-link btn-info btn-just-icon like"><i
-                                                    class="material-icons">read_more</i></a>
-                                            <a href="#" class="btn btn-link btn-warning btn-just-icon edit"><i
-                                                    class="material-icons">mode_edit</i></a>
-                                            <a href="#" class="btn btn-link btn-danger btn-just-icon remove"><i
-                                                    class="material-icons">close</i></a>
-                                        </td>
-                                    </tr>
+                                    @foreach ($akhirs as $akhr)
+                                        <tr>
+                                            <td>{{ $akhr->proposal->judul }}</td>
+                                            <td>{{ $akhr->tanggal_upload }}</td>
+                                            <td><a href="{{ asset('storage/' . $akhr->path_akhir) }}" target="_blank"
+                                                    class="badge badge-success">{{ substr($akhr->path_akhir, 14) }}</a>
+                                            </td>
+                                            <td><a href="{{ asset('storage/' . $akhr->path_keuangan) }}" target="_blank"
+                                                    class="badge badge-success">{{ substr($akhr->path_keuangan, 17) }}</a>
+                                            </td>
+                                            <td class="text-right">
+                                                <button type="button" class="btn btn-link btn-warning btn-just-icon edit"
+                                                    data-toggle="modal" data-target="#EditLapKemajuan{{ $akhr->id }}"><i
+                                                        class="material-icons">mode_edit</i></button>
+                                                <!-- Modal Edit Laporan Kemajuan -->
+                                                <div class="modal fade" id="EditLapKemajuan{{ $akhr->id }}"
+                                                    tabindex="-1" role="dialog" aria-labelledby="formProposal"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Edit
+                                                                    Laporan Akhir</h5>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form class="form" id="EditAkhirValidation"
+                                                                action="{{ route('laporan-akhir.update', $akhr->id) }}"
+                                                                method="POST" enctype="multipart/form-data">
+                                                                <div class="modal-body">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <div class="form-group">
+                                                                        <select class="form-control selectpicker"
+                                                                            data-style="btn btn-link" id="proposal_id"
+                                                                            name="proposal_id" required>
+                                                                            <option value="{{ $akhr->proposal_id }}">
+                                                                                {{ $akhr->proposal->judul }}
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    @error('proposal_id')
+                                                                        <span id="category_id-error" class="error text-danger"
+                                                                            for="input-id"
+                                                                            style="display: block;">{{ $message }}</span>
+                                                                    @enderror
+                                                                    @if (Auth::user()->role_id == 1)
+                                                                        <div class="form-group mt-3">
+                                                                            <input type="date" class="form-control"
+                                                                                id="tanggal_upload" name="tanggal_upload"
+                                                                                placeholder="Tanggal Upload"
+                                                                                value="{{ old('tanggal_upload', $akhr->tanggal_upload) }}"
+                                                                                required>
+                                                                        </div>
+                                                                        @error('tanggal_upload')
+                                                                            <span id="category_id-error"
+                                                                                class="error text-danger" for="input-id"
+                                                                                style="display: block;">{{ $message }}</span>
+                                                                        @enderror
+                                                                    @endif
+                                                                    <div
+                                                                        class="form-group form-file-upload form-file-multiple">
+                                                                        <input type="file" name="path_akhir"
+                                                                            class="inputFileHidden">
+                                                                        <div class="input-group">
+                                                                            <input type="text"
+                                                                                class="form-control inputFileVisible"
+                                                                                placeholder="File Laporan Akhir">
+                                                                            <span class="input-group-btn">
+                                                                                <button type="button"
+                                                                                    class="btn btn-fab btn-round btn-primary">
+                                                                                    <i
+                                                                                        class="material-icons">attach_file</i>
+                                                                                </button>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    @error('path_akhir')
+                                                                        <span id="category_id-error" class="error text-danger"
+                                                                            for="input-id"
+                                                                            style="display: block;">{{ $message }}</span>
+                                                                    @enderror
+                                                                    <div
+                                                                        class="form-group form-file-upload form-file-multiple">
+                                                                        <input type="file" name="path_keuangan"
+                                                                            class="inputFileHidden">
+                                                                        <div class="input-group">
+                                                                            <input type="text"
+                                                                                class="form-control inputFileVisible"
+                                                                                placeholder="File Laporan Keuangan">
+                                                                            <span class="input-group-btn">
+                                                                                <button type="button"
+                                                                                    class="btn btn-fab btn-round btn-primary">
+                                                                                    <i
+                                                                                        class="material-icons">attach_file</i>
+                                                                                </button>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    @error('path_keuangan')
+                                                                        <span id="category_id-error" class="error text-danger"
+                                                                            for="input-id"
+                                                                            style="display: block;">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Batal</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-rose">Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -76,9 +179,120 @@
     </div>
 @endsection
 
+@section('modal')
+    <!-- Modal Tambah laporan kemajuan -->
+    <div class="modal fade" id="formAkhir" tabindex="-1" role="dialog" aria-labelledby="formProposal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form Laporan Akhir</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form" id="AddAkhirValidation" action="{{ route('laporan-akhir.store') }}"
+                    method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        @csrf
+                        {{-- <span class="form-group bmd-form-group email-error ">
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $e)
+                                    <p class="
+                                description text-center text-danger">
+                                        {{ $e }}</p>
+                                @endforeach
+                            @endif
+                        </span> --}}
+                        @if (Auth::user()->role_id == 1)
+                            <div class="form-group">
+                                <label for="proposal_id">Pilih Proposal</label>
+                                <select class="form-control selectpicker" data-style="btn btn-link" id="proposal_id"
+                                    name="proposal_id" required>
+                                    @foreach ($proposal as $pps)
+                                        <option value="{{ $pps->id }}">
+                                            {{ $pps->judul }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('proposal_id')
+                                <span id="category_id-error" class="error text-danger" for="input-id"
+                                    style="display: block;">{{ $message }}</span>
+                            @enderror
+                            <div class="form-group mt-3">
+                                <input type="text" class="form-control datepicker" id="tanggal_upload" name="tanggal_upload"
+                                    placeholder="Tanggal Upload" value="{{ old('tanggal_upload') }}" required>
+                            </div>
+                            @error('tanggal_upload')
+                                <span id="category_id-error" class="error text-danger" for="input-id"
+                                    style="display: block;">{{ $message }}</span>
+                            @enderror
+                        @endif
+                        @if (Auth::user()->role_id == 2)
+                            <input type="hidden" name="tanggal_upload" value="{{ now()->toDateString('Y-m-d') }}">
+                            <div class="form-group">
+                                <label for="proposal_id">Judul Proposal</label>
+                                <select class="form-control selectpicker" data-style="btn btn-link" id="proposal_id"
+                                    name="proposal_id" required>
+                                    @foreach ($proposal as $pps)
+                                        <option value="{{ $pps->id }}" selected>
+                                            {{ $pps->judul }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('proposal_id')
+                                <span id="category_id-error" class="error text-danger" for="input-id"
+                                    style="display: block;">{{ $message }}</span>
+                            @enderror
+                        @endif
+                        <div class="form-group form-file-upload form-file-multiple">
+                            <input type="file" name="path_akhir" class="inputFileHidden" required>
+                            <div class="input-group">
+                                <input type="text" class="form-control inputFileVisible" placeholder="File Laporan Akhir">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-fab btn-round btn-primary">
+                                        <i class="material-icons">attach_file</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        @error('path_akhir')
+                            <span id="category_id-error" class="error text-danger" for="input-id"
+                                style="display: block;">{{ $message }}</span>
+                        @enderror
+                        <div class="form-group form-file-upload form-file-multiple">
+                            <input type="file" name="path_keuangan" class="inputFileHidden" required>
+                            <div class="input-group">
+                                <input type="text" class="form-control inputFileVisible"
+                                    placeholder="File Laporan Keuangan">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-fab btn-round btn-primary">
+                                        <i class="material-icons">attach_file</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        @error('path_keuangan')
+                            <span id="category_id-error" class="error text-danger" for="input-id"
+                                style="display: block;">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-rose">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+
 @section('customSCript')
     <script>
         $(document).ready(function() {
+            //datatables
             $('#datatables-akhir').DataTable({
                 //pagingType documentation : "https://datatables.net/reference/option/pagingType"
                 "pagingType": "first_last_numbers",

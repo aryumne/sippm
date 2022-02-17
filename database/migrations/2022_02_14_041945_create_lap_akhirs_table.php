@@ -16,6 +16,7 @@ class CreateLapAkhirsTable extends Migration
         Schema::create('lap_akhirs', function (Blueprint $table) {
             $table->id();
             $table->text('path_akhir');
+            $table->text('path_keuangan');
             $table->date('tanggal_upload');
             $table->foreignId('proposal_id');
             $table->foreignId('user_id');
