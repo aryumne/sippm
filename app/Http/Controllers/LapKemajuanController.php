@@ -24,12 +24,15 @@ class LapKemajuanController extends Controller
             $kemajuans = LapKemajuan::where('user_id', Auth::user()->id)->get();
         }
 
-        return view('proposal.kemajuan',
+
+        return view(
+            'proposal.kemajuan',
             [
                 'title' => $title,
                 'proposal' => $proposal,
                 'kemajuans' => $kemajuans,
-            ]);
+            ]
+        );
     }
 
     public function store(Request $request)

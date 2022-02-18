@@ -45,7 +45,6 @@ class ProposalController extends Controller
             'pengusul' => $pengusul,
             'usulan' => $usulan,
         ]);
-
     }
 
     public function create()

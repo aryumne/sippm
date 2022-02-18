@@ -1,5 +1,4 @@
-<div class="sidebar" data-color="rose" data-background-color="black"
-    data-image="{{ asset('img/sidebar.png') }}">
+<div class="sidebar" data-color="rose" data-background-color="black" data-image="{{ asset('img/sidebar.png') }}">
 
     <div class="logo">
         <a href="#" class="simple-text logo-mini">
@@ -29,16 +28,14 @@
                     <p>Dashboard</p>
                 </a>
             </li>
-            <li
-                class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*')? 'active': '' }}">
+            <li class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'active': '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#proposal" aria-expanded=&quot;true&quot;>
                     <i class="material-icons">article</i>
                     <p>Proposal
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*')? 'show': '' }}"
-                    id="proposal">
+                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'show': '' }}" id="proposal">
                     <ul class="nav">
                         <li class="nav-item {{ request()->routeIs('usulan*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('usulan.index') }} ">
@@ -58,25 +55,25 @@
                                 <span class="sidebar-normal">Laporan akhir </span>
                             </a>
                         </li>
-                        <li class="nav-item ">
+                        <li class="nav-item {{ request()->routeIs('publikasi*')? 'active': '' }}">
                             <a class="nav-link" data-toggle="collapse" href="#luaran">
                                 <i class="material-icons">task</i>
                                 <p> Luaran
                                     <b class="caret"></b>
                                 </p>
                             </a>
-                            <div class="collapse" id="luaran">
+                            <div class="collapse {{ request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'show': '' }}" id="luaran">
                                 <ul class="nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
+                                    <li class="nav-item {{ request()->routeIs('publikasi*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('publikasi.index') }}">
                                             <span class="sidebar-mini"> P </span>
                                             <span class="sidebar-normal">Publikasi </span>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
+                                    <li class="nav-item {{ request()->routeIs('hki*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('hki.index') }}">
                                             <span class="sidebar-mini"> H </span>
-                                            <span class="sidebar-normal">HAKI </span>
+                                            <span class="sidebar-normal">HKI </span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -100,30 +97,30 @@
 
 
             @if (Auth::user()->role_id == 1)
-                <li class="nav-item ">
-                    <a class="nav-link" data-toggle="collapse" href="#penilaian">
-                        <i class="material-icons">assessment</i>
-                        <p> Penilaian
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="penilaian">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span class="sidebar-mini"> PP </span>
-                                    <span class="sidebar-normal">Penilaian Proposal </span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span class="sidebar-mini"> MV </span>
-                                    <span class="sidebar-normal">Monev </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+            <li class="nav-item ">
+                <a class="nav-link" data-toggle="collapse" href="#penilaian">
+                    <i class="material-icons">assessment</i>
+                    <p> Penilaian
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse" id="penilaian">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="sidebar-mini"> PP </span>
+                                <span class="sidebar-normal">Penilaian Proposal </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="sidebar-mini"> MV </span>
+                                <span class="sidebar-normal">Monev </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             @endif
 
             <li class="nav-item">
@@ -152,18 +149,18 @@
             </li>
 
             @if (Auth::user()->role_id == 1)
-                <li class="nav-item ">
-                    <a class="nav-link" href="#">
-                        <i class="material-icons">date_range</i>
-                        <p>Penjadwalan </p>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="#">
-                        <i class="material-icons">assignment_ind</i>
-                        <p>Data Dosen </p>
-                    </a>
-                </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="#">
+                    <i class="material-icons">date_range</i>
+                    <p>Penjadwalan </p>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="#">
+                    <i class="material-icons">assignment_ind</i>
+                    <p>Data Dosen </p>
+                </a>
+            </li>
             @endif
 
             <li class="nav-item ">
@@ -175,8 +172,7 @@
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();this.closest('form').submit();">
+                    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();this.closest('form').submit();">
                         <i class="material-icons">logout</i>
                         <p>Log Out </p>
                     </a>

@@ -81,5 +81,12 @@
 
         $(document).ready(function() {
             setFormValidation('#AddProposalValidation');
+            setFormValidation('#EditHakiValidation');
+            setFormValidation('#AddHakiValidation');
+            setFormValidation('#DeteleHakiValidation');
+
+            setFormValidation('#EditPublikasiValidation');
+            setFormValidation('#AddPublikasiValidation');
+            setFormValidation('#DetelePublikasiValidation');
         });
     </script>
