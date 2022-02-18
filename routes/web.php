@@ -31,6 +31,13 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin', 'prevent-back-history']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/reviewers', [AdminController::class, 'reviewers'])->name('admin.reviewers.index');
+    Route::post('/storeReviewer', [AdminController::class, 'storeReviewer'])->name('admin.reviewers.store');
+    Route::get('/audits', [AdminController::class, 'audits'])->name('adminpenilaian.audits.index');
+    Route::post('/auditStore', [AdminController::class, 'auditStore'])->name('adminpenilaian.audits.store');
+    Route::put('/auditUpdate/{id}', [AdminController::class, 'auditUpdateStatus'])->name('adminpenilaian.audits.update');
+    Route::get('/monevs', [AdminController::class, 'monevs'])->name('adminpenilaian.monevs.index');
+    Route::post('/monevStore', [AdminController::class, 'monevStore'])->name('adminpenilaian.monevs.store');
 });
 
 Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPengusul', 'prevent-back-history']], function () {

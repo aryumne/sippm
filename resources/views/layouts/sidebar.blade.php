@@ -97,35 +97,6 @@
                     </ul>
                 </div>
             </li>
-
-
-            @if (Auth::user()->role_id == 1)
-                <li class="nav-item ">
-                    <a class="nav-link" data-toggle="collapse" href="#penilaian">
-                        <i class="material-icons">assessment</i>
-                        <p> Penilaian
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="penilaian">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span class="sidebar-mini"> PP </span>
-                                    <span class="sidebar-normal">Penilaian Proposal </span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span class="sidebar-mini"> MV </span>
-                                    <span class="sidebar-normal">Monev </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            @endif
-
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#laporan">
                     <i class="material-icons">picture_as_pdf</i>
@@ -152,6 +123,37 @@
             </li>
 
             @if (Auth::user()->role_id == 1)
+                <li class="nav-item {{ request()->routeIs('adminpenilaian.*') ? 'active' : '' }}">
+                    <a class="nav-link" data-toggle="collapse" href="#penilaian">
+                        <i class="material-icons">assessment</i>
+                        <p> Penilaian
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('adminpenilaian.*') ? 'show' : '' }}" id="penilaian">
+                        <ul class="nav">
+                            <li class="nav-item {{ request()->routeIs('adminpenilaian.audits.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('adminpenilaian.audits.index') }}">
+                                    <span class="sidebar-mini"> PP </span>
+                                    <span class="sidebar-normal">Penilaian Proposal </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('adminpenilaian.monevs.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('adminpenilaian.monevs.index') }}">
+                                    <span class="sidebar-mini"> MV </span>
+                                    <span class="sidebar-normal">Monev </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item {{ request()->routeIs('admin.reviewers.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.reviewers.index') }}">
+                        <i class="material-icons">manage_accounts</i>
+                        <p>Reviewers </p>
+                    </a>
+                </li>
                 <li class="nav-item ">
                     <a class="nav-link" href="#">
                         <i class="material-icons">date_range</i>

@@ -179,15 +179,6 @@ col-12 @endif
                     method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
                         @csrf
-                        <span class="form-group bmd-form-group email-error ">
-                            @if ($errors->any())
-                                @foreach ($errors->all() as $e)
-                                    <p class="
-                                description text-center text-danger">
-                                        {{ $e }}</p>
-                                @endforeach
-                            @endif
-                        </span>
                         @if (Auth::user()->role_id == 2)
                             <input type="hidden" name="nidn_pengusul" value="{{ Auth::user()->nidn }}">
                             <input type="hidden" name="status" value="menunggu">

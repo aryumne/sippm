@@ -195,15 +195,6 @@
                     method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
                         @csrf
-                        {{-- <span class="form-group bmd-form-group email-error ">
-                            @if ($errors->any())
-                                @foreach ($errors->all() as $e)
-                                    <p class="
-                                description text-center text-danger">
-                                        {{ $e }}</p>
-                                @endforeach
-                            @endif
-                        </span> --}}
                         @if (Auth::user()->role_id == 1)
                             <div class="form-group">
                                 <label for="proposal_id">Pilih Proposal</label>
