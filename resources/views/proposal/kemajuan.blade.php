@@ -2,17 +2,17 @@
 @section('content')
     .<div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
                             <i class="material-icons">assignment</i>
                         </div>
                         <div class="row card-title">
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <h4 class="fw-400">Laporan Kemajuan</h4>
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-md-6 text-right">
                                 <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
                                     data-target="#formKemajuan">
                                     <span class="material-icons">add</span> Laporan Baru
@@ -30,6 +30,8 @@
                                 <thead>
                                     <tr>
                                         <th>Judul Proposal</th>
+                                        <th>Pengusul</th>
+                                        <th>Fakultas</th>
                                         <th>tanggal Upload</th>
                                         <th>Berkas Laporan</th>
                                         <th class="disabled-sorting text-right">Actions</th>
@@ -38,6 +40,8 @@
                                 <tfoot>
                                     <tr>
                                         <th>Judul Proposal</th>
+                                        <th>Pengusul</th>
+                                        <th>Fakultas</th>
                                         <th>tanggal Upload</th>
                                         <th>Berkas Laporan</th>
                                         <th class="text-right">Actions</th>
@@ -47,6 +51,12 @@
                                     @foreach ($kemajuans as $lap)
                                         <tr>
                                             <td>{{ $lap->proposal->judul }}</td>
+                                            @foreach ($lap->proposal->dosen as $dsn)
+                                                @if ($dsn->pivot->isLeader == true)
+                                                    <td>{{ $dsn->nama }}</td>
+                                                    <td>{{ $dsn->prodi->faculty->nama_faculty }}</td>
+                                                @endif
+                                            @endforeach
                                             <td>{{ $lap->tanggal_upload }}</td>
                                             <td><a href="{{ asset('storage/' . $lap->path_kemajuan) }}" target="_blank"
                                                     class="badge badge-success">{{ substr($lap->path_kemajuan, 17) }}</a>

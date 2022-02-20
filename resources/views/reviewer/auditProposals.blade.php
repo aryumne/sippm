@@ -34,8 +34,7 @@
                                                     class="btn btn-sm btn-danger">Belum dinilai</a>
                                             @else
                                                 <button type="button" class="btn btn-sm btn-success" data-toggle="modal"
-                                                    data-target="#detail{{ $ua->id }}">Large
-                                                    modal</button>
+                                                    data-target="#detail{{ $ua->id }}">Lihat nilai</button>
                                                 <div class="modal fade" id="detail{{ $ua->id }}" tabindex="-1"
                                                     role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg">
@@ -87,6 +86,16 @@
                                                                                     <div class="col-9">
                                                                                         <p class="card-tex text-justify">
                                                                                             {{ $ua->hasil->komentar }}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row py-1">
+                                                                                    <div class="col-3 fw-400">
+                                                                                        Tanggal Monev
+                                                                                    </div>
+                                                                                    <div class="col-9">
+                                                                                        <p class="card-tex text-justify">
+                                                                                            {{ $ua->hasil->created_at->format('d M Y') }}
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>

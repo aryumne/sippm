@@ -34,15 +34,15 @@
                                                     class="btn btn-sm btn-danger">Belum dinilai</a>
                                             @else
                                                 <button type="button" class="btn btn-sm btn-success" data-toggle="modal"
-                                                    data-target="#detail{{ $ua->id }}">Large
-                                                    modal</button>
+                                                    data-target="#detail{{ $ua->id }}">Lihat nilai</button>
                                                 <div class="modal fade" id="detail{{ $ua->id }}" tabindex="-1"
                                                     role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="card-header card-header-text card-header-warning">
                                                                 <div class="card-text">
-                                                                    <h4 class="card-title">Hasil Penilaian</h4>
+                                                                    <h4 class="card-title">Hasil Monitoring dan Evaluasi
+                                                                    </h4>
                                                                 </div>
                                                             </div>
                                                             <div class="card-body">
@@ -62,7 +62,7 @@
                                                                         @foreach ($ua->kemajuan->proposal->dosen as $dsn)
                                                                             @if ($dsn->pivot->isLeader == true)
                                                                                 <div class="row py-1">
-                                                                                    <div class="col-3 fw-300">
+                                                                                    <div class="col-3 fw-400">
                                                                                         Ketua Peneliti
                                                                                     </div>
                                                                                     <div class="col-9">
@@ -81,13 +81,23 @@
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="row py-1">
+                                                                                <div class="row pt-1">
                                                                                     <div class="col-3 fw-400">
-                                                                                        Catatan
+                                                                                        Catatan Penilaian
                                                                                     </div>
                                                                                     <div class="col-9">
-                                                                                        <p class="card-tex text-justify">
+                                                                                        <p class="card-text">
                                                                                             {{ $ua->hasil->komentar }}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row pt-1">
+                                                                                    <div class="col-3 fw-400">
+                                                                                        Tanggal Penilaian
+                                                                                    </div>
+                                                                                    <div class="col-9">
+                                                                                        <p class="card-text">
+                                                                                            {{ $ua->hasil->created_at->format('d M Y') }}
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>

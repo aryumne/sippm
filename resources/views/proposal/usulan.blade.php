@@ -100,9 +100,9 @@ col-12 @endif
                                             <tr>
                                                 <th>Judul Proposal</th>
                                                 <th>Pengusul</th>
+                                                <th>Fakultas</th>
                                                 <th>tanggal Upload</th>
                                                 <th>Berkas Laporan</th>
-                                                <th>Status</th>
                                                 <th class="disabled-sorting text-right">Actions</th>
                                             </tr>
                                         </thead>
@@ -110,9 +110,9 @@ col-12 @endif
                                             <tr>
                                                 <th>Judul Proposal</th>
                                                 <th>Pengusul</th>
+                                                <th>Fakultas</th>
                                                 <th>tanggal Upload</th>
                                                 <th>Berkas Laporan</th>
-                                                <th>Status</th>
                                                 <th class="text-right">Actions</th>
                                             </tr>
                                         </tfoot>
@@ -120,26 +120,16 @@ col-12 @endif
                                             @foreach ($usulan as $lap)
                                                 <tr>
                                                     <td>{{ $lap->judul }}</td>
-                                                    <td>
-                                                        @foreach ($lap->dosen as $pvt)
-                                                            @if ($pvt->pivot->isLeader == true)
-                                                                {{ $pvt->nama }}
-                                                            @endif
-                                                        @endforeach
-                                                    </td>
+                                                    @foreach ($lap->dosen as $pvt)
+                                                        @if ($pvt->pivot->isLeader == true)
+                                                            <td> {{ $pvt->nama }}</td>
+                                                            <td>{{ $pvt->prodi->faculty->nama_faculty }}</td>
+                                                        @endif
+                                                    @endforeach
                                                     <td>{{ $lap->tanggal_usul }}</td>
                                                     <td><a href="{{ asset('storage/' . $lap->path_proposal) }}"
                                                             target="_blank"
                                                             class="badge badge-success">{{ substr($lap->path_proposal, 9) }}</a>
-                                                    </td>
-                                                    <td>
-                                                        @if ($lap->status == 1)
-                                                            Menunggu
-                                                        @elseif ($lap->status == 2)
-                                                            Lanjut
-                                                        @else
-                                                            Tidak Lanjut
-                                                        @endif
                                                     </td>
                                                     <td class="text-right">
                                                         <a href="{{ route('usulan.show', $lap->id) }}"

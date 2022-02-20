@@ -164,7 +164,7 @@
                                             @else
                                                 <div class="row py-1">
                                                     <div class="col-3 fw-400">
-                                                        Tanggal Reviewing
+                                                        Tanggal Penilaian
                                                     </div>
                                                     <div class="col-9">
                                                         <p class="card-text">

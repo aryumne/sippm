@@ -90,6 +90,10 @@
 
 
  <style>
+     td {
+         max-width: 350px;
+     }
+
      .fw-300 {
          font-weight: 300 !important;
      }

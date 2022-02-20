@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LapKemajuan;
+use App\Models\Monev;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -99,9 +100,11 @@ class LapKemajuanController extends Controller
 
         $title = "Detail Laporan Kemajuan";
         $kemajuan = LapKemajuan::find($id);
+        $monev = Monev::where('lap_kemajuan_id', $id)->first();
         return view('proposal.showKemajuan', [
             'title' => $title,
             'kemajuan' => $kemajuan,
+            'monev' => $monev,
         ]);
     }
 
