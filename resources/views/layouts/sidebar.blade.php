@@ -29,98 +29,101 @@
                     <p>Dashboard</p>
                 </a>
             </li>
-            <li
-                class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*')? 'active': '' }}">
-                <a class="nav-link" data-toggle="collapse" href="#proposal" aria-expanded=&quot;true&quot;>
-                    <i class="material-icons">article</i>
-                    <p>Proposal
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*')? 'show': '' }}"
-                    id="proposal">
-                    <ul class="nav">
-                        <li class="nav-item {{ request()->routeIs('usulan*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('usulan.index') }} ">
-                                <span class="sidebar-mini"> UP </span>
-                                <span class="sidebar-normal">Usulan Proposal </span>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ request()->routeIs('laporan-kemajuan*') ? 'active' : '' }}">
-                            <a class="nav-link" href=" {{ route('laporan-kemajuan.index') }} ">
-                                <span class="sidebar-mini"> LK </span>
-                                <span class="sidebar-normal">Laporan Kemajuan </span>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ request()->routeIs('laporan-akhir*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('laporan-akhir.index') }}">
-                                <span class="sidebar-mini"> LA </span>
-                                <span class="sidebar-normal">Laporan akhir </span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" data-toggle="collapse" href="#luaran">
-                                <i class="material-icons">task</i>
-                                <p> Luaran
-                                    <b class="caret"></b>
-                                </p>
-                            </a>
-                            <div class="collapse" id="luaran">
-                                <ul class="nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            <span class="sidebar-mini"> P </span>
-                                            <span class="sidebar-normal">Publikasi </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            <span class="sidebar-mini"> H </span>
-                                            <span class="sidebar-normal">HAKI </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            <span class="sidebar-mini"> B </span>
-                                            <span class="sidebar-normal">BUKU </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            <span class="sidebar-mini"> TG </span>
-                                            <span class="sidebar-normal">Teknologi Tepat Guna </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#laporan">
-                    <i class="material-icons">picture_as_pdf</i>
-                    <p> Laporan Kegiatan
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse" id="laporan">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span class="sidebar-mini"> PL </span>
-                                <span class="sidebar-normal">Penelitian </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span class="sidebar-mini"> PG </span>
-                                <span class="sidebar-normal">Pengabdian </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+
+            @if (Auth::user()->role_id <= 2)
+                <li
+                    class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*')? 'active': '' }}">
+                    <a class="nav-link" data-toggle="collapse" href="#proposal" aria-expanded=&quot;true&quot;>
+                        <i class="material-icons">article</i>
+                        <p>Proposal
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*')? 'show': '' }}"
+                        id="proposal">
+                        <ul class="nav">
+                            <li class="nav-item {{ request()->routeIs('usulan*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('usulan.index') }} ">
+                                    <span class="sidebar-mini"> UP </span>
+                                    <span class="sidebar-normal">Usulan Proposal </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('laporan-kemajuan*') ? 'active' : '' }}">
+                                <a class="nav-link" href=" {{ route('laporan-kemajuan.index') }} ">
+                                    <span class="sidebar-mini"> LK </span>
+                                    <span class="sidebar-normal">Laporan Kemajuan </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('laporan-akhir*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('laporan-akhir.index') }}">
+                                    <span class="sidebar-mini"> LA </span>
+                                    <span class="sidebar-normal">Laporan akhir </span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" data-toggle="collapse" href="#luaran">
+                                    <i class="material-icons">task</i>
+                                    <p> Luaran
+                                        <b class="caret"></b>
+                                    </p>
+                                </a>
+                                <div class="collapse" id="luaran">
+                                    <ul class="nav">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">
+                                                <span class="sidebar-mini"> P </span>
+                                                <span class="sidebar-normal">Publikasi </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">
+                                                <span class="sidebar-mini"> H </span>
+                                                <span class="sidebar-normal">HAKI </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">
+                                                <span class="sidebar-mini"> B </span>
+                                                <span class="sidebar-normal">BUKU </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">
+                                                <span class="sidebar-mini"> TG </span>
+                                                <span class="sidebar-normal">Teknologi Tepat Guna </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#laporan">
+                        <i class="material-icons">picture_as_pdf</i>
+                        <p> Laporan Kegiatan
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="laporan">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span class="sidebar-mini"> PL </span>
+                                    <span class="sidebar-normal">Penelitian </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span class="sidebar-mini"> PG </span>
+                                    <span class="sidebar-normal">Pengabdian </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
 
             @if (Auth::user()->role_id == 1)
                 <li class="nav-item {{ request()->routeIs('adminpenilaian.*') ? 'active' : '' }}">
@@ -164,6 +167,21 @@
                     <a class="nav-link" href="#">
                         <i class="material-icons">assignment_ind</i>
                         <p>Data Dosen </p>
+                    </a>
+                </li>
+            @endif
+
+            @if (Auth::user()->role_id == 3)
+                <li class="nav-item {{ request()->routeIs('reviewer.audit.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('reviewer.audit.proposals') }}">
+                        <i class="material-icons">assignment</i>
+                        <p>Review Proposal </p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('reviewer.monev.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('reviewer.monev.kemajuan') }}">
+                        <i class="material-icons">dvr</i>
+                        <p>Monitoring & Evaluasi </p>
                     </a>
                 </li>
             @endif

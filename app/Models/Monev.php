@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\HasilMonev;
-use App\Models\Proposal;
+use App\Models\LapKemajuan;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,9 +19,9 @@ class Monev extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function proposal()
+    public function kemajuan()
     {
-        return $this->belongsTo(Proposal::class);
+        return $this->belongsTo(LapKemajuan::class, 'lap_kemajuan_id');
     }
 
     public function hasil()

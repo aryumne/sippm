@@ -18,6 +18,7 @@ class CreateHasilMonevsTable extends Migration
             $table->json('luaran_wajib');
             $table->json('luaran_tambahan');
             $table->json('kesesuaian');
+            $table->integer('total');
             $table->text('komentar');
             $table->foreignId('monev_id');
             $table->timestamps();

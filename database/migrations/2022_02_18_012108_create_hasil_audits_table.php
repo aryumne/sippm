@@ -22,7 +22,7 @@ class CreateHasilAuditsTable extends Migration
             $table->integer('kelayakan');
             $table->integer('total');
             $table->text('komentar');
-            $table->foreignId('user_id');
+            $table->foreignId('audit_id');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggota;
+use App\Models\Audit;
 use App\Models\Dosen;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
@@ -159,11 +160,22 @@ class ProposalController extends Controller
         }
         $title = "Detail Proposal";
         $proposal = Proposal::find($id);
+        $audit_ids = collect([]);
+        foreach ($proposal->reviewer as $reviewer) {
+            $audit_ids->push($reviewer->pivot->id);
+        }
+        $audits = Audit::whereIn('id', $audit_ids)->get();
+        // foreach ($audits as $a) {
+        //     echo 'Hasil = ' . ($a->hasil == null ? 'Kosong' : $a->hasil) . '<br>';
+        //     echo 'Reviewer = ' . $a->user->dosen->nama . '<br>';
+        //     echo 'Proposal = ' . $a->proposal . '<br>';
+        // }
 
         return view('proposal.showProposal',
             [
                 'title' => $title,
                 'proposal' => $proposal,
+                'audits' => $audits,
             ]);
     }
 

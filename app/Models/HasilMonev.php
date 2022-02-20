@@ -12,7 +12,13 @@ class HasilMonev extends Model
 
     protected $guarded = ['id'];
 
-    public function audit()
+    protected $casts = [
+        'luaran_wajib' => 'array',
+        'luaran_tambahan' => 'array',
+        'kesesuaian' => 'array',
+    ];
+
+    public function monev()
     {
         return $this->belongsTo(Monev::class);
     }

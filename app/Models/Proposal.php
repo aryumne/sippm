@@ -27,7 +27,7 @@ class Proposal extends Model
 
     public function reviewer()
     {
-        return $this->belongsToMany(User::class, 'audits', 'proposal_id', 'user_id')->withPivot('status');
+        return $this->belongsToMany(User::class, 'audits', 'proposal_id', 'user_id')->withPivot('id', 'status');
     }
 
     public function hasilAudit()

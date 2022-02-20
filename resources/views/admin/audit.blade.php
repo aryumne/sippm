@@ -11,7 +11,7 @@
                         </div>
                         <div class="row card-title">
                             <div class="col-6">
-                                <h4 class="fw-400">Penilai Proposal</h4>
+                                <h4 class="fw-400">Reviewer Proposal</h4>
                             </div>
                             <div class="col-6 text-right">
                                 <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
@@ -31,7 +31,7 @@
                                 <thead>
                                     <tr>
                                         <th>Reviewer</th>
-                                        <th>List Proposal</th>
+                                        <th>Judul Proposal</th>
                                         <th>Status</th>
                                         <th class="disabled-sorting">Actions</th>
                                     </tr>
@@ -102,27 +102,36 @@
                             <table id="datatables-hasilAudit" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
-                                    <tr>
-                                        <th>Judul Proposal</th>
+                                    <tr class="text-center">
+                                        <th class="text-left">Judul Proposal</th>
                                         <th>Review 1</th>
                                         <th>Review 2</th>
                                         <th>Rata-Rata</th>
-                                        <th class="disabled-sorting">Actions</th>
+                                        <th class="disabled-sorting">Detail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($proposals as $pps)
                                         @if (count($pps->reviewer) != 0)
-                                            <tr>
-                                                <td>{{ $pps->judul }}</td>
-                                                @foreach ($pps->reviewer as $rvw)
-                                                    <td>{{ $rvw->dosen->nama }}</td>
+                                            <tr class="text-center">
+                                                <td class="text-left">{{ $pps->judul }}</td>
+                                                @foreach ($pps->hasilAudit as $hasil)
+                                                    <td>{{ $hasil->total }}</td>
                                                 @endforeach
-                                                @if (count($pps->reviewer) < 2)
-                                                    <td> 80 </td>
+                                                @if (count($pps->hasilAudit) == 0)
+                                                    <td> belum mereview </td>
+                                                    <td> belum mereview </td>
+                                                    <td> - </td>
+                                                @elseif(count($pps->hasilAudit) == 1)
+                                                    <td> belum mereview </td>
+                                                    <td> - </td>
+                                                @elseif(count($pps->hasilAudit) == 2)
+                                                    <td> {{ ($pps->hasilAudit[0]->total + $pps->hasilAudit[1]->total) / 2 }}
+                                                    </td>
                                                 @endif
-                                                <td> 100 </td>
-                                                <td>aksi</td>
+                                                <td> <a href="{{ route('usulan.show', $pps->id) }}"
+                                                        class="btn btn-link btn-info btn-just-icon like"><i
+                                                            class="material-icons">read_more</i></a></td>
                                             </tr>
                                         @endif
                                     @endforeach
@@ -144,7 +153,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Form Laporan Kemajuan</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Form Reviewer Proposal</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -201,8 +210,8 @@
                 //pagingType documentation : "https://datatables.net/reference/option/pagingType"
                 "pagingType": "first_last_numbers",
                 "lengthMenu": [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "All"]
+                    [15, 25, 50, -1],
+                    [15, 25, 50, "All"]
                 ],
                 responsive: true,
                 language: {
@@ -214,8 +223,8 @@
                 //pagingType documentation : "https://datatables.net/reference/option/pagingType"
                 "pagingType": "first_last_numbers",
                 "lengthMenu": [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "All"]
+                    [15, 25, 55, -1],
+                    [15, 25, 55, "All"]
                 ],
                 responsive: true,
                 language: {

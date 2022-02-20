@@ -86,6 +86,8 @@
  <!-- CSS Files -->
 
  <link href="{{ asset('/css/material-dashboard.css') }}" rel="stylesheet" />
+ {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
+
 
  <style>
      .fw-300 {
