@@ -6,6 +6,7 @@ use App\Http\Controllers\LapKemajuanController;
 use App\Http\Controllers\PengusulController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\ReviewerController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +44,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     Route::get('/monevs', [AdminController::class, 'monevs'])->name('adminpenilaian.monevs.index');
     Route::post('/monevStore', [AdminController::class, 'monevStore'])->name('adminpenilaian.monevs.store');
     Route::put('/monevUpdate/{id}', [AdminController::class, 'monevUpdateStatus'])->name('adminpenilaian.monevs.update');
+
+    //penjadwalan
+    Route::resource('/schedule', ScheduleController::class)->only(['index', 'update']);
 });
 
 Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPengusul', 'prevent-back-history']], function () {

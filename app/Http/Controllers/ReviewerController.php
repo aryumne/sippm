@@ -8,6 +8,7 @@ use App\Models\HasilMonev;
 use App\Models\Monev;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -34,6 +35,10 @@ class ReviewerController extends Controller
 
     public function formAudit($id)
     {
+        if (!Gate::allows('penilaian_proposal')) {
+            abort(403);
+        }
+
         $title = "Form Penilaian Proposal";
         //ambil data proposal dari data audit berdasarkan id audit
         $proposal = Audit::find($id);
@@ -56,6 +61,10 @@ class ReviewerController extends Controller
 
     public function storeAudit(Request $request, $id)
     {
+        if (!Gate::allows('penilaian_proposal')) {
+            abort(403);
+        }
+
         $validator = Validator::make($request->all(), [
             'perumusan' => 'required',
             'peluang' => 'required',
@@ -104,6 +113,10 @@ class ReviewerController extends Controller
 
     public function formMonev($id)
     {
+        if (!Gate::allows('monev_laporan_kemajuan')) {
+            abort(403);
+        }
+
         $title = "Form MONEV Laporan Kemajuan ";
         $monev = Monev::find($id);
         return view('reviewer.formMonev', [
@@ -115,6 +128,10 @@ class ReviewerController extends Controller
 
     public function storeMonev(Request $request, $id)
     {
+        if (!Gate::allows('monev_laporan_kemajuan')) {
+            abort(403);
+        }
+
         // dd($request->all());
         $validator = Validator::make($request->all(), [
             'luaran_wajib' => 'required',

@@ -30,8 +30,10 @@
                                         </td>
                                         <td>
                                             @if ($ua->hasil == null)
-                                                <a href="{{ route('reviewer.audit.form', $ua->id) }}"
-                                                    class="btn btn-sm btn-danger">Belum dinilai</a>
+                                                @can('penilaian_proposal')
+                                                    <a href="{{ route('reviewer.audit.form', $ua->id) }}"
+                                                        class="btn btn-sm btn-danger">Belum dinilai</a>
+                                                @endcan
                                             @else
                                                 <button type="button" class="btn btn-sm btn-success" data-toggle="modal"
                                                     data-target="#detail{{ $ua->id }}">Lihat nilai</button>

@@ -157,8 +157,8 @@
                         <p>Reviewers </p>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="#">
+                <li class="nav-item {{ request()->routeIs('schedule.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('schedule.index') }}">
                         <i class="material-icons">date_range</i>
                         <p>Penjadwalan </p>
                     </a>

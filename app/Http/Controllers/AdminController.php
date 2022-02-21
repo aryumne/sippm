@@ -48,7 +48,6 @@ class AdminController extends Controller
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
-
         $nidn = Dosen::where('nidn', $request->nidn)->get();
         if (count($nidn) > 0) {
             User::create([

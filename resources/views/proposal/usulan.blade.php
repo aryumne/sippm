@@ -18,12 +18,14 @@ col-12 @endif
                                 <div class="col-md-6">
                                     <h4 class="fw-400">Daftar Proposal</h4>
                                 </div>
-                                <div class="col-md-6 text-right">
-                                    <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
-                                        data-target="#formProposal">
-                                        <span class="material-icons">add</span> Proposal Baru
-                                    </button>
-                                </div>
+                                @can('pengusulan_proposal')
+                                    <div class="col-md-6 text-right">
+                                        <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                            data-target="#formProposal">
+                                            <span class="material-icons">add</span> Proposal Baru
+                                        </button>
+                                    </div>
+                                @endcan
                             </div>
                         </div>
                         <div class="card-body pt-0">

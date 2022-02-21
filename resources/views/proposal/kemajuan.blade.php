@@ -12,12 +12,14 @@
                             <div class="col-md-6">
                                 <h4 class="fw-400">Laporan Kemajuan</h4>
                             </div>
-                            <div class="col-md-6 text-right">
-                                <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
-                                    data-target="#formKemajuan">
-                                    <span class="material-icons">add</span> Laporan Baru
-                                </button>
-                            </div>
+                            @can('upload_laporan_kemajuan')
+                                <div class="col-md-6 text-right">
+                                    <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                        data-target="#formKemajuan">
+                                        <span class="material-icons">add</span> Laporan Baru
+                                    </button>
+                                </div>
+                            @endcan
                         </div>
                     </div>
                     <div class="card-body">
@@ -67,90 +69,92 @@
                                                         class="btn btn-link btn-info btn-just-icon like"><i
                                                             class="material-icons">read_more</i></a>
                                                 @endif
-                                                <button type="button" class="btn btn-link btn-warning btn-just-icon edit"
-                                                    data-toggle="modal" data-target="#EditLapKemajuan{{ $lap->id }}"><i
-                                                        class="material-icons">mode_edit</i></button>
-                                                <!-- Modal Edit Laporan Kemajuan -->
-                                                <div class="modal fade" id="EditLapKemajuan{{ $lap->id }}"
-                                                    tabindex="-1" role="dialog" aria-labelledby="formProposal"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Edit
-                                                                    Laporan Kemajuan</h5>
-                                                                <button type="button" class="close"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form class="form" id="EditKemajuanValidation"
-                                                                action="{{ route('laporan-kemajuan.update', $lap->id) }}"
-                                                                method="POST" enctype="multipart/form-data">
-                                                                <div class="modal-body">
-                                                                    @csrf
-                                                                    @method('PUT')
-                                                                    <div class="form-group">
-                                                                        <select class="form-control selectpicker"
-                                                                            data-style="btn btn-link" id="proposal_id"
-                                                                            name="proposal_id" required>
-                                                                            <option value="{{ $lap->proposal_id }}">
-                                                                                {{ $lap->proposal->judul }}
-                                                                            </option>
-                                                                        </select>
-                                                                    </div>
-                                                                    @error('proposal_id')
-                                                                        <span id="category_id-error" class="error text-danger"
-                                                                            for="input-id"
-                                                                            style="display: block;">{{ $message }}</span>
-                                                                    @enderror
-                                                                    @if (Auth::user()->role_id == 1)
-                                                                        <div class="form-group mt-3">
-                                                                            <input type="date" class="form-control"
-                                                                                id="tanggal_upload" name="tanggal_upload"
-                                                                                placeholder="Tanggal Upload"
-                                                                                value="{{ old('tanggal_upload', $lap->tanggal_upload) }}"
-                                                                                required>
+                                                @can('upload_laporan_kemajuan')
+                                                    <button type="button" class="btn btn-link btn-warning btn-just-icon edit"
+                                                        data-toggle="modal" data-target="#EditLapKemajuan{{ $lap->id }}"><i
+                                                            class="material-icons">mode_edit</i></button>
+                                                    <!-- Modal Edit Laporan Kemajuan -->
+                                                    <div class="modal fade" id="EditLapKemajuan{{ $lap->id }}"
+                                                        tabindex="-1" role="dialog" aria-labelledby="formProposal"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Edit
+                                                                        Laporan Kemajuan</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <form class="form" id="EditKemajuanValidation"
+                                                                    action="{{ route('laporan-kemajuan.update', $lap->id) }}"
+                                                                    method="POST" enctype="multipart/form-data">
+                                                                    <div class="modal-body">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <div class="form-group">
+                                                                            <select class="form-control selectpicker"
+                                                                                data-style="btn btn-link" id="proposal_id"
+                                                                                name="proposal_id" required>
+                                                                                <option value="{{ $lap->proposal_id }}">
+                                                                                    {{ $lap->proposal->judul }}
+                                                                                </option>
+                                                                            </select>
                                                                         </div>
-                                                                        @error('tanggal_upload')
-                                                                            <span id="category_id-error"
-                                                                                class="error text-danger" for="input-id"
+                                                                        @error('proposal_id')
+                                                                            <span id="category_id-error" class="error text-danger"
+                                                                                for="input-id"
                                                                                 style="display: block;">{{ $message }}</span>
                                                                         @enderror
-                                                                    @endif
-                                                                    <div
-                                                                        class="form-group form-file-upload form-file-multiple">
-                                                                        <input type="file" name="path_kemajuan"
-                                                                            class="inputFileHidden">
-                                                                        <div class="input-group">
-                                                                            <input type="text"
-                                                                                class="form-control inputFileVisible"
-                                                                                placeholder="Single File">
-                                                                            <span class="input-group-btn">
-                                                                                <button type="button"
-                                                                                    class="btn btn-fab btn-round btn-primary">
-                                                                                    <i
-                                                                                        class="material-icons">attach_file</i>
-                                                                                </button>
-                                                                            </span>
+                                                                        @if (Auth::user()->role_id == 1)
+                                                                            <div class="form-group mt-3">
+                                                                                <input type="date" class="form-control"
+                                                                                    id="tanggal_upload" name="tanggal_upload"
+                                                                                    placeholder="Tanggal Upload"
+                                                                                    value="{{ old('tanggal_upload', $lap->tanggal_upload) }}"
+                                                                                    required>
+                                                                            </div>
+                                                                            @error('tanggal_upload')
+                                                                                <span id="category_id-error"
+                                                                                    class="error text-danger" for="input-id"
+                                                                                    style="display: block;">{{ $message }}</span>
+                                                                            @enderror
+                                                                        @endif
+                                                                        <div
+                                                                            class="form-group form-file-upload form-file-multiple">
+                                                                            <input type="file" name="path_kemajuan"
+                                                                                class="inputFileHidden">
+                                                                            <div class="input-group">
+                                                                                <input type="text"
+                                                                                    class="form-control inputFileVisible"
+                                                                                    placeholder="Single File">
+                                                                                <span class="input-group-btn">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-fab btn-round btn-primary">
+                                                                                        <i
+                                                                                            class="material-icons">attach_file</i>
+                                                                                    </button>
+                                                                                </span>
+                                                                            </div>
                                                                         </div>
+                                                                        @error('path_kemajuan')
+                                                                            <span id="category_id-error" class="error text-danger"
+                                                                                for="input-id"
+                                                                                style="display: block;">{{ $message }}</span>
+                                                                        @enderror
                                                                     </div>
-                                                                    @error('path_kemajuan')
-                                                                        <span id="category_id-error" class="error text-danger"
-                                                                            for="input-id"
-                                                                            style="display: block;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Batal</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-rose">Simpan</button>
-                                                                </div>
-                                                            </form>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">Batal</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-rose">Simpan</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
