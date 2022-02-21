@@ -44,12 +44,15 @@ class LapKemajuanController extends Controller
             $kemajuans = LapKemajuan::whereIn('proposal_id', $proposal_id)->get();
         }
 
-        return view('proposal.kemajuan',
+
+        return view(
+            'proposal.kemajuan',
             [
                 'title' => $title,
                 'proposal' => $proposal,
                 'kemajuans' => $kemajuans,
-            ]);
+            ]
+        );
     }
 
     public function store(Request $request)

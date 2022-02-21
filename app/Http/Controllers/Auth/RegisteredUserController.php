@@ -50,8 +50,6 @@ class RegisteredUserController extends Controller
                 Alert::toast("You don't have any access.!", 'error');
                 return redirect()->route('login');
             }
-
-
         } else {
             Alert::toast('NIDN tidak valid', 'error');
             return back();

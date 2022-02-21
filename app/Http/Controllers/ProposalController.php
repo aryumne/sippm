@@ -45,7 +45,6 @@ class ProposalController extends Controller
             'dosen' => $dosen,
             'usulan' => $usulan,
         ]);
-
     }
 
     public function store(Request $request)
