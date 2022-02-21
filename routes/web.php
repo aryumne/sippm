@@ -10,8 +10,8 @@ use App\Http\Controllers\PengusulController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\ReviewerController;
-use App\Http\Controllers\TeknologiTepatGunaController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\TeknologiTepatGunaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,14 +33,14 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
     Route::resource('/usulan', ProposalController::class);
     Route::resource('/laporan-kemajuan', LapKemajuanController::class);
     Route::resource('/laporan-akhir', LapAkhirController::class);
-    Route::resource('/publikasi', PublikasiController::class);
-    Route::resource('/hki', HkiController::class);
+    Route::resource('/publikasi', PublikasiController::class)->except(['create', 'show', 'edit', 'destroy']);
+    Route::resource('/hki', HkiController::class)->except(['create', 'show', 'edit', 'destroy']);
     Route::resource('/usulan', ProposalController::class)->except(['create', 'destroy']);
     Route::resource('/laporan-kemajuan', LapKemajuanController::class)->except(['create', 'edit', 'destroy']);
     Route::resource('/laporan-akhir', LapAkhirController::class)->except(['create', 'show', 'edit', 'destroy']);
-    Route::resource('/buku', BukuController::class);
-    Route::resource('/ttg', TeknologiTepatGunaController::class);
-    Route::resource('/kegiatan', KegiatanController::class)->except(['index']);
+    Route::resource('/buku', BukuController::class)->except(['create', 'show', 'edit', 'destroy']);
+    Route::resource('/ttg', TeknologiTepatGunaController::class)->except(['create', 'show', 'edit', 'destroy']);
+    Route::resource('/kegiatan', KegiatanController::class)->except(['index', 'show', 'edit', 'destroy']);
     Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
 });
 

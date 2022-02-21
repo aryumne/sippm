@@ -53,22 +53,6 @@ class BukuController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // dd($request->all());
@@ -106,35 +90,6 @@ class BukuController extends Controller
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // dd($request->all());
@@ -168,10 +123,10 @@ class BukuController extends Controller
         if ($path_buku != NULL) {
             $fileName = $path_buku->getClientOriginalName();
             $cekFileName = Buku::where('path_buku', 'laporan-buku/' . str_replace(" ", "-", $fileName))->get();
-            if (count($cekFileName) != 0) {
-                Alert::toast('File Sudah Ada!', 'error');
-                return back()->withInput();
-            }
+            // if (count($cekFileName) != 0) {
+            //     Alert::toast('File Sudah Ada!', 'error');
+            //     return back()->withInput();
+            // }
             $path_buku = $path_buku->storeAs('laporan-buku', str_replace(" ", "-", $fileName));
         } else {
             $path_buku = $buku->path_buku;
@@ -190,12 +145,6 @@ class BukuController extends Controller
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $buku = Buku::find($id);

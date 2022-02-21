@@ -272,11 +272,11 @@ class ProposalController extends Controller
             Alert::toast('Pengusulan hanya dapat dilakukan sekali dalam satu periode', 'error');
             return back()->withInput();
         }
-        if (count($getAgt1) >= 2) {
+        if (count($getAgt1) > 2) {
             Alert::toast($agt[0] . ' sudah terdaftar 2 kali di periode ini', 'error');
             return back()->withInput();
         }
-        if (count($getAgt2) >= 2) {
+        if (count($getAgt2) > 2) {
             Alert::toast($agt[1] . ' sudah terdaftar anggota 2 kali di periode ini', 'error');
             return back()->withInput();
         }
@@ -287,10 +287,10 @@ class ProposalController extends Controller
             $filename = $path_proposal->getClientOriginalName();
             //query file proposal sudah ada atau tidak
             $cekfilename = Proposal::where('path_proposal', 'proposal/' . str_replace(" ", "-", $filename))->get();
-            if (count($cekfilename) != 0) {
-                Alert::toast('File proposal sudah ada', 'error');
-                return back()->withInput();
-            }
+            // if (count($cekfilename) != 0) {
+            //     Alert::toast('File proposal sudah ada', 'error');
+            //     return back()->withInput();
+            // }
             $path_proposal = $path_proposal->storeAs('proposal', str_replace(" ", "-", $filename));
         } else {
             $path_proposal = $proposal->path_proposal;

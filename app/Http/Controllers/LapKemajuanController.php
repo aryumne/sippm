@@ -44,7 +44,6 @@ class LapKemajuanController extends Controller
             $kemajuans = LapKemajuan::whereIn('proposal_id', $proposal_id)->get();
         }
 
-
         return view(
             'proposal.kemajuan',
             [
@@ -160,10 +159,10 @@ class LapKemajuanController extends Controller
             $filename = $path_kemajuan->getClientOriginalName();
             //query file proposal sudah ada atau tidak
             $cekfilename = LapKemajuan::where('path_kemajuan', 'laporan-kemajuan/' . str_replace(" ", "-", $filename))->get();
-            if (count($cekfilename) != 0) {
-                Alert::toast('File laporan sudah ada', 'error');
-                return back()->withInput();
-            }
+            // if (count($cekfilename) != 0) {
+            //     Alert::toast('File laporan sudah ada', 'error');
+            //     return back()->withInput();
+            // }
             $path_kemajuan = $path_kemajuan->storeAs('laporan-kemajuan', str_replace(" ", "-", $filename));
         } else {
             $path_kemajuan = $kemajuan->path_kemajuan;

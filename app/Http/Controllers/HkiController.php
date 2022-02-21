@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
+use App\Models\Hki;
+use App\Models\Jenis_hki;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\Hki;
-use App\Models\Jenis_hki;
-use Illuminate\Support\Facades\Storage;
-use phpDocumentor\Reflection\Types\Null_;
 
 class HkiController extends Controller
 {
@@ -59,22 +58,6 @@ class HkiController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // dd($request->all());
@@ -109,35 +92,6 @@ class HkiController extends Controller
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // dd($request->all());
@@ -164,13 +118,13 @@ class HkiController extends Controller
         $date = date('Y-m-d', $date);
 
         $path_Hki = $request->file('path_hki');
-        if ($path_Hki != NULL) {
+        if ($path_Hki != null) {
             $fileName = $path_Hki->getClientOriginalName();
             $cekFileName = Hki::where('path_hki', 'laporan-Hki/' . str_replace(" ", "-", $fileName))->get();
-            if (count($cekFileName) != 0) {
-                Alert::toast('File Sudah Ada!', 'error');
-                return back()->withInput();
-            }
+            // if (count($cekFileName) != 0) {
+            //     Alert::toast('File Sudah Ada!', 'error');
+            //     return back()->withInput();
+            // }
             $path_Hki = $path_Hki->storeAs('laporan-Hki', str_replace(" ", "-", $fileName));
         } else {
             $path_Hki = $hki->path_hki;
@@ -181,19 +135,13 @@ class HkiController extends Controller
             'jenis_hki_id' => $request->jenis,
             'path_hki' => $path_Hki,
             'tanggal_upload' => $date,
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
         ]);
 
         Alert::success('Laporan Hki berhasil diubah', 'success');
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $hki = Hki::find($id);

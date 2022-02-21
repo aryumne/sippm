@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
 use App\Models\Jenis_jurnal;
 use App\Models\Proposal;
+use App\Models\Publikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\Publikasi;
-use App\Models\Dosen;
-use Illuminate\Support\Facades\Storage;
 
 class PublikasiController extends Controller
 {
@@ -54,26 +54,10 @@ class PublikasiController extends Controller
             'proposal' => $proposal,
             'jj' => $jj,
             'dosen' => $dosen,
-            'publikasi' => $publikasi
+            'publikasi' => $publikasi,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // dd($request->all());
@@ -116,35 +100,6 @@ class PublikasiController extends Controller
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // dd($request->all());
@@ -175,13 +130,13 @@ class PublikasiController extends Controller
         $date = date('Y-m-d', $date);
 
         $path_publikasi = $request->file('path_jurnal');
-        if ($path_publikasi != NULL) {
+        if ($path_publikasi != null) {
             $fileName = $path_publikasi->getClientOriginalName();
             $cekFileName = publikasi::where('path_jurnal', 'laporan-publikasi/' . str_replace(" ", "-", $fileName))->get();
-            if (count($cekFileName) != 0) {
-                Alert::toast('File Sudah Ada!', 'error');
-                return back()->withInput();
-            }
+            // if (count($cekFileName) != 0) {
+            //     Alert::toast('File Sudah Ada!', 'error');
+            //     return back()->withInput();
+            // }
             $path_publikasi = $path_publikasi->storeAs('laporan-publikasi', str_replace(" ", "-", $fileName));
         } else {
             $path_publikasi = $publikasi->path_jurnal;
@@ -201,12 +156,6 @@ class PublikasiController extends Controller
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $publikasi = Publikasi::find($id);
