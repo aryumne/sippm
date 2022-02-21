@@ -9,8 +9,8 @@ class Hki extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
-    // protected $fillable = ['proposal_id', 'user_id', 'path_hki', 'tanggal_upload', 'jenis_hki_id'];
+    // protected $guarded = ['id'];
+    protected $fillable = ['proposal_id', 'user_id', 'path_hki', 'tanggal_upload', 'jenis_hki_id'];
 
     public function proposal()
     {
@@ -25,5 +25,10 @@ class Hki extends Model
     public function jenis_hki()
     {
         return $this->belongsTo(Jenis_hki::class);
+    }
+
+    public function dosen()
+    {
+        return $this->belongsToMany(Dosen::class, 'anggotas', 'proposal_id', 'nidn')->withPivot('isLeader');
     }
 }

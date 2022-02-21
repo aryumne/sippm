@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jenis_jurnal;
+use App\Models\Buku;
+use App\Models\Dosen;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\Publikasi;
-use App\Models\Dosen;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class PublikasiController extends Controller
+class BukuController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,13 +20,10 @@ class PublikasiController extends Controller
      */
     public function index()
     {
-        $title = "Daftar Usulan Publikasi";
-        $publikasi = Publikasi::all();
+        $title = "Daftar Usulan Buku";
         $proposal = Proposal::all();
         $dosen = Dosen::all();
-        $jj = Jenis_jurnal::all();
-
-        // dd($proposal);
+        $buku = Buku::all();
 
         if (Auth::user()->role_id == 2) {
             $listProposal = Proposal::all();
@@ -46,15 +42,14 @@ class PublikasiController extends Controller
             //ambil proposal yang pengusul upload di tahun ini
             $proposal = Proposal::whereIn('id', $proposal_id)->get();
             //ambil laporan kemajuan yang pengusul upload
-            $publikasi = Publikasi::whereIn('proposal_id', $proposal_id)->get();
+            $buku = Buku::whereIn('proposal_id', $proposal_id)->get();
         }
 
-        return view('proposal.publikasi', [
+        return view('proposal.buku', [
             'title' => $title,
             'proposal' => $proposal,
-            'jj' => $jj,
             'dosen' => $dosen,
-            'publikasi' => $publikasi
+            'buku' => $buku,
         ]);
     }
 
@@ -81,9 +76,8 @@ class PublikasiController extends Controller
         $validator = Validator::make($request->all(), [
             'proposal_id' => ['required', 'numeric'],
             'judul' => ['required', 'string'],
-            'nama' => ['required', 'string'],
-            'jenis' => ['required', 'numeric'],
-            'path_publikasi' => ['required', 'file', 'mimes:pdf', 'max:2048'],
+            'penerbit' => ['required', 'string'],
+            'path_buku' => ['required', 'file', 'mimes:pdf', 'max:2048'],
             'tanggal_upload' => ['required', 'string'],
         ]);
 
@@ -91,28 +85,24 @@ class PublikasiController extends Controller
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
-        // $nama = $request->nama;
-        // $gabungNama = implode(" - ", $nama);
-        // dd($gabungNama);
 
         $date = strtotime($request->tanggal_upload);
         $date = date('Y-m-d', $date);
 
-        $path_publikasi = $request->file('path_publikasi');
-        $filename = $path_publikasi->getClientOriginalName();
-        $path_publikasi = $path_publikasi->storeAs('laporan-publikasi', str_replace(" ", "-", $filename));
+        $path_buku = $request->file('path_buku');
+        $filename = $path_buku->getClientOriginalName();
+        $path_buku = $path_buku->storeAs('laporan-buku', str_replace(" ", "-", $filename));
 
-        Publikasi::create([
+        Buku::create([
             'proposal_id' => $request->proposal_id,
-            'judul_jurnal' => $request->judul,
-            'nama_artikel' => $request->nama,
-            'jenis_jurnal_id' => $request->jenis,
-            'path_jurnal' => $path_publikasi,
+            'judul_buku' => $request->judul,
+            'penerbit' => $request->penerbit,
+            'path_buku' => $path_buku,
             'tanggal_upload' => $date,
             'user_id' => Auth::user()->id,
         ]);
 
-        Alert::success('Laporan publikasi berhasil ditambahkan', 'success');
+        Alert::success('Laporan Buku berhasil ditambahkan', 'success');
         return back();
     }
 
@@ -148,20 +138,20 @@ class PublikasiController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $publikasi = Publikasi::find($id);
 
-        // dd($publikasi);
+        $buku = Buku::find($id);
+
+        // dd($buku);
 
         $rules = [
             'proposal_id' => ['required', 'numeric'],
             'judul' => ['required', 'string'],
-            'nama' => ['required', 'string'],
-            'jenis' => ['required', 'numeric'],
+            'penerbit' => ['required', 'string'],
             'tanggal_upload' => ['required', 'string'],
         ];
 
-        if ($publikasi->path_jurnal != $request->path_jurnal) {
-            $rules['path_jurnal'] = ['required', 'file', 'mimes:pdf', 'max:2048'];
+        if ($buku->path_buku != $request->path_buku) {
+            $rules['path_buku'] = ['required', 'file', 'mimes:pdf', 'max:2048'];
         }
 
         $validator = Validator::make($request->all(), $rules);
@@ -174,30 +164,29 @@ class PublikasiController extends Controller
         $date = strtotime($request->tanggal_upload);
         $date = date('Y-m-d', $date);
 
-        $path_publikasi = $request->file('path_jurnal');
-        if ($path_publikasi != NULL) {
-            $fileName = $path_publikasi->getClientOriginalName();
-            $cekFileName = publikasi::where('path_jurnal', 'laporan-publikasi/' . str_replace(" ", "-", $fileName))->get();
+        $path_buku = $request->file('path_buku');
+        if ($path_buku != NULL) {
+            $fileName = $path_buku->getClientOriginalName();
+            $cekFileName = Buku::where('path_buku', 'laporan-buku/' . str_replace(" ", "-", $fileName))->get();
             if (count($cekFileName) != 0) {
                 Alert::toast('File Sudah Ada!', 'error');
                 return back()->withInput();
             }
-            $path_publikasi = $path_publikasi->storeAs('laporan-publikasi', str_replace(" ", "-", $fileName));
+            $path_buku = $path_buku->storeAs('laporan-buku', str_replace(" ", "-", $fileName));
         } else {
-            $path_publikasi = $publikasi->path_jurnal;
+            $path_buku = $buku->path_buku;
         }
 
-        publikasi::findOrFail($id)->update([
+        Buku::findOrFail($id)->update([
             'proposal_id' => $request->proposal_id,
-            'judul_jurnal' => $request->judul,
-            'nama_artikel' => $request->nama,
-            'jenis_jurnal_id' => $request->jenis,
-            'path_jurnal' => $path_publikasi,
+            'judul_buku' => $request->judul,
+            'penerbit' => $request->penerbit,
+            'path_buku' => $path_buku,
             'tanggal_upload' => $date,
             'user_id' => Auth::user()->id,
         ]);
 
-        Alert::success('Laporan publikasi berhasil diubah', 'success');
+        Alert::success('Laporan Buku berhasil diubah', 'success');
         return back();
     }
 
@@ -209,10 +198,10 @@ class PublikasiController extends Controller
      */
     public function destroy($id)
     {
-        $publikasi = Publikasi::find($id);
-        Storage::delete($publikasi->path_jurnal);
-        Publikasi::findOrFail($id)->delete();
-        Alert::success('Laporan Publikasi berhasil dihapus', 'success');
+        $buku = Buku::find($id);
+        Storage::delete($buku->path_buku);
+        Buku::findOrFail($id)->delete();
+        Alert::success('Laporan Buku berhasil dihapus', 'success');
         return back();
     }
 }

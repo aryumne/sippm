@@ -127,6 +127,12 @@
             setFormValidation('#EditHakiValidation');
             setFormValidation('#AddHakiValidation');
             setFormValidation('#DeteleHakiValidation');
+            setFormValidation('#EditBukuValidation');
+            setFormValidation('#AddBukuValidation');
+            setFormValidation('#DeteleBukuValidation');
+            setFormValidation('#EditTtgValidation');
+            setFormValidation('#AddTtgValidation');
+            setFormValidation('#DeteleTtgValidation');
             setFormValidation('#EditPublikasiValidation');
             setFormValidation('#AddPublikasiValidation');
             setFormValidation('#DetelePublikasiValidation');

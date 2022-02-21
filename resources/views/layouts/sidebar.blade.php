@@ -35,7 +35,7 @@
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'show': '' }}" id="proposal">
+                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*') || request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}" id="proposal">
                     <ul class="nav">
                         <li class="nav-item {{ request()->routeIs('usulan*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('usulan.index') }} ">
@@ -62,7 +62,7 @@
                                     <b class="caret"></b>
                                 </p>
                             </a>
-                            <div class="collapse {{ request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'show': '' }}" id="luaran">
+                            <div class="collapse {{ request()->routeIs('publikasi*') || request()->routeIs('hki*') || request()->routeIs('buku*')||request()->routeIs('ttg*')? 'show': '' }}" id="luaran">
                                 <ul class="nav">
                                     <li class="nav-item {{ request()->routeIs('publikasi*') ? 'active' : '' }}">
                                         <a class="nav-link" href="{{ route('publikasi.index') }}">
@@ -76,14 +76,14 @@
                                             <span class="sidebar-normal">HKI </span>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
+                                    <li class="nav-item {{ request()->routeIs('buku*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('buku.index') }}">
                                             <span class="sidebar-mini"> B </span>
                                             <span class="sidebar-normal">BUKU </span>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
+                                    <li class="nav-item {{ request()->routeIs('ttg*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('ttg.index') }}">
                                             <span class="sidebar-mini"> TG </span>
                                             <span class="sidebar-normal">Teknologi Tepat Guna </span>
                                         </a>
@@ -123,23 +123,27 @@
             </li>
             @endif
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('kegiatan*')? 'active': '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#laporan">
                     <i class="material-icons">picture_as_pdf</i>
                     <p> Laporan Kegiatan
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse" id="laporan">
+                <div class="collapse {{ request()->routeIs('kegiatan*')? 'show': '' }}" id="laporan">
                     <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item <?php if ($title == 'Daftar Penelitian') {
+                                                echo 'active';
+                                            } ?>">
+                            <a class="nav-link" href="{{ route('kegiatan.index', 'penelitian') }}">
                                 <span class="sidebar-mini"> PL </span>
                                 <span class="sidebar-normal">Penelitian </span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item <?php if ($title == 'Daftar Pkm') {
+                                                echo 'active';
+                                            } ?>">
+                            <a class="nav-link" href="{{ route('kegiatan.index', 'pkm') }}">
                                 <span class="sidebar-mini"> PG </span>
                                 <span class="sidebar-normal">Pengabdian </span>
                             </a>

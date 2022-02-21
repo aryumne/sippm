@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,12 +26,35 @@ class HkiController extends Controller
         $hki = Hki::all();
         $proposal = Proposal::all();
         $jenisHki = Jenis_hki::all();
+        $dosen = Dosen::all();
 
-        // dd($jenisHki);
+        if (Auth::user()->role_id == 2) {
+            $listProposal = Proposal::all();
+            //buat collection
+            $collectionProposalId = collect([]);
+            foreach ($listProposal as $dsn) {
+                foreach ($dsn->dosen as $dosen) {
+                    if ($dosen->pivot->isLeader == 1 && $dosen->pivot->nidn == Auth::user()->nidn) {
+                        //simpan id proposal yang pengusul upload ke collcection
+                        $collectionProposalId->push($dsn->id);
+                    }
+                }
+            }
+            //dapatkan semua isi collection
+            $proposal_id = $collectionProposalId->all();
+            //ambil proposal yang pengusul upload di tahun ini
+            $proposal = Proposal::whereIn('id', $proposal_id)->get();
+            //ambil laporan kemajuan yang pengusul upload
+            $hki = Hki::whereIn('proposal_id', $proposal_id)->get();
+        }
+
+        // dd($dosen);
+
         return view('proposal.Hki', [
             'title' => $title,
             'proposal' => $proposal,
             'jenisHki' => $jenisHki,
+            'dosen' => $dosen,
             'Hki' => $hki,
         ]);
     }
@@ -66,8 +90,8 @@ class HkiController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        $tanggal_upload = $request->tanggal_upload;
-        date('Y-m-d H:i:s');
+        $date = strtotime($request->tanggal_upload);
+        $date = date('Y-m-d', $date);
 
         $path_Hki = $request->file('path_hki');
         $filename = $path_Hki->getClientOriginalName();
@@ -77,7 +101,7 @@ class HkiController extends Controller
             'proposal_id' => $request->proposal_id,
             'jenis_hki_id' => $request->jenis,
             'path_hki' => $path_Hki,
-            'tanggal_upload' => $tanggal_upload,
+            'tanggal_upload' => $date,
             'user_id' => Auth::user()->id,
         ]);
 
@@ -136,8 +160,8 @@ class HkiController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        $tanggal_upload = $request->tanggal_upload;
-        date('Y-m-d H:i:s');
+        $date = strtotime($request->tanggal_upload);
+        $date = date('Y-m-d', $date);
 
         $path_Hki = $request->file('path_hki');
         if ($path_Hki != NULL) {
@@ -156,7 +180,7 @@ class HkiController extends Controller
             'proposal_id' => $request->proposal_id,
             'jenis_hki_id' => $request->jenis,
             'path_hki' => $path_Hki,
-            'tanggal_upload' => $tanggal_upload,
+            'tanggal_upload' => $date,
             'user_id' => Auth::user()->id
         ]);
 

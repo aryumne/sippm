@@ -28,6 +28,7 @@
                             <thead>
                                 <tr>
                                     <th>Judul Proposal</th>
+                                    <th>Pengusul</th>
                                     <th>Judul Jurnal</th>
                                     <th>Nama Artikel</th>
                                     <th>Jenis</th>
@@ -38,6 +39,7 @@
                             <tfoot>
                                 <tr>
                                     <th>Judul Proposal</th>
+                                    <th>Pengusul</th>
                                     <th>Judul Jurnal</th>
                                     <th>Nama Artikel</th>
                                     <th>Jenis</th>
@@ -50,10 +52,18 @@
                                 @foreach ($publikasi as $publik)
                                 <tr>
                                     <td>{{ $publik->proposal->judul}}</td>
+                                    <td>
+                                        @foreach ($publik->proposal->dosen as $pvt)
+                                        @if ($pvt->pivot->isLeader == true)
+                                        {{ $pvt->nama }}
+                                        @endif
+                                        @endforeach
+                                    </td>
                                     <td>{{ $publik->judul_jurnal }}</td>
                                     <td>{{ $publik->nama_artikel }}</td>
                                     <td>{{ $publik->jenis_jurnal->jurnal }}</td>
-                                    <td>{{ $publik->path_jurnal }}</td>
+                                    <td><a href="{{ asset('storage/' . $publik->path_jurnal) }}" target="_blank" class="badge badge-success">{{ substr($publik->path_jurnal, 9) }}</a>
+                                    </td>
                                     <td class="text-right">
                                         <button type="button" class="btn btn-link btn-warning btn-just-icon edit" data-toggle="modal" data-target="#updatePublikasi{{$publik->id}}">
                                             <i class="material-icons">mode_edit</i>
@@ -72,6 +82,7 @@
                                                             @csrf
                                                             @method('PUT')
                                                             <input type="hidden" name="path_jurnal" value="{{$publik->path_jurnal}}">
+                                                            <input type="hidden" name="tanggal_upload" value="{{ now()->toDateString('Y-m-d') }}">
                                                             @if (Auth::user()->role_id == 2)
                                                             <input type="hidden" name="nidn_pengusul" value="{{ Auth::user()->nidn }}">
                                                             @endif
@@ -106,6 +117,19 @@
                                                             @error('tanggal_upload')
                                                             <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                                             @enderror
+                                                            <div class="form-group">
+                                                                <label for="nidn_pengusul">Pengusul</label>
+                                                                <select class="form-control selectpicker" data-style="btn btn-link" id="nidn_pengusul" name="nidn_pengusul" required>
+                                                                    @foreach ($dosen as $ds)
+                                                                    <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
+                                                                        {{ $ds->nama }}
+                                                                    </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            @error('nidn_pengusul')
+                                                            <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
+                                                            @enderror
                                                             @endif
                                                             <!-- Dynamic Form Js -->
                                                             <div class="form-group" id="dynamic_form">
@@ -124,9 +148,8 @@
                                                             <div class="form-group">
                                                                 <label for="jenis">Jenis Publikasi</label>
                                                                 <select class="form-control selectpicker" data-style="btn btn-link" id="jenis" name="jenis" data-style="btn btn-primary btn-round" required>
-                                                                    <option selected>{{ old('jenis') }}</option>
                                                                     @foreach ($jj as $j)
-                                                                    <option value="{{ $j->id}}">
+                                                                    <option value="{{ $j->id }}">
                                                                         {{ $j->jurnal }}
                                                                     </option>
                                                                     @endforeach
@@ -199,6 +222,7 @@
             <form class="form" id="AddPublikasiValidation" action="{{ route('publikasi.store') }}" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
+                    <input type="hidden" name="tanggal_upload" value="{{ now()->toDateString('Y-m-d') }}">
                     @if (Auth::user()->role_id == 2)
                     <input type="hidden" name="nidn_pengusul" value="{{ Auth::user()->nidn }}">
                     @endif
@@ -229,6 +253,19 @@
                         <input type="text" class="form-control datepicker" id="tanggal_upload" name="tanggal_upload" placeholder="Tanggal Pengusulan" value="{{ now()->toDateString('Y-m-d') }}" value="{{ old('tanggal_upload') }}" required>
                     </div>
                     @error('tanggal_upload')
+                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
+                    @enderror
+                    <div class="form-group">
+                        <label for="nidn_pengusul">Pengusul</label>
+                        <select class="form-control selectpicker" data-style="btn btn-link" id="nidn_pengusul" name="nidn_pengusul" required>
+                            @foreach ($dosen as $ds)
+                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
+                                {{ $ds->nama }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('nidn_pengusul')
                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                     @enderror
                     @endif

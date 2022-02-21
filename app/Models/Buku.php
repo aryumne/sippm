@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Publikasi extends Model
+class Buku extends Model
 {
     use HasFactory;
     // protected $guarded = ['id'];
-    protected $fillable = ['judul_jurnal', 'nama_artikel', 'path_jurnal', 'user_id', 'proposal_id', 'tanggal_upload', 'jenis_jurnal_id'];
+    protected $fillable = ['judul_buku', 'penerbit', 'path_buku', 'user_id', 'proposal_id', 'tanggal_upload'];
 
     public function proposal()
     {
@@ -19,11 +19,6 @@ class Publikasi extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function jenis_jurnal()
-    {
-        return $this->belongsTo(Jenis_jurnal::class);
     }
 
     public function dosen()
