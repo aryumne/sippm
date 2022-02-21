@@ -18,10 +18,18 @@ col-12 @endif
                             <div class="col-md-6">
                                 <h4 class="fw-400">Daftar Proposal</h4>
                             </div>
-                            <div class="col-md-6 text-right">
-                                <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal" data-target="#formProposal">
-                                    <span class="material-icons">add</span> Proposal Baru
-                                </button>
+                            <div class="row card-title">
+                                <div class="col-md-6">
+                                    <h4 class="fw-400">Daftar Proposal</h4>
+                                </div>
+                                @can('pengusulan_proposal')
+                                    <div class="col-md-6 text-right">
+                                        <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                            data-target="#formProposal">
+                                            <span class="material-icons">add</span> Proposal Baru
+                                        </button>
+                                    </div>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -154,29 +162,26 @@ col-12 @endif
 @endsection
 
 @section('modal')
-<!-- Modal Proposal -->
-<div class="modal fade" id="formProposal" tabindex="-1" role="dialog" aria-labelledby="formProposal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Pengusulan Proposal</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form class="form" id="AddProposalValidation" action="{{ route('usulan.store') }}" method="POST" enctype="multipart/form-data">
-                <div class="modal-body">
-                    @csrf
-                    <span class="form-group bmd-form-group email-error ">
-                        @if ($errors->any())
-                        @foreach ($errors->all() as $e)
-                        <p class="
-                                description text-center text-danger">
-                            {{ $e }}
-                        </p>
-                        @endforeach
+    <!-- Modal Proposal -->
+    <div class="modal fade" id="formProposal" tabindex="-1" role="dialog" aria-labelledby="formProposal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form Pengusulan Proposal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form" id="AddProposalValidation" action="{{ route('usulan.store') }}"
+                    method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        @csrf
+                        @if (Auth::user()->role_id == 2)
+                            <input type="hidden" name="nidn_pengusul" value="{{ Auth::user()->nidn }}">
+                            <input type="hidden" name="status" value="menunggu">
+                            <input type="hidden" name="tanggal_usul" value="{{ now()->toDateString('Y-m-d') }}">
                         @endif
-                    </span>
                     @if (Auth::user()->role_id == 2)
                     <input type="hidden" name="nidn_pengusul" value="{{ Auth::user()->nidn }}">
                     <input type="hidden" name="status" value="menunggu">

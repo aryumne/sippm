@@ -42,7 +42,11 @@
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('/material/js/material-dashboard.js?v=2.1.0" type="text/javascript') }}"></script>
     <script src="{{ asset('/material/js/application.js') }}"></script>
+    <script src="{{ asset('/material/demo/demo.js') }}"></script>
+    {{-- <script src="{{ asset('/material/demo/jquery.sharrre.js') }}"></script> --}}
+    {{-- <script src="{{ asset('/material/demo/tour.js') }}"></script> --}}
     <script src="https://cdn.ckeditor.com/ckeditor5/19.1.1/classic/ckeditor.js"></script>
+
     <script>
         $(document).ready(function() {
             md.checkFullPageBackgroundImage();
@@ -141,6 +145,7 @@
             setFormValidation('#EditKemajuanValidation');
             setFormValidation('#AddAkhirValidation');
             setFormValidation('#EditAkhirValidation');
-
+            setFormValidation('#AddReviewerValidation');
+            setFormValidation('#AddPenilaianValidation');
         });
     </script>

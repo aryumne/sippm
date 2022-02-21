@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggota;
+use App\Models\Audit;
 use App\Models\Dosen;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -47,7 +49,9 @@ class ProposalController extends Controller
 
     public function store(Request $request)
     {
-
+        if (!Gate::allows('pengusulan_proposal')) {
+            abort(403);
+        }
         $validator = Validator::make($request->all(), [
             'nidn_pengusul' => ['required', 'numeric'],
             'judul' => ['required', 'string', 'unique:proposals'],
@@ -158,16 +162,31 @@ class ProposalController extends Controller
         }
         $title = "Detail Proposal";
         $proposal = Proposal::find($id);
+        $audit_ids = collect([]);
+        foreach ($proposal->reviewer as $reviewer) {
+            $audit_ids->push($reviewer->pivot->id);
+        }
+        $audits = Audit::whereIn('id', $audit_ids)->get();
+        // foreach ($audits as $a) {
+        //     echo 'Hasil = ' . ($a->hasil == null ? 'Kosong' : $a->hasil) . '<br>';
+        //     echo 'Reviewer = ' . $a->user->dosen->nama . '<br>';
+        //     echo 'Proposal = ' . $a->proposal . '<br>';
+        // }
 
         return view('proposal.showProposal',
             [
                 'title' => $title,
                 'proposal' => $proposal,
+                'audits' => $audits,
             ]);
     }
 
     public function edit($id)
     {
+        if (!Gate::allows('pengusulan_proposal')) {
+            abort(403);
+        }
+
         $isLeader = Anggota::where('proposal_id', $id)->where('isLeader', 1)->first();
         if (Auth::user()->role_id != 1) {
             if (Auth::user()->nidn != $isLeader->nidn) {
@@ -187,6 +206,10 @@ class ProposalController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (!Gate::allows('pengusulan_proposal')) {
+            abort(403);
+        }
+
         $proposal = Proposal::find($id);
         $rules = [
             'nidn_anggota' => ['required', 'array', 'min:2', 'max:2'],

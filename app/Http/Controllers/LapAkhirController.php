@@ -6,6 +6,7 @@ use App\Models\LapAkhir;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -57,6 +58,10 @@ class LapAkhirController extends Controller
 
     public function store(Request $request)
     {
+        if (!Gate::allows('upload_laporan_akhir')) {
+            abort(403);
+        }
+
         $validator = Validator::make($request->all(), [
             'proposal_id' => ['required', 'numeric', 'unique:lap_akhirs'],
             'tanggal_upload' => ['required'],
@@ -110,6 +115,10 @@ class LapAkhirController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (!Gate::allows('upload_laporan_akhir')) {
+            abort(403);
+        }
+
         if (Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return redirect()->intended('login');
         }

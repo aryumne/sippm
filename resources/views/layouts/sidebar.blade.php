@@ -28,7 +28,8 @@
                     <p>Dashboard</p>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'active': '' }}">
+            @if (Auth::user()->role_id <= 2)
+                 <li class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'active': '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#proposal" aria-expanded=&quot;true&quot;>
                     <i class="material-icons">article</i>
                     <p>Proposal
@@ -94,36 +95,7 @@
                     </ul>
                 </div>
             </li>
-
-
-            @if (Auth::user()->role_id == 1)
-            <li class="nav-item ">
-                <a class="nav-link" data-toggle="collapse" href="#penilaian">
-                    <i class="material-icons">assessment</i>
-                    <p> Penilaian
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse" id="penilaian">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span class="sidebar-mini"> PP </span>
-                                <span class="sidebar-normal">Penilaian Proposal </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span class="sidebar-mini"> MV </span>
-                                <span class="sidebar-normal">Monev </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            @endif
-
-            <li class="nav-item {{ request()->routeIs('kegiatan*')? 'active': '' }}">
+                <li class="nav-item {{ request()->routeIs('kegiatan*')? 'active': '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#laporan">
                     <i class="material-icons">picture_as_pdf</i>
                     <p> Laporan Kegiatan
@@ -151,20 +123,65 @@
                     </ul>
                 </div>
             </li>
-
+            @endif
+            
             @if (Auth::user()->role_id == 1)
-            <li class="nav-item ">
-                <a class="nav-link" href="#">
-                    <i class="material-icons">date_range</i>
-                    <p>Penjadwalan </p>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link" href="#">
-                    <i class="material-icons">assignment_ind</i>
-                    <p>Data Dosen </p>
-                </a>
-            </li>
+                <li class="nav-item {{ request()->routeIs('adminpenilaian.*') ? 'active' : '' }}">
+                    <a class="nav-link" data-toggle="collapse" href="#penilaian">
+                        <i class="material-icons">assessment</i>
+                        <p> Penilaian
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('adminpenilaian.*') ? 'show' : '' }}" id="penilaian">
+                        <ul class="nav">
+                            <li class="nav-item {{ request()->routeIs('adminpenilaian.audits.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('adminpenilaian.audits.index') }}">
+                                    <span class="sidebar-mini"> PP </span>
+                                    <span class="sidebar-normal">Penilaian Proposal </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('adminpenilaian.monevs.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('adminpenilaian.monevs.index') }}">
+                                    <span class="sidebar-mini"> MV </span>
+                                    <span class="sidebar-normal">Monev </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item {{ request()->routeIs('admin.reviewers.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.reviewers.index') }}">
+                        <i class="material-icons">manage_accounts</i>
+                        <p>Reviewers </p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('schedule.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('schedule.index') }}">
+                        <i class="material-icons">date_range</i>
+                        <p>Penjadwalan </p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="#">
+                        <i class="material-icons">assignment_ind</i>
+                        <p>Data Dosen </p>
+                    </a>
+                </li>
+            @endif
+            @if (Auth::user()->role_id == 3)
+                <li class="nav-item {{ request()->routeIs('reviewer.audit.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('reviewer.audit.proposals') }}">
+                        <i class="material-icons">assignment</i>
+                        <p>Review Proposal </p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('reviewer.monev.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('reviewer.monev.kemajuan') }}">
+                        <i class="material-icons">dvr</i>
+                        <p>Monitoring & Evaluasi </p>
+                    </a>
+                </li>
             @endif
 
             <li class="nav-item ">

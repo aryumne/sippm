@@ -2,49 +2,74 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header card-header-text card-header-info">
                         <div class="card-text">
-                            <h4 class="fw-400">Detail Laporan</h4>
+                            <h4 class="fw-400">Detail Laporan Kemajuan</h4>
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <p>Judul Proposal</p>
-                                        </td>
-                                        <td class="text-left">
-                                            <h5>
-                                                {{ $kemajuan->proposal->judul }}
-                                            </h5>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p>Tanggal Upload</p>
-                                        </td>
-                                        <td class="text-left">
-                                            <h5>
-                                                {{ $kemajuan->tanggal_upload }}
-                                            </h5>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p>File kemajuan</p>
-                                        </td>
-                                        <td class="text-left">
-                                            <a href="{{ asset('storage/' . $kemajuan->path_kemajuan) }}" target="_blank"
-                                                class="badge badge-success">{{ substr($kemajuan->path_kemajuan, 17) }}</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        {{-- head --}}
+                        <div class="row px-2">
+                            <div class="col-12">
+                                <div class="row pt-3 pb-1">
+                                    <div class="col-3 fw-400">
+                                        Judul Penelitian
+                                    </div>
+                                    <div class="col-9">
+                                        <p class="card-text">
+                                            {{ $kemajuan->proposal->judul }}
+                                        </p>
+                                    </div>
+                                </div>
+                                @foreach ($kemajuan->proposal->dosen as $dsn)
+                                    @if ($dsn->pivot->isLeader == true)
+                                        <div class="row py-1">
+                                            <div class="col-3 fw-400">
+                                                Ketua Peneliti
+                                            </div>
+                                            <div class="col-9">
+                                                <p class="card-text">
+                                                    {{ $dsn->nama }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row py-1">
+                                            <div class="col-3 fw-400">
+                                                Fakultas
+                                            </div>
+                                            <div class="col-9">
+                                                <p class="card-text">
+                                                    {{ $dsn->prodi->faculty->nama_faculty }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row py-1">
+                                            <div class="col-3 fw-400">
+                                                Laporan Kemajuan
+                                            </div>
+                                            <div class="col-9">
+                                                <a href="{{ asset('storage/' . $kemajuan->path_kemajuan) }}"
+                                                    target="_blank"
+                                                    class="badge badge-success">{{ substr($kemajuan->path_kemajuan, 17) }}</a>
+                                            </div>
+                                        </div>
+                                        <div class="row py-1">
+                                            <div class="col-3 fw-400">
+                                                Tanggal Upload
+                                            </div>
+                                            <div class="col-9">
+                                                <p class="card-text">
+                                                    {{ $kemajuan->tanggal_upload }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
                         </div>
+                        {{-- end head --}}
                         <div class="text-right">
                             <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
                                 data-target="#EditLapKemajuan{{ $kemajuan->id }}">Edit</button>
@@ -120,22 +145,128 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header card-header-text card-header-info">
-                        <div class="card-icon">
-                            <i class="material-icons">assignment</i>
-                        </div>
-                        <div class="row card-title">
-                            <div class="col-md-6">
-                                <h4 class="fw-400">Hasil Monitoring dan Evaluasi</h4>
+                @if (Auth::user()->role_id == 1)
+                    <div class="card">
+                        <div class="card-header card-header-text card-header-info">
+                            <div class="card-icon">
+                                <i class="material-icons">assignment</i>
+                            </div>
+                            <div class="row card-title">
+                                <div class="col-md-6">
+                                    <h4 class="fw-400">Hasil Monitoring dan Evaluasi</h4>
+                                </div>
                             </div>
                         </div>
+                        <div class="card-body">
+                            @isset($monev->hasil)
+                                {{-- head --}}
+                                <div class="row px-2">
+                                    <div class="col-12">
+                                        <div class="row pt-1">
+                                            <div class="col-3 fw-400">
+                                                Catatan Penilaian
+                                            </div>
+                                            <div class="col-9">
+                                                <p class="card-text">
+                                                    {{ $monev->hasil->komentar }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-1">
+                                            <div class="col-3 fw-400">
+                                                Tanggal Monev
+                                            </div>
+                                            <div class="col-9">
+                                                <p class="card-text">
+                                                    {{ $monev->hasil->created_at->format('d M Y') }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                {{-- end head --}}
+                                <div class="row pt-2 px-1">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <h6>KRITERIA PENILAIAN</h6>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <h6>NILAI</h6>
+                                            </div>
+                                            <div class="col-5">
+                                                <h6>KOMENTAR</h6>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2 bg-light align-items-center">
+                                            <div class="col-5">
+                                                <p class="card-text fw-400 mb-0">Kemajuan
+                                                    ketercapaian luaran wajib</p>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <h6 class="fw-400">
+                                                    {{ $monev->hasil->luaran_wajib['nilai'] }}
+                                                </h6>
+                                            </div>
+                                            <div class="col-5">
+                                                <p class="card-text">
+                                                    {{ $monev->hasil->luaran_wajib['komentar'] }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2 align-items-center">
+                                            <div class="col-5">
+                                                <p class="card-text fw-400 mb-0">Kemajuan
+                                                    ketercapaian luaran tambahan
+                                                    yang dijanjikan</p>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <h6 class="fw-400">
+                                                    {{ $monev->hasil->luaran_tambahan['nilai'] }}
+                                                </h6>
+                                            </div>
+                                            <div class="col-5">
+                                                <p class="card-text">
+                                                    {{ $monev->hasil->luaran_tambahan['komentar'] }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2 bg-light align-items-center">
+                                            <div class="col-5">
+                                                <p class="card-text fw-400 mb-0">Kesesuaian
+                                                    penelitian dengan usulan</p>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <h6 class="fw-400">
+                                                    {{ $monev->hasil->kesesuaian['nilai'] }}
+                                                </h6>
+                                            </div>
+                                            <div class="col-5">
+                                                <p class="card-text">
+                                                    {{ $monev->hasil->kesesuaian['komentar'] }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2 align-items-center">
+                                            <div class="col-5">
+                                                <h5 class="fw-500">TOTAL NILAI</h5>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <h5 class="fw-400">
+                                                    {{ $monev->hasil->total }}</h5>
+                                            </div>
+                                            <div class="col-5 text-center">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <p class="card-text text-center">Belum ada hasil monev</p>
+                            @endisset
+                        </div>
                     </div>
-                    <div class="card-body">
-                        The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where
-                        you can enjoy the main night life in Barcelona...
-                    </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>

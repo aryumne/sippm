@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\LapKemajuan;
+use App\Models\Monev;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -55,6 +57,10 @@ class LapKemajuanController extends Controller
 
     public function store(Request $request)
     {
+        if (!Gate::allows('upload_laporan_kemajuan')) {
+            abort(403);
+        }
+
         $validator = Validator::make($request->all(), [
             'proposal_id' => ['required', 'numeric', 'unique:lap_kemajuans'],
             'tanggal_upload' => ['required'],
@@ -102,14 +108,20 @@ class LapKemajuanController extends Controller
 
         $title = "Detail Laporan Kemajuan";
         $kemajuan = LapKemajuan::find($id);
+        $monev = Monev::where('lap_kemajuan_id', $id)->first();
         return view('proposal.showKemajuan', [
             'title' => $title,
             'kemajuan' => $kemajuan,
+            'monev' => $monev,
         ]);
     }
 
     public function update(Request $request, $id)
     {
+        if (!Gate::allows('upload_laporan_kemajuan')) {
+            abort(403);
+        }
+
         if (Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return redirect()->intended('login');
         }

@@ -14,15 +14,6 @@
                         </div>
                     </div>
                     <div class="card-body ">
-                        <span class="form-group  bmd-form-group email-error ">
-                            @if ($errors->any())
-                                @foreach ($errors->all() as $e)
-                                    <p class="
-                                description text-center text-danger">
-                                        {{ $e }}</p>
-                                @endforeach
-                            @endif
-                        </span>
                         <span class="form-group bmd-form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">

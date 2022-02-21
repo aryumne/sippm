@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\User;
+use App\Models\HasilMonev;
+use App\Models\Monev;
 use App\Models\Proposal;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class LapKemajuan extends Model
 {
@@ -20,5 +22,15 @@ class LapKemajuan extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function reviewer()
+    {
+        return $this->belongsToMany(User::class, 'monevs', 'lap_kemajuan_id', 'user_id')->withPivot('status');
+    }
+
+    public function hasilMonev()
+    {
+        return $this->hasOneThrough(HasilMonev::class, Monev::class);
     }
 }
