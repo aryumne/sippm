@@ -109,17 +109,13 @@
                     </a>
                     <div class="collapse {{ request()->routeIs('kegiatan*') ? 'show' : '' }}" id="laporan">
                         <ul class="nav">
-                            <li class="nav-item <?php if ($title == 'Daftar Penelitian') {
-    echo 'active';
-} ?>">
+                            <li class="nav-item {{ $title == 'Daftar Penelitian' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('kegiatan.index', 'penelitian') }}">
                                     <span class="sidebar-mini"> PL </span>
                                     <span class="sidebar-normal">Penelitian </span>
                                 </a>
                             </li>
-                            <li class="nav-item <?php if ($title == 'Daftar Pkm') {
-    echo 'active';
-} ?>">
+                            <li class="nav-item {{ $title == 'Daftar Pkm' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('kegiatan.index', 'pkm') }}">
                                     <span class="sidebar-mini"> PG </span>
                                     <span class="sidebar-normal">Pengabdian </span>
@@ -167,8 +163,8 @@
                         <p>Penjadwalan </p>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="#">
+                <li class="nav-item {{ request()->routeIs('dosen.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('dosen.index') }}">
                         <i class="material-icons">assignment_ind</i>
                         <p>Data Dosen </p>
                     </a>

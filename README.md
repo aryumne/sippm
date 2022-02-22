@@ -62,3 +62,13 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Instalaltion Required
+- clone this project in your local directory
+- run command in your terminal code editor "composer install", for install vendor 
+- run command "composer require realrashid/sweet-alert" to install sweet alert package to your project's dependencies. check "https://realrashid.github.io/sweet-alert/install"  for detail installation sweet alert in laravel
+- run command "composer require maatwebsite/excel" to install laravel excel package to your project's dependencies. check "https://docs.laravel-excel.com/3.1/getting-started/installation.html" for detail installation laravel excel
+- dont forget to install xampp for the local server and database serve (mysql), and make database with name "sippm".
+- run command "php artisan storage:link"
+- run command "php artisan migrate --seed"
+- finally, you can run the project with command "php artisan serve"

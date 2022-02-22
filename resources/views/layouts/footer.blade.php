@@ -150,5 +150,6 @@
             setFormValidation('#EditAkhirValidation');
             setFormValidation('#AddReviewerValidation');
             setFormValidation('#AddPenilaianValidation');
+            setFormValidation('#AddDosenValidation');
         });
     </script>

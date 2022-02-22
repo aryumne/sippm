@@ -152,7 +152,7 @@
                                                     <div class="row">
                                                         <div class="col-9 col-lg-8">
                                                             <div class="form-group">
-                                                                <select required class="form-control selectpicker bg-rose"
+                                                                <select required class="form-control selectpicker "
                                                                     data-style="btn btn-link" id="point2"
                                                                     title="Tingkat ketercapaian">
                                                                     <option value="15">Telah tercapai/terlaksana</option>

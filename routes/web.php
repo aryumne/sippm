@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\DosenController;
 use App\Http\Controllers\HkiController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LapAkhirController;
@@ -58,9 +59,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     Route::get('/monevs', [AdminController::class, 'monevs'])->name('adminpenilaian.monevs.index');
     Route::post('/monevStore', [AdminController::class, 'monevStore'])->name('adminpenilaian.monevs.store');
     Route::put('/monevUpdate/{id}', [AdminController::class, 'monevUpdateStatus'])->name('adminpenilaian.monevs.update');
-
     //penjadwalan
     Route::resource('/schedule', ScheduleController::class)->only(['index', 'update']);
+    //Dosen
+    Route::resource('/dosen', DosenController::class)->except(['create', 'edit', 'destroy']);
+    Route::post('/import', [DosenController::class, 'import'])->name('importDosen');
+
 });
 
 Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPengusul', 'prevent-back-history']], function () {

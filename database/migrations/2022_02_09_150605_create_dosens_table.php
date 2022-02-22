@@ -16,10 +16,10 @@ class CreateDosensTable extends Migration
         Schema::create('dosens', function (Blueprint $table) {
             $table->char('nidn', 10)->unique();
             $table->string('nama');
-            $table->foreignId('jabatan_id');
+            $table->foreignId('jabatan_id')->nullable();
             $table->foreignId('prodi_id');
-            $table->char('handphone', 12)->unique();
-            $table->string('email')->unique();
+            $table->char('handphone', 12)->unique()->nullable();
+            $table->string('email')->unique()->nullable();
             $table->timestamps();
         });
     }
