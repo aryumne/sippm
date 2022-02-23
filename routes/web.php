@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\DosenController;
 use App\Http\Controllers\HkiController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LapAkhirController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\ReviewerController;
 use App\Http\Controllers\TeknologiTepatGunaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,8 +58,15 @@ Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPe
     Route::get('/kegiatan/penelitian', [PengusulController::class, 'penelitian'])->name('pengusul.kegiatan.penelitian');
     Route::get('/kegiatan/pengabdian', [PengusulController::class, 'pengabdian'])->name('pengusul.kegiatan.pengabdian');
 });
+
 Route::group(['prefix' => 'reviewer', 'middleware' => ['auth', 'verified', 'isReviewer', 'prevent-back-history']], function () {
     Route::get('/', [ReviewerController::class, 'index'])->name('reviewer.dashboard');
 });
+
+
+Route::resource('/user', UserController::class);
+Route::resource('/dosen', DosenController::class)->except(['index']);
+
+
 
 require __DIR__ . '/auth.php';

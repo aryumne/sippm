@@ -28,14 +28,16 @@
                     <p>Dashboard</p>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'active': '' }}">
+            <li
+                class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'active': '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#proposal" aria-expanded=&quot;true&quot;>
                     <i class="material-icons">article</i>
                     <p>Proposal
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*') || request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}" id="proposal">
+                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*') || request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}"
+                    id="proposal">
                     <ul class="nav">
                         <li class="nav-item {{ request()->routeIs('usulan*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('usulan.index') }} ">
@@ -62,7 +64,8 @@
                                     <b class="caret"></b>
                                 </p>
                             </a>
-                            <div class="collapse {{ request()->routeIs('publikasi*') || request()->routeIs('hki*') || request()->routeIs('buku*')||request()->routeIs('ttg*')? 'show': '' }}" id="luaran">
+                            <div class="collapse {{ request()->routeIs('publikasi*') || request()->routeIs('hki*') || request()->routeIs('buku*')||request()->routeIs('ttg*')? 'show': '' }}"
+                                id="luaran">
                                 <ul class="nav">
                                     <li class="nav-item {{ request()->routeIs('publikasi*') ? 'active' : '' }}">
                                         <a class="nav-link" href="{{ route('publikasi.index') }}">
@@ -167,8 +170,8 @@
             </li>
             @endif
 
-            <li class="nav-item ">
-                <a class="nav-link" href="#">
+            <li class="nav-item  {{ request()->routeIs('dosen*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('dosen.edit', Auth::user()->nidn) }}">
                     <i class="material-icons">person</i>
                     <p>Profile </p>
                 </a>
@@ -176,7 +179,8 @@
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();this.closest('form').submit();">
+                    <a class="nav-link" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();this.closest('form').submit();">
                         <i class="material-icons">logout</i>
                         <p>Log Out </p>
                     </a>
