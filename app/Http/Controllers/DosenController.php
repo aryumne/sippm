@@ -9,57 +9,77 @@ use App\Models\Prodi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Imports\DosenImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use RealRashid\SweetAlert\Facades\Alert;
 
 class DosenController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $title = "Daftar Dosen";
+        $dosens = Dosen::all();
+        $prodis = Prodi::all()->sortBy('nama_prodi');
+        $jabatans = Jabatan::all();
+        return view('master.dosen', [
+            'title' => $title,
+            'dosens' => $dosens,
+            'prodis' => $prodis,
+            'jabatans' => $jabatans,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+
+        $validator = Validator::make($request->all(), [
+            'nidn' => ['required', 'unique:dosens', 'numeric'],
+            'nama' => ['required', 'string'],
+            'jabatan_id' => ['required'],
+            'prodi_id' => ['required'],
+            'email' => ['required', 'email', 'max:255', 'unique:dosens'],
+            'handphone' => ['required', 'numeric'],
+        ], [
+            'nidn.unique' => 'NIDN ini sudah terdaftar',
+            'email.unique' => 'Email ini sudah terdaftar',
+        ]);
+
+        // dd($request->all());
+        if ($validator->fails()) {
+            Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
+            return back()->withErrors($validator)->withInput();
+        }
+
+        Dosen::create($request->all());
+        Alert::success('Berhasil', 'Data dosen baru telah ditambahkan');
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function import(Request $request)
     {
+        $file = $request->file('file_excel');
+        $fileName = $file->getClientOriginalName();
+        $getPath = $file->move('DataExcel', $fileName);
+        Excel::import(new DosenImport, $getPath);
+        Alert::success('Berhasil', 'Data berhasil di import');
+        return back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function show(Dosen $dosen)
+    {
+        $title = "Data $dosen->nama";
+        $prodis = Prodi::all()->sortBy('nama_prodi');
+        $jabatans = Jabatan::all();
+        return view('master.showDosen', [
+            'title' => $title,
+            'dosen' => $dosen,
+            'prodis' => $prodis,
+            'jabatans' => $jabatans,
+        ]);
+    }
+
     public function edit($id)
     {
         $id = Auth::user()->nidn;
@@ -69,10 +89,6 @@ class DosenController extends Controller
         $fakultas = Faculty::all();
         $prodi = Prodi::all();
 
-        // dd($dosen);
-        //buat tabel join
-        // $prodi = Prodi::join('faculties', 'prodis.faculty_id', '=', 'faculties.id')->get();
-        // dd($prodi);
         return view('user', [
             'title' => $title,
             'data' => $dosen,
@@ -82,14 +98,7 @@ class DosenController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $nidn)
+    public function update(Request $request, $id)
     {
 
         $rules = [

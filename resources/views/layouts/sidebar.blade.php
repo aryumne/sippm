@@ -28,15 +28,15 @@
                     <p>Dashboard</p>
                 </a>
             </li>
-            <li
-                class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*')? 'active': '' }}">
+            @if (Auth::user()->role_id <= 2) <li
+                class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') ||request()->routeIs('hki*')? 'active': '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#proposal" aria-expanded=&quot;true&quot;>
                     <i class="material-icons">article</i>
                     <p>Proposal
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') || request()->routeIs('hki*') || request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}"
+                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') ||request()->routeIs('hki*') ||request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}"
                     id="proposal">
                     <ul class="nav">
                         <li class="nav-item {{ request()->routeIs('usulan*') ? 'active' : '' }}">
@@ -57,14 +57,15 @@
                                 <span class="sidebar-normal">Laporan akhir </span>
                             </a>
                         </li>
-                        <li class="nav-item {{ request()->routeIs('publikasi*')? 'active': '' }}">
+                        <li
+                            class="nav-item {{ request()->routeIs('publikasi*') ||request()->routeIs('hki*') ||request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'active': '' }}">
                             <a class="nav-link" data-toggle="collapse" href="#luaran">
                                 <i class="material-icons">task</i>
                                 <p> Luaran
                                     <b class="caret"></b>
                                 </p>
                             </a>
-                            <div class="collapse {{ request()->routeIs('publikasi*') || request()->routeIs('hki*') || request()->routeIs('buku*')||request()->routeIs('ttg*')? 'show': '' }}"
+                            <div class="collapse {{ request()->routeIs('publikasi*') ||request()->routeIs('hki*') ||request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}"
                                 id="luaran">
                                 <ul class="nav">
                                     <li class="nav-item {{ request()->routeIs('publikasi*') ? 'active' : '' }}">
@@ -82,7 +83,7 @@
                                     <li class="nav-item {{ request()->routeIs('buku*') ? 'active' : '' }}">
                                         <a class="nav-link" href="{{ route('buku.index') }}">
                                             <span class="sidebar-mini"> B </span>
-                                            <span class="sidebar-normal">BUKU </span>
+                                            <span class="sidebar-normal">Buku </span>
                                         </a>
                                     </li>
                                     <li class="nav-item {{ request()->routeIs('ttg*') ? 'active' : '' }}">
@@ -96,96 +97,108 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+                </li>
+                <li class="nav-item {{ request()->routeIs('kegiatan*') ? 'active' : '' }}">
+                    <a class="nav-link" data-toggle="collapse" href="#laporan">
+                        <i class="material-icons">picture_as_pdf</i>
+                        <p> Laporan Kegiatan
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('kegiatan*') ? 'show' : '' }}" id="laporan">
+                        <ul class="nav">
+                            <li class="nav-item {{ $title == 'Daftar Penelitian' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('kegiatan.index', 'penelitian') }}">
+                                    <span class="sidebar-mini"> PL </span>
+                                    <span class="sidebar-normal">Penelitian </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ $title == 'Daftar Pkm' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('kegiatan.index', 'pkm') }}">
+                                    <span class="sidebar-mini"> PG </span>
+                                    <span class="sidebar-normal">Pengabdian </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                @endif
 
-
-            @if (Auth::user()->role_id == 1)
-            <li class="nav-item ">
-                <a class="nav-link" data-toggle="collapse" href="#penilaian">
-                    <i class="material-icons">assessment</i>
-                    <p> Penilaian
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse" id="penilaian">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span class="sidebar-mini"> PP </span>
-                                <span class="sidebar-normal">Penilaian Proposal </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span class="sidebar-mini"> MV </span>
-                                <span class="sidebar-normal">Monev </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            @endif
-
-            <li class="nav-item {{ request()->routeIs('kegiatan*')? 'active': '' }}">
-                <a class="nav-link" data-toggle="collapse" href="#laporan">
-                    <i class="material-icons">picture_as_pdf</i>
-                    <p> Laporan Kegiatan
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse {{ request()->routeIs('kegiatan*')? 'show': '' }}" id="laporan">
-                    <ul class="nav">
-                        <li class="nav-item <?php if ($title == 'Daftar Penelitian') {
-                                                echo 'active';
-                                            } ?>">
-                            <a class="nav-link" href="{{ route('kegiatan.index', 'penelitian') }}">
-                                <span class="sidebar-mini"> PL </span>
-                                <span class="sidebar-normal">Penelitian </span>
-                            </a>
-                        </li>
-                        <li class="nav-item <?php if ($title == 'Daftar Pkm') {
-                                                echo 'active';
-                                            } ?>">
-                            <a class="nav-link" href="{{ route('kegiatan.index', 'pkm') }}">
-                                <span class="sidebar-mini"> PG </span>
-                                <span class="sidebar-normal">Pengabdian </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            @if (Auth::user()->role_id == 1)
-            <li class="nav-item ">
-                <a class="nav-link" href="#">
-                    <i class="material-icons">date_range</i>
-                    <p>Penjadwalan </p>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link" href="#">
-                    <i class="material-icons">assignment_ind</i>
-                    <p>Data Dosen </p>
-                </a>
-            </li>
-            @endif
-
-            <li class="nav-item  {{ request()->routeIs('dosen*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('dosen.edit', Auth::user()->nidn) }}">
-                    <i class="material-icons">person</i>
-                    <p>Profile </p>
-                </a>
-            </li>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();this.closest('form').submit();">
-                        <i class="material-icons">logout</i>
-                        <p>Log Out </p>
+                @if (Auth::user()->role_id == 1)
+                <li class="nav-item {{ request()->routeIs('adminpenilaian.*') ? 'active' : '' }}">
+                    <a class="nav-link" data-toggle="collapse" href="#penilaian">
+                        <i class="material-icons">assessment</i>
+                        <p> Penilaian
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('adminpenilaian.*') ? 'show' : '' }}" id="penilaian">
+                        <ul class="nav">
+                            <li class="nav-item {{ request()->routeIs('adminpenilaian.audits.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('adminpenilaian.audits.index') }}">
+                                    <span class="sidebar-mini"> PP </span>
+                                    <span class="sidebar-normal">Penilaian Proposal </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('adminpenilaian.monevs.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('adminpenilaian.monevs.index') }}">
+                                    <span class="sidebar-mini"> MV </span>
+                                    <span class="sidebar-normal">Monev </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item {{ request()->routeIs('admin.reviewers.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.reviewers.index') }}">
+                        <i class="material-icons">manage_accounts</i>
+                        <p>Reviewers </p>
                     </a>
                 </li>
-            </form>
+                <li class="nav-item {{ request()->routeIs('schedule.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('schedule.index') }}">
+                        <i class="material-icons">date_range</i>
+                        <p>Penjadwalan </p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('dosen.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('dosen.index') }}">
+                        <i class="material-icons">assignment_ind</i>
+                        <p>Data Dosen </p>
+                    </a>
+                </li>
+                @endif
+                @if (Auth::user()->role_id == 3)
+                <li class="nav-item {{ request()->routeIs('reviewer.audit.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('reviewer.audit.proposals') }}">
+                        <i class="material-icons">assignment</i>
+                        <p>Review Proposal </p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('reviewer.monev.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('reviewer.monev.kemajuan') }}">
+                        <i class="material-icons">dvr</i>
+                        <p>Monitoring & Evaluasi </p>
+                    </a>
+                </li>
+                @endif
+
+                <li class="nav-item  {{ request()->routeIs('dosen*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('dosen.edit', Auth::user()->nidn) }}">
+                        <i class="material-icons">person</i>
+                        <p>Profile </p>
+                    </a>
+                </li>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();this.closest('form').submit();">
+                            <i class="material-icons">logout</i>
+                            <p>Log Out </p>
+                        </a>
+                    </li>
+                </form>
         </ul>
     </div>
 </div>

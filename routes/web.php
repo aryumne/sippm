@@ -11,6 +11,7 @@ use App\Http\Controllers\PengusulController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\ReviewerController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TeknologiTepatGunaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -34,19 +35,37 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
     Route::resource('/usulan', ProposalController::class);
     Route::resource('/laporan-kemajuan', LapKemajuanController::class);
     Route::resource('/laporan-akhir', LapAkhirController::class);
-    Route::resource('/publikasi', PublikasiController::class);
-    Route::resource('/hki', HkiController::class);
+    Route::resource('/publikasi', PublikasiController::class)->except(['create', 'show', 'edit', 'destroy']);
+    Route::resource('/hki', HkiController::class)->except(['create', 'show', 'edit', 'destroy']);
     Route::resource('/usulan', ProposalController::class)->except(['create', 'destroy']);
     Route::resource('/laporan-kemajuan', LapKemajuanController::class)->except(['create', 'edit', 'destroy']);
     Route::resource('/laporan-akhir', LapAkhirController::class)->except(['create', 'show', 'edit', 'destroy']);
-    Route::resource('/buku', BukuController::class);
-    Route::resource('/ttg', TeknologiTepatGunaController::class);
-    Route::resource('/kegiatan', KegiatanController::class)->except(['index']);
+    Route::resource('/buku', BukuController::class)->except(['create', 'show', 'edit', 'destroy']);
+    Route::resource('/ttg', TeknologiTepatGunaController::class)->except(['create', 'show', 'edit', 'destroy']);
+    Route::resource('/kegiatan', KegiatanController::class)->except(['index', 'show', 'edit', 'destroy']);
     Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin', 'prevent-back-history']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    //akun reviewer
+    Route::get('/reviewers', [AdminController::class, 'reviewers'])->name('admin.reviewers.index');
+    Route::post('/storeReviewer', [AdminController::class, 'storeReviewer'])->name('admin.reviewers.store');
+    //penilaian
+    Route::get('/audits', [AdminController::class, 'audits'])->name('adminpenilaian.audits.index');
+    Route::post('/auditStore', [AdminController::class, 'auditStore'])->name('adminpenilaian.audits.store');
+    Route::put('/auditUpdate/{id}', [AdminController::class, 'auditUpdateStatus'])->name('adminpenilaian.audits.update');
+    //monitoring dan evaluasi (MONEV)
+    Route::get('/monevs', [AdminController::class, 'monevs'])->name('adminpenilaian.monevs.index');
+    Route::post('/monevStore', [AdminController::class, 'monevStore'])->name('adminpenilaian.monevs.store');
+    Route::put('/monevUpdate/{id}', [AdminController::class, 'monevUpdateStatus'])->name('adminpenilaian.monevs.update');
+    //penjadwalan
+    Route::resource('/schedule', ScheduleController::class)->only(['index', 'update']);
+    //Dosen
+    Route::resource('/dosen', DosenController::class)->except(['create', 'edit', 'destroy']);
+    Route::post('/import', [DosenController::class, 'import'])->name('importDosen');
+
 });
 
 Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPengusul', 'prevent-back-history']], function () {
@@ -61,6 +80,14 @@ Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPe
 
 Route::group(['prefix' => 'reviewer', 'middleware' => ['auth', 'verified', 'isReviewer', 'prevent-back-history']], function () {
     Route::get('/', [ReviewerController::class, 'index'])->name('reviewer.dashboard');
+
+    Route::get('/audit', [ReviewerController::class, 'auditProposals'])->name('reviewer.audit.proposals');
+    Route::get('/formAudit/{id}', [ReviewerController::class, 'formAudit'])->name('reviewer.audit.form');
+    Route::post('/storeAudit/{id}', [ReviewerController::class, 'storeAudit'])->name('reviewer.audit.store');
+
+    Route::get('/monev', [ReviewerController::class, 'monevKemajuan'])->name('reviewer.monev.kemajuan');
+    Route::get('/formMonev/{id}', [ReviewerController::class, 'formMonev'])->name('reviewer.monev.form');
+    Route::post('/storeMonev/{id}', [ReviewerController::class, 'storeMonev'])->name('reviewer.monev.store');
 });
 
 

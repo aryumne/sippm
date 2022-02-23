@@ -1,6 +1,9 @@
     <!--   Core JS Files   -->
     <script src="{{ asset('/material/js/core/jquery.min.js') }}"></script>
     <script src="{{ asset('/material/js/core/popper.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+        integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('/material/js/core/bootstrap-material-design.min.js') }}"></script>
     <script src="{{ asset('/material/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
     <!-- Plugin for the momentJs  -->
@@ -42,7 +45,11 @@
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('/material/js/material-dashboard.js?v=2.1.0" type="text/javascript') }}"></script>
     <script src="{{ asset('/material/js/application.js') }}"></script>
+    <script src="{{ asset('/material/demo/demo.js') }}"></script>
+    {{-- <script src="{{ asset('/material/demo/jquery.sharrre.js') }}"></script> --}}
+    {{-- <script src="{{ asset('/material/demo/tour.js') }}"></script> --}}
     <script src="https://cdn.ckeditor.com/ckeditor5/19.1.1/classic/ckeditor.js"></script>
+
     <script>
         $(document).ready(function() {
             md.checkFullPageBackgroundImage();
@@ -141,6 +148,8 @@
             setFormValidation('#EditKemajuanValidation');
             setFormValidation('#AddAkhirValidation');
             setFormValidation('#EditAkhirValidation');
-
+            setFormValidation('#AddReviewerValidation');
+            setFormValidation('#AddPenilaianValidation');
+            setFormValidation('#AddDosenValidation');
         });
     </script>

@@ -91,6 +91,15 @@
         font-weight: 300 !important;
     }
 
+    td {
+        max-width: 350px;
+    }
+
+    .fw-300 {
+        font-weight: 300 !important;
+    }
+
+
     .fw-400 {
         font-weight: 400 !important;
     }
