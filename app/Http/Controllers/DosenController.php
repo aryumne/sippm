@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\DosenImport;
 use App\Models\Dosen;
+use App\Models\Faculty;
 use App\Models\Jabatan;
 use App\Models\Prodi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Imports\DosenImport;
 use Maatwebsite\Excel\Facades\Excel;
+
 use RealRashid\SweetAlert\Facades\Alert;
 
 class DosenController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $title = "Daftar Dosen";
@@ -34,6 +33,7 @@ class DosenController extends Controller
 
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'nidn' => ['required', 'unique:dosens', 'numeric'],
             'nama' => ['required', 'string'],
@@ -67,15 +67,8 @@ class DosenController extends Controller
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Dosen $dosen)
     {
-        // dd($dosen);
         $title = "Data $dosen->nama";
         $prodis = Prodi::all()->sortBy('nama_prodi');
         $jabatans = Jabatan::all();
@@ -87,9 +80,56 @@ class DosenController extends Controller
         ]);
     }
 
+    public function edit($id)
+    {
+        $id = Auth::user()->nidn;
+        $title = "Profile User";
+        $dosen = Dosen::where('nidn', $id)->get();
+        $jabatan = Jabatan::all();
+        $fakultas = Faculty::all();
+        $prodi = Prodi::all();
+
+        return view('user', [
+            'title' => $title,
+            'data' => $dosen,
+            'jabatan' => $jabatan,
+            'fakultas' => $fakultas,
+            'prodi' => $prodi,
+        ]);
+    }
+
     public function update(Request $request, $id)
     {
-        //
+
+        $rules = [
+            'nidn' => ['required', 'string'],
+            'nama' => ['required', 'string'],
+            'jabatan' => ['required', 'numeric'],
+            'prodi' => ['required', 'numeric'],
+            'noHp' => ['required', 'string'],
+            'email' => ['required', 'email'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $nidn = Auth::user()->nidn;
+        $prodi = $request->prodi;
+        Dosen::findOrFail($nidn)->update([
+            'nama' => $request->nama,
+            'jabatan_id' => $request->jabatan,
+            'prodi_id' => $prodi,
+            'handphone' => $request->noHp,
+            'email' => $request->email
+        ]);
+
+        Alert::success('Data Profile berhasil diubah', 'success');
+        // return redirect()->route('dosen.show', $nidn);
+        return back();
     }
 
     /**

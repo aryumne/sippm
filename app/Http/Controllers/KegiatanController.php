@@ -22,6 +22,7 @@ class KegiatanController extends Controller
             $title = "Daftar Penelitian";
             $data = 1;
             $dataKegiatan = Kegiatan::where('jenis_kegiatan', $data)->get();
+
             if (Auth::user()->role_id == 2) {
                 $dataKegiatan = Kegiatan::where('jenis_kegiatan', $data)->where('user_id', Auth::user()->nidn)->get();
             }

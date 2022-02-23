@@ -15,6 +15,7 @@ use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\ReviewerController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TeknologiTepatGunaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +47,10 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
     Route::resource('/kegiatan', KegiatanController::class)->except(['index', 'show', 'edit', 'destroy']);
     Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
 });
+Route::group(['prefix' => 'profile', 'middleware' => ['auth', 'verified', 'prevent-back-history']], function () {
+    Route::resource('/user', UserController::class);
+    Route::get('/editProfile/{id}', [DosenController::class, 'edit'])->name('editProfile');
+});
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin', 'prevent-back-history']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -69,7 +74,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     //Prodi
     Route::resource('/prodi', ProdiController::class)->only(['store', 'update']);
     Route::resource('/faculty', FacultyController::class)->only(['index', 'store', 'update']);
-
 });
 
 Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPengusul', 'prevent-back-history']], function () {
@@ -81,6 +85,7 @@ Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPe
     Route::get('/kegiatan/penelitian', [PengusulController::class, 'penelitian'])->name('pengusul.kegiatan.penelitian');
     Route::get('/kegiatan/pengabdian', [PengusulController::class, 'pengabdian'])->name('pengusul.kegiatan.pengabdian');
 });
+
 Route::group(['prefix' => 'reviewer', 'middleware' => ['auth', 'verified', 'isReviewer', 'prevent-back-history']], function () {
     Route::get('/', [ReviewerController::class, 'index'])->name('reviewer.dashboard');
 
@@ -92,5 +97,10 @@ Route::group(['prefix' => 'reviewer', 'middleware' => ['auth', 'verified', 'isRe
     Route::get('/formMonev/{id}', [ReviewerController::class, 'formMonev'])->name('reviewer.monev.form');
     Route::post('/storeMonev/{id}', [ReviewerController::class, 'storeMonev'])->name('reviewer.monev.store');
 });
+
+
+
+
+
 
 require __DIR__ . '/auth.php';
