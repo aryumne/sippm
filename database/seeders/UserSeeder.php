@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
     {
         User::create([
             'nidn' => '1234567890',
-            'email' => 'm.sapari@student.unipa.ac.id',
+            'email' => 'aryumsf@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12341234'),
             'role_id' => 1,
@@ -26,11 +26,11 @@ class UserSeeder extends Seeder
 
         Dosen::create([
             'nidn' => '1234567890',
-            'nama' => 'Mozes Sapari',
+            'nama' => 'Aryum Slebewww',
             'jabatan_id' => 1,
             'prodi_id' => 1,
             'handphone' => '081234567890',
-            'email' => 'm.sapari@student.unipa.ac.id',
+            'email' => 'aryumsf@gmail.com',
         ]);
     }
 }

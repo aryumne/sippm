@@ -49,7 +49,7 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
 });
 Route::group(['prefix' => 'profile', 'middleware' => ['auth', 'verified', 'prevent-back-history']], function () {
     Route::resource('/user', UserController::class);
-    Route::get('/editProfile/{id}', [DosenController::class, 'edit'])->name('editProfile');
+    Route::get('/editProfile', [DosenController::class, 'edit'])->name('editProfile');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin', 'prevent-back-history']], function () {
@@ -69,7 +69,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     //penjadwalan
     Route::resource('/schedule', ScheduleController::class)->only(['index', 'update']);
     //Dosen
-    Route::resource('/dosen', DosenController::class)->except(['create', 'edit', 'destroy']);
+    Route::resource('/dosen', DosenController::class)->except(['edit', 'destroy']);
     Route::post('/import', [DosenController::class, 'import'])->name('importDosen');
     //Prodi
     Route::resource('/prodi', ProdiController::class)->only(['store', 'update']);
@@ -97,10 +97,5 @@ Route::group(['prefix' => 'reviewer', 'middleware' => ['auth', 'verified', 'isRe
     Route::get('/formMonev/{id}', [ReviewerController::class, 'formMonev'])->name('reviewer.monev.form');
     Route::post('/storeMonev/{id}', [ReviewerController::class, 'storeMonev'])->name('reviewer.monev.store');
 });
-
-
-
-
-
 
 require __DIR__ . '/auth.php';
