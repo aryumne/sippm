@@ -3,11 +3,13 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\HkiController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LapAkhirController;
 use App\Http\Controllers\LapKemajuanController;
 use App\Http\Controllers\PengusulController;
+use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\ReviewerController;
@@ -64,6 +66,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     //Dosen
     Route::resource('/dosen', DosenController::class)->except(['create', 'edit', 'destroy']);
     Route::post('/import', [DosenController::class, 'import'])->name('importDosen');
+    //Prodi
+    Route::resource('/prodi', ProdiController::class)->only(['store', 'update']);
+    Route::resource('/faculty', FacultyController::class)->only(['index', 'store', 'update']);
 
 });
 

@@ -163,11 +163,32 @@
                         <p>Penjadwalan </p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('dosen.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('dosen.index') }}">
-                        <i class="material-icons">assignment_ind</i>
-                        <p>Data Dosen </p>
+                <li
+                    class="nav-item {{ request()->routeIs('dosen.*') || request()->routeIs('faculty.*') || request()->routeIs('prodi.*')? 'active': '' }}">
+                    <a class="nav-link" data-toggle="collapse" href="#master">
+                        <i class="material-icons">storage</i>
+                        <p> Data Master
+                            <b class="caret"></b>
+                        </p>
                     </a>
+                    <div class="collapse {{ request()->routeIs('dosen.*') || request()->routeIs('faculty.*') || request()->routeIs('prodi.*')? 'show': '' }}"
+                        id="master">
+                        <ul class="nav">
+                            <li class="nav-item {{ request()->routeIs('dosen.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('dosen.index') }}">
+                                    <span class="sidebar-mini"> D </span>
+                                    <span class="sidebar-normal">Dosen </span>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item {{ request()->routeIs('faculty.*') || request()->routeIs('prodi.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('faculty.index') }}">
+                                    <span class="sidebar-mini"> FP </span>
+                                    <span class="sidebar-normal">Fakultas & Prodi </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             @endif
             @if (Auth::user()->role_id == 3)
