@@ -212,8 +212,8 @@ col-12 @endif
                             @enderror
                             <div class="form-group">
                                 <label for="nidn_pengusul">Pengusul</label>
-                                <select class="form-control selectpicker" data-style="btn btn-link" id="nidn_pengusul"
-                                    name="nidn_pengusul" required>
+                                <select class="form-control p-0" data-size="10" title="Pilih Pengusul" data-color="rose"
+                                    id="choices-tag-pengusul" name="nidn_pengusul" required>
                                     @foreach ($dosen as $ds)
                                         <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
                                             {{ $ds->nama }}
@@ -244,7 +244,7 @@ col-12 @endif
                             <div class="input-group">
                                 <input type="text" class="form-control inputFileVisible" placeholder="Pilih File">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-fab btn-round btn-primary">
+                                    <button type="button" class="btn btn-fab btn-round btn-rose">
                                         <i class="material-icons">attach_file</i>
                                     </button>
                                 </span>
@@ -256,8 +256,8 @@ col-12 @endif
                         @enderror
                         <div class="form-group">
                             <label for=" nidn_anggota">Tambah Anggota</label>
-                            <select multiple class="form-control selectpicker" data-size="10" title="Pilih Anggota"
-                                data-style="btn btn-link" id="nidn_anggota" name="nidn_anggota[]" required>
+                            <select multiple class="form-control" data-size="10" title="Pilih Anggota" data-color="rose"
+                                id="choices-tags" name="nidn_anggota[]" required>
                                 @foreach ($dosen as $ds)
                                     @if (Auth::user()->nidn != str_pad($ds->nidn, 10, '0', STR_PAD_LEFT))
                                         <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
@@ -283,6 +283,34 @@ col-12 @endif
 @endsection
 
 @section('customSCript')
+    <script type="text/javascript">
+        var choicesTags = document.getElementById('choices-tags');
+        var color = choicesTags.dataset.color;
+        if (choicesTags) {
+            const example = new Choices(choicesTags, {
+                maxItemCount: 40,
+                removeItemButton: false,
+                addItems: true,
+                itemSelectText: '',
+                classNames: {
+                    item: 'btn btn-sm btn-link btn-' + color + ' me-2',
+                }
+            });
+        }
+        var choicesTags = document.getElementById('choices-tag-pengusul');
+        var color = choicesTags.dataset.color;
+        if (choicesTags) {
+            const example = new Choices(choicesTags, {
+                maxItemCount: 40,
+                removeItemButton: false,
+                addItems: true,
+                itemSelectText: '',
+                classNames: {
+                    item: 'btn btn-sm btn-link btn-' + color + ' me-2',
+                }
+            });
+        }
+    </script>
     <script>
         $(document).ready(function() {
             //datatables

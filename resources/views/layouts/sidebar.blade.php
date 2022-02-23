@@ -117,8 +117,8 @@
                             </li>
                             <li class="nav-item {{ $title == 'Daftar Pkm' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('kegiatan.index', 'pkm') }}">
-                                    <span class="sidebar-mini"> PG </span>
-                                    <span class="sidebar-normal">Pengabdian </span>
+                                    <span class="sidebar-mini"> PM </span>
+                                    <span class="sidebar-normal">PkM </span>
                                 </a>
                             </li>
                         </ul>
@@ -127,6 +127,12 @@
             @endif
 
             @if (Auth::user()->role_id == 1)
+                <li class="nav-item {{ request()->routeIs('admin.reviewers.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.reviewers.index') }}">
+                        <i class="material-icons">manage_accounts</i>
+                        <p>Reviewers </p>
+                    </a>
+                </li>
                 <li class="nav-item {{ request()->routeIs('adminpenilaian.*') ? 'active' : '' }}">
                     <a class="nav-link" data-toggle="collapse" href="#penilaian">
                         <i class="material-icons">assessment</i>
@@ -136,32 +142,36 @@
                     </a>
                     <div class="collapse {{ request()->routeIs('adminpenilaian.*') ? 'show' : '' }}" id="penilaian">
                         <ul class="nav">
-                            <li class="nav-item {{ request()->routeIs('adminpenilaian.audits.*') ? 'active' : '' }}">
+                            <li
+                                class="nav-item {{ request()->routeIs('adminpenilaian.audits.index') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('adminpenilaian.audits.index') }}">
                                     <span class="sidebar-mini"> PP </span>
                                     <span class="sidebar-normal">Penilaian Proposal </span>
                                 </a>
                             </li>
-                            <li class="nav-item {{ request()->routeIs('adminpenilaian.monevs.*') ? 'active' : '' }}">
+                            <li
+                                class="nav-item {{ request()->routeIs('adminpenilaian.audits.hasil') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('adminpenilaian.audits.hasil') }}">
+                                    <span class="sidebar-mini"> HP </span>
+                                    <span class="sidebar-normal">Hasil Penilaian Proposal </span>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item {{ request()->routeIs('adminpenilaian.monevs.index') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('adminpenilaian.monevs.index') }}">
                                     <span class="sidebar-mini"> MV </span>
-                                    <span class="sidebar-normal">Monev </span>
+                                    <span class="sidebar-normal">Monev Laporan</span>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item {{ request()->routeIs('adminpenilaian.monevs.hasil') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('adminpenilaian.monevs.hasil') }}">
+                                    <span class="sidebar-mini"> HM </span>
+                                    <span class="sidebar-normal">Hasil Monev Laporan</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                </li>
-                <li class="nav-item {{ request()->routeIs('admin.reviewers.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.reviewers.index') }}">
-                        <i class="material-icons">manage_accounts</i>
-                        <p>Reviewers </p>
-                    </a>
-                </li>
-                <li class="nav-item {{ request()->routeIs('schedule.*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('schedule.index') }}">
-                        <i class="material-icons">date_range</i>
-                        <p>Penjadwalan </p>
-                    </a>
                 </li>
                 <li
                     class="nav-item {{ request()->routeIs('dosen.*') || request()->routeIs('faculty.*') || request()->routeIs('prodi.*')? 'active': '' }}">
@@ -189,6 +199,12 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li class="nav-item {{ request()->routeIs('schedule.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('schedule.index') }}">
+                        <i class="material-icons">date_range</i>
+                        <p>Penjadwalan </p>
+                    </a>
                 </li>
             @endif
 

@@ -10,7 +10,7 @@
                             <p class="card-category">Batas waktu penilaian: 3 Maret 2022</p>
                         </div>
                     </div>
-                    <div class="card-body table-responsive">
+                    <div class="card-body">
                         <table class="table table-hover">
                             <thead class="text-dark">
                                 <th>ID</th>

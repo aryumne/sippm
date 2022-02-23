@@ -17,20 +17,20 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'nidn' => '1234567890',
-            'email' => 'aryumsf@gmail.com',
+            'nidn' => '0000000000',
+            'email' => 'dev.tik@unipa.ac.id',
             'email_verified_at' => now(),
             'password' => Hash::make('12341234'),
             'role_id' => 1,
         ]);
 
         Dosen::create([
-            'nidn' => '1234567890',
-            'nama' => 'Aryum Slebewww',
+            'nidn' => '0000000000',
+            'nama' => 'DEV TIK UNIPA',
             'jabatan_id' => 1,
             'prodi_id' => 1,
             'handphone' => '081234567890',
-            'email' => 'aryumsf@gmail.com',
+            'email' => 'dev.tik@unipa.ac.id',
         ]);
     }
 }

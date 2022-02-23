@@ -43,7 +43,7 @@
                                     @enderror
                                     <div class="form-group">
                                         <label for="nidn_pengusul">Pengusul</label>
-                                        <select class="form-control selectpicker" data-style="btn btn-link"
+                                        <select class="form-control" data-color="rose" id="choices-tag-pengusul"
                                             id="nidn_pengusul" name="nidn_pengusul" required>
                                             @foreach ($dosen as $ds)
                                                 <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}"
@@ -99,8 +99,9 @@ Selected @endif
                                 @enderror
                                 <div class="form-group">
                                     <label for=" nidn_anggota"> Anggota</label>
-                                    <select multiple class="form-control selectpicker" data-size="10" title="Pilih Anggota"
-                                        data-style="btn btn-link" id="nidn_anggota" name="nidn_anggota[]">
+                                    <select multiple class="form-control" data-color="rose" data-size="10"
+                                        title="Pilih Anggota" data-style="btn btn-link" id="choices-tags-anggota"
+                                        name="nidn_anggota[]">
                                         @foreach ($dosen as $ds)
                                             @if (Auth::user()->role_id == 2)
                                                 @if (Auth::user()->nidn != str_pad($ds->nidn, 10, '0', STR_PAD_LEFT))
@@ -148,4 +149,34 @@ Selected @endif
             <!-- end col-md-12 -->
         </div>
     </div>
+@endsection
+
+@section('customSCript')
+    <script type="text/javascript">
+        var choicesTags = document.getElementById('choices-tags-anggota');
+        var color = choicesTags.dataset.color;
+        if (choicesTags) {
+            const example = new Choices(choicesTags, {
+                maxItemCount: 40,
+                removeItemButton: false,
+                addItems: true,
+                itemSelectText: '',
+                classNames: {
+                    item: 'btn btn-sm btn-link btn-' + color + ' me-2',
+                }
+            });
+        }
+        var choicesTags = document.getElementById('choices-tag-pengusul');
+        var color = choicesTags.dataset.color;
+        if (choicesTags) {
+            const example = new Choices(choicesTags, {
+                removeItemButton: false,
+                addItems: true,
+                itemSelectText: '',
+                classNames: {
+                    item: 'btn btn-sm btn-link btn-' + color + ' me-2',
+                }
+            });
+        }
+    </script>
 @endsection

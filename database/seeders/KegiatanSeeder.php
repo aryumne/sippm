@@ -15,23 +15,23 @@ class KegiatanSeeder extends Seeder
     public function run()
     {
         SumberDana::create([
-            "sumber" => "Mandiri"
+            "sumber" => "MANDIRI",
         ]);
 
         SumberDana::create([
-            "sumber" => "PEMDA"
+            "sumber" => "PEMDA",
         ]);
 
         SumberDana::create([
-            "sumber" => "Swasta"
+            "sumber" => "SWASTA",
         ]);
 
         SumberDana::create([
-            "sumber" => "NJO"
+            "sumber" => "NGO",
         ]);
 
         SumberDana::create([
-            "sumber" => "UNIPA"
+            "sumber" => "UNIPA",
         ]);
     }
 }

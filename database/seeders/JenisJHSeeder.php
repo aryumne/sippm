@@ -43,16 +43,16 @@ class JenisJHSeeder extends Seeder
 
         //Jenis Jurnal
         Jenis_jurnal::create([
-            "jurnal" => "Prosiding Internasional"
+            "jurnal" => "Prosiding Internasional",
         ]);
         Jenis_jurnal::create([
-            "jurnal" => "Internasional"
+            "jurnal" => "Jurnal Internasional",
         ]);
         Jenis_jurnal::create([
-            "jurnal" => "Nasional Terakreditasi"
+            "jurnal" => "Jurnal Nasional Terakreditasi",
         ]);
         Jenis_jurnal::create([
-            "jurnal" => "Nasional"
+            "jurnal" => "Jurnal Nasional",
         ]);
     }
 }

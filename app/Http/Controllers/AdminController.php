@@ -94,9 +94,23 @@ class AdminController extends Controller
         return view('admin.audit', [
             'title' => $title,
             'reviewers' => $reviewers,
-            'proposals' => $proposals,
             'newReviewers' => $newReviewers,
             'newProposals' => $newProposals,
+        ]);
+    }
+
+    public function hasilAudits()
+    {
+        $title = "Penilaian Proposal";
+        $reviewerAudits = Audit::all();
+        //ambil tahun sekarang
+        $getYear = date("Y");
+        $proposals = Proposal::whereYear('created_at', $getYear)->get();
+
+        return view('admin.hasilAudit', [
+            'title' => $title,
+            'reviewerAudits' => $reviewerAudits,
+            'proposals' => $proposals,
         ]);
     }
 
@@ -190,6 +204,18 @@ class AdminController extends Controller
             'reviewers' => $reviewers,
             'kemajuans' => $kemajuans,
             'newKemajuans' => $newKemajuans,
+        ]);
+    }
+
+    public function hasilMonevs()
+    {
+        $title = "Penilaian Proposal";
+        //ambil tahun sekarang
+        $getYear = date("Y");
+        $kemajuans = LapKemajuan::whereYear('created_at', $getYear)->get();
+        return view('admin.hasilMonev', [
+            'title' => $title,
+            'kemajuans' => $kemajuans,
         ]);
     }
 

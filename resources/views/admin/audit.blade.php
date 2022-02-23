@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12 col-lg-6">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
@@ -22,9 +22,6 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="toolbar">
-                            <!--        Here you can write extra buttons/actions for the toolbar              -->
-                        </div>
                         <div class="material-datatables">
                             <table id="datatables-audit" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
@@ -80,67 +77,6 @@
                         </div>
                     </div>
                 </div>
-                <!--  end card  -->
-            </div>
-            <div class="col-md-12 col-lg-6">
-                <div class="card">
-                    <div class="card-header card-header-success card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">assignment_turned_in</i>
-                        </div>
-                        <div class="row card-title">
-                            <div class="col-6">
-                                <h4 class="fw-400">Hasil Penilaian Proposal</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="toolbar">
-                            <!--        Here you can write extra buttons/actions for the toolbar              -->
-                        </div>
-                        <div class="material-datatables">
-                            <table id="datatables-hasilAudit" class="table table-striped table-no-bordered table-hover"
-                                cellspacing="0" width="100%" style="width:100%">
-                                <thead>
-                                    <tr class="text-center">
-                                        <th class="text-left">Judul Proposal</th>
-                                        <th>Review 1</th>
-                                        <th>Review 2</th>
-                                        <th>Rata-Rata</th>
-                                        <th class="disabled-sorting">Detail</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($proposals as $pps)
-                                        @if (count($pps->reviewer) != 0)
-                                            <tr class="text-center">
-                                                <td class="text-left">{{ $pps->judul }}</td>
-                                                @foreach ($pps->hasilAudit as $hasil)
-                                                    <td>{{ $hasil->total }}</td>
-                                                @endforeach
-                                                @if (count($pps->hasilAudit) == 0)
-                                                    <td> belum mereview </td>
-                                                    <td> belum mereview </td>
-                                                    <td> - </td>
-                                                @elseif(count($pps->hasilAudit) == 1)
-                                                    <td> belum mereview </td>
-                                                    <td> - </td>
-                                                @elseif(count($pps->hasilAudit) == 2)
-                                                    <td> {{ ($pps->hasilAudit[0]->total + $pps->hasilAudit[1]->total) / 2 }}
-                                                    </td>
-                                                @endif
-                                                <td> <a href="{{ route('usulan.show', $pps->id) }}"
-                                                        class="btn btn-link btn-info btn-just-icon like"><i
-                                                            class="material-icons">read_more</i></a></td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!--  end card  -->
             </div>
         </div>
     </div>
@@ -212,19 +148,6 @@
                 "lengthMenu": [
                     [15, 25, 50, -1],
                     [15, 25, 50, "All"]
-                ],
-                responsive: true,
-                language: {
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search records",
-                }
-            });
-            $('#datatables-hasilAudit').DataTable({
-                //pagingType documentation : "https://datatables.net/reference/option/pagingType"
-                "pagingType": "first_last_numbers",
-                "lengthMenu": [
-                    [15, 25, 55, -1],
-                    [15, 25, 55, "All"]
                 ],
                 responsive: true,
                 language: {

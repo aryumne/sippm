@@ -104,7 +104,8 @@
                         </div>
                         <div class="row pt-3 px-3" id="edit">
                             <div class="col-12">
-                                <form action="{{ route('dosen.update', $dosen) }}" method="POST">
+                                <form action="{{ route('dosen.update', str_pad($dosen->nidn, 10, '0', STR_PAD_LEFT)) }}"
+                                    method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="row align-items-center">

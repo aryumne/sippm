@@ -85,8 +85,8 @@
                                             </div>
                                         </div>
                                         <div class="col-10 px-0">
-                                            <select class="form-control selectpicker" data-style="btn btn-link" id="nidn"
-                                                name="nidn" required>
+                                            <select class="form-control " data-color="rose" id="choices-tags" name="nidn"
+                                                required>
                                                 @foreach ($dosen as $ds)
                                                     <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
                                                         {{ $ds->nama }}
@@ -126,4 +126,21 @@
             </div>
         </div>
     </div>
+@endsection
+@section('customSCript')
+    <script type="text/javascript">
+        var choicesTags = document.getElementById('choices-tags');
+        var color = choicesTags.dataset.color;
+        if (choicesTags) {
+            const example = new Choices(choicesTags, {
+                maxItemCount: 40,
+                removeItemButton: false,
+                addItems: true,
+                itemSelectText: '',
+                classNames: {
+                    item: 'btn btn-sm btn-link btn-' + color + ' me-2',
+                }
+            });
+        }
+    </script>
 @endsection
