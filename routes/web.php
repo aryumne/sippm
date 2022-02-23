@@ -65,7 +65,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     //Dosen
     Route::resource('/dosen', DosenController::class)->except(['create', 'edit', 'destroy']);
     Route::post('/import', [DosenController::class, 'import'])->name('importDosen');
-
 });
 
 Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPengusul', 'prevent-back-history']], function () {
@@ -92,7 +91,8 @@ Route::group(['prefix' => 'reviewer', 'middleware' => ['auth', 'verified', 'isRe
 
 
 Route::resource('/user', UserController::class);
-Route::resource('/dosen', DosenController::class)->except(['index']);
+Route::resource('/dosen', DosenController::class)->except(['index', 'edit']);
+Route::get('/editProfile/{id}', [DosenController::class, 'edit'])->name('editProfile');
 
 
 

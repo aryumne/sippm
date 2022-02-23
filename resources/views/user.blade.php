@@ -80,7 +80,8 @@
                   <div class="form-group bmd-form-group is-filled">
                     <select class="form-control selectpicker" data-style=" btn btn-link" name="jabatan" id="jabatan_id">
                       @foreach ($jabatan as $k)
-                      <option value="{{ $k->id }}" selected> {{ $k->nama_jabatan }} </option>
+                      <option value="{{ $k->id }}" {{ $k->id == $d->jabatan_id ? 'Selected' : '' }}> {{ $k->nama_jabatan
+                        }} </option>
                       @endforeach
                     </select>
                     </select>
@@ -93,29 +94,15 @@
               @enderror
 
               <div class="row">
-                <label class="col-sm-2 col-form-label" for="fakultas">Fakultas</label>
+                <label class="col-sm-2 col-form-label" for="prodi">prodi</label>
                 <div class="col-sm-9">
                   <div class="form-group bmd-form-group is-filled">
-                    <select class="form-control selectpicker" data-style=" btn btn-link" name="fakultas"
-                      id="fakultas_id">
-                      @foreach ($fakultas as $k)
-                      <option value="{{ $k->id }}"> {{ $k->nama_faculty }} </option>
+                    <select class="form-control selectpicker" data-style=" btn btn-link" data-size="8" name="prodi"
+                      id="prodi_id">
+                      @foreach ($prodi as $k)
+                      <option value="{{ $k->id }}" {{ $k->id == $d->prodi_id ? 'Selected' : '' }}> {{ $k->nama_prodi }}
+                      </option>
                       @endforeach
-                    </select>
-                  </div>
-                </div>
-              </div>
-              @error('fakultas')
-              <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message
-                }}</span>
-              @enderror
-
-              <div class="row">
-                <label class="col-sm-2 col-form-label" for="prodi">Prodi</label>
-                <div class="col-sm-9">
-                  <div class="form-group bmd-form-group is-filled">
-                    <select class="form-control" data-style="btn btn-link" name="prodi" id="prodi_id">
-                      <option disabled selected>{{ $d->prodi->nama_prodi }}</option>
                     </select>
                   </div>
                 </div>
@@ -232,23 +219,6 @@
 @endsection
 
 @section('customSCript')
-<script>
-  $(document).ready(function() {
-  // var element = document.getElementById("prodi_id");
-
-  $('#fakultas_id').on('change', function() {
-    var app = @json($prodi);
-    var nilai = this.value;
-    app.forEach(function(data, index){
-      if(data['faculty_id'] ==  nilai){
-      $('#prodi_id').append("<option value='"+data['id'] +"'>"+data['nama_prodi'] +" </option>");
-      }
-      
-    });
-  });
-});
-</script>
-
 <script type="text/javascript">
   $(document).ready(function () {
       $('.form-checkbox').click(function () {

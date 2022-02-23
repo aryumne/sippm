@@ -183,8 +183,8 @@
                 </li>
                 @endif
 
-                <li class="nav-item  {{ request()->routeIs('dosen*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('dosen.edit', Auth::user()->nidn) }}">
+                <li class="nav-item  {{ request()->routeIs('editProfile') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('editProfile', Auth::user()->nidn) }}">
                         <i class="material-icons">person</i>
                         <p>Profile </p>
                     </a>

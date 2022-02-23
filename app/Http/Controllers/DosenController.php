@@ -105,14 +105,12 @@ class DosenController extends Controller
             'nidn' => ['required', 'string'],
             'nama' => ['required', 'string'],
             'jabatan' => ['required', 'numeric'],
-            'fakultas' => ['required', 'numeric'],
             'prodi' => ['required', 'numeric'],
             'noHp' => ['required', 'string'],
             'email' => ['required', 'email'],
         ];
 
         $validator = Validator::make($request->all(), $rules);
-
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
@@ -121,8 +119,6 @@ class DosenController extends Controller
 
         $nidn = Auth::user()->nidn;
         $prodi = $request->prodi;
-        $fakultas = $request->fakultas;
-        Prodi::where('id', $prodi)->update(['faculty_id' => $fakultas]);
         Dosen::findOrFail($nidn)->update([
             'nama' => $request->nama,
             'jabatan_id' => $request->jabatan,
