@@ -93,9 +93,6 @@ col-12 @endif
                                     @endforeach
                                 @endforeach
                             @elseif(Auth::user()->role_id == 1)
-                                <div class="toolbar">
-                                    <!--        Here you can write extra buttons/actions for the toolbar              -->
-                                </div>
                                 <div class="material-datatables">
                                     <table id="datatables-usulan" class="table table-striped table-no-bordered table-hover"
                                         cellspacing="0" width="100%" style="width:100%">
@@ -103,9 +100,9 @@ col-12 @endif
                                             <tr>
                                                 <th>Judul Proposal</th>
                                                 <th>Pengusul</th>
+                                                <th>Fakultas</th>
                                                 <th>tanggal Upload</th>
                                                 <th>Berkas Laporan</th>
-                                                <th>Status</th>
                                                 <th class="disabled-sorting text-right">Actions</th>
                                             </tr>
                                         </thead>
@@ -113,9 +110,9 @@ col-12 @endif
                                             <tr>
                                                 <th>Judul Proposal</th>
                                                 <th>Pengusul</th>
+                                                <th>Fakultas</th>
                                                 <th>tanggal Upload</th>
                                                 <th>Berkas Laporan</th>
-                                                <th>Status</th>
                                                 <th class="text-right">Actions</th>
                                             </tr>
                                         </tfoot>
@@ -130,19 +127,17 @@ col-12 @endif
                                                             @endif
                                                         @endforeach
                                                     </td>
+                                                    <td>
+                                                        @foreach ($lap->dosen as $pvt)
+                                                            @if ($pvt->pivot->isLeader == true)
+                                                                {{ $pvt->prodi->faculty->nama_faculty }}
+                                                            @endif
+                                                        @endforeach
+                                                    </td>
                                                     <td>{{ $lap->tanggal_usul }}</td>
                                                     <td><a href="{{ asset('storage/' . $lap->path_proposal) }}"
                                                             target="_blank"
                                                             class="badge badge-success">{{ substr($lap->path_proposal, 9) }}</a>
-                                                    </td>
-                                                    <td>
-                                                        @if ($lap->status == 1)
-                                                            Menunggu
-                                                        @elseif ($lap->status == 2)
-                                                            Lanjut
-                                                        @else
-                                                            Tidak Lanjut
-                                                        @endif
                                                     </td>
                                                     <td class="text-right">
                                                         <a href="{{ route('usulan.show', $lap->id) }}"
@@ -212,7 +207,7 @@ col-12 @endif
                             @enderror
                             <div class="form-group">
                                 <label for="nidn_pengusul">Pengusul</label>
-                                <select class="form-control p-0" data-size="10" title="Pilih Pengusul" data-color="rose"
+                                <select class="form-control" data-size="10" title="Pilih Pengusul" data-color="rose"
                                     id="choices-tag-pengusul" name="nidn_pengusul" required>
                                     @foreach ($dosen as $ds)
                                         <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
@@ -283,35 +278,10 @@ col-12 @endif
 @endsection
 
 @section('customSCript')
-    <script type="text/javascript">
-        var choicesTags = document.getElementById('choices-tags');
-        var color = choicesTags.dataset.color;
-        if (choicesTags) {
-            const example = new Choices(choicesTags, {
-                maxItemCount: 40,
-                removeItemButton: false,
-                addItems: true,
-                itemSelectText: '',
-                classNames: {
-                    item: 'btn btn-sm btn-link btn-' + color + ' me-2',
-                }
-            });
-        }
-        var choicesTags = document.getElementById('choices-tag-pengusul');
-        var color = choicesTags.dataset.color;
-        if (choicesTags) {
-            const example = new Choices(choicesTags, {
-                maxItemCount: 40,
-                removeItemButton: false,
-                addItems: true,
-                itemSelectText: '',
-                classNames: {
-                    item: 'btn btn-sm btn-link btn-' + color + ' me-2',
-                }
-            });
-        }
-    </script>
     <script>
+
+    </script>
+    <script type="text/javascript">
         $(document).ready(function() {
             //datatables
             $('#datatables-usulan').DataTable({
@@ -327,6 +297,32 @@ col-12 @endif
                     searchPlaceholder: "Search records",
                 }
             });
+            var choicesTags = document.getElementById('choices-tags');
+            var color = choicesTags.dataset.color;
+            if (choicesTags) {
+                const example = new Choices(choicesTags, {
+                    maxItemCount: 40,
+                    removeItemButton: false,
+                    addItems: true,
+                    itemSelectText: '',
+                    classNames: {
+                        item: 'btn btn-sm btn-link btn-' + color + ' me-2',
+                    }
+                });
+            }
+            var choicesTags = document.getElementById('choices-tag-pengusul');
+            var color = choicesTags.dataset.color;
+            if (choicesTags) {
+                const example = new Choices(choicesTags, {
+                    maxItemCount: 40,
+                    removeItemButton: false,
+                    addItems: true,
+                    itemSelectText: '',
+                    classNames: {
+                        item: 'btn btn-sm btn-link btn-' + color + ' me-2',
+                    }
+                });
+            }
         });
     </script>
 @endsection

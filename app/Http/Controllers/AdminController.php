@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Audit;
 use App\Models\Dosen;
+use App\Models\Faculty;
 use App\Models\Monev;
 use App\Models\Proposal;
 use App\Models\LapKemajuan;
@@ -19,7 +20,99 @@ class AdminController extends Controller
     public function index()
     {
         $title = "Dashboard Admin";
-        return view('admin.dashboard-admin', ['title' => $title]);
+        $proposal = Proposal::all();
+        $data= [];
+        $fmipa = 0;
+        $fkip = 0;
+        $ft = 0;
+        $ftpp= 0;
+        $fasasbud = 0;
+        $fateta = 0;
+        $faperta = 0;
+        $fpik= 0;
+        $fapet= 0;
+        $fahut = 0;
+        $feb = 0;
+        $fked = 0;
+        $pasca = 0;
+        foreach($proposal as $pps) {
+            foreach($pps->dosen as $dsn) {
+                if($dsn->pivot->isLeader == true)
+                {
+                    if($dsn->prodi->faculty_id == 1)
+                    {
+                        $fmipa++;
+                    }
+                    if($dsn->prodi->faculty_id == 2)
+                    {
+                        $fkip++;
+                    }
+                    if($dsn->prodi->faculty_id == 3)
+                    {
+                        $ft++;
+                    }
+                    if($dsn->prodi->faculty_id == 4)
+                    {
+                        $ftpp++;
+                    }
+                    if($dsn->prodi->faculty_id == 5)
+                    {
+                        $fasasbud++;
+                    }
+                    if($dsn->prodi->faculty_id == 6)
+                    {
+                        $fateta++;
+                    }
+                    if($dsn->prodi->faculty_id == 7)
+                    {
+                        $faperta++;
+                    }
+                    if($dsn->prodi->faculty_id == 8)
+                    {
+                        $fpik++;
+                    }
+                    if($dsn->prodi->faculty_id == 9)
+                    {
+                        $fapet++;
+                    }
+                    if($dsn->prodi->faculty_id == 10)
+                    {
+                        $fahut++;
+                    }
+                    if($dsn->prodi->faculty_id == 11)
+                    {
+                        $feb++;
+                    }
+                    if($dsn->prodi->faculty_id == 12)
+                    {
+                        $fked++;
+                    }
+                    if($dsn->prodi->faculty_id == 13)
+                    {
+                        $pasca++;
+                    }
+                }
+            }
+        }
+
+        $data['FMIPA'] = $fmipa;
+        $data['FKIP'] = $fkip;
+        $data['FT'] = $ft;
+        $data['FTPP'] = $ftpp;
+        $data['FASASBUD'] = $fasasbud;
+        $data['FATETA'] = $fateta;
+        $data['FAPERTA'] = $faperta;
+        $data['FPIK'] = $fpik;
+        $data['FAPET'] = $fapet;
+        $data['FAHUT'] = $fahut;
+        $data['FEB'] = $feb;
+        $data['FKED'] = $fked;
+        $data['PASCA'] = $pasca;
+        $jsonFakultas = json_encode($data);
+        return view('admin.dashboard-admin', [
+            'title' => $title,
+            'jsonFakultas' => $jsonFakultas
+    ]);
     }
 
     public function reviewers()
