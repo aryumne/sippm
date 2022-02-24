@@ -194,6 +194,7 @@
                   <div class="form-group bmd-form-group is-filled">
                     <input class="form-control form-password" name="password_confirm" id="password_confirm"
                       type="password" required="true" aria-required="true" onChange="onChange()">
+                    <span id='message'></span>
                   </div>
                 </div>
               </div>
@@ -231,9 +232,9 @@
   });
   $('#password, #password_confirm').on('keyup', function () {
       if ($('#password').val() != $('#password_confirm').val()) {
-          $('#message').html('Password Tidak Sama').css('color', 'red');
+          $('#message').html('Password Baru dan Konfirmasi Password Tidak Sama').css('color', 'red');
       } else
-          $('#message').html('Password Sama').css('color', 'green');
+          $('#message').html('Password Baru dan Konfirmasi Password Sama').css('color', 'green');
   });
   function onChange() {
       const password = document.querySelector('input[name=password]');
