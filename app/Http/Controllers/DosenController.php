@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DosenImport;
 use App\Models\Dosen;
-use App\Models\Faculty;
 use App\Models\Jabatan;
 use App\Models\Prodi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Imports\DosenImport;
 use Maatwebsite\Excel\Facades\Excel;
-
 use RealRashid\SweetAlert\Facades\Alert;
 
 class DosenController extends Controller
@@ -80,25 +78,58 @@ class DosenController extends Controller
         ]);
     }
 
-    public function edit($id)
+    public function edit()
     {
-        $id = Auth::user()->nidn;
         $title = "Profile User";
-        $dosen = Dosen::where('nidn', $id)->get();
+        $nidn = Auth::user()->nidn;
+        $dosen = Dosen::where('nidn', $nidn)->get();
         $jabatan = Jabatan::all();
-        $fakultas = Faculty::all();
         $prodi = Prodi::all();
 
-        return view('user', [
+        return view('auth.user', [
             'title' => $title,
             'data' => $dosen,
             'jabatan' => $jabatan,
-            'fakultas' => $fakultas,
             'prodi' => $prodi,
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Dosen $dosen)
+    {
+        $rules = [
+            'nama' => ['required', 'string'],
+            'jabatan_id' => ['required', 'numeric'],
+            'prodi_id' => ['required', 'numeric'],
+            'handphone' => ['required', 'string'],
+            'email' => ['required', 'email'],
+        ];
+
+        if ($request->nidn != $dosen->nidn) {
+            $rules['nidn'] = ['required', 'unique:dosens,nidn'];
+        }
+
+        $validator = Validator::make($request->all(), $rules, [
+            'nidn.unique' => 'NIDN sudah terdaftar',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
+            return back()->withErrors($validator)->withInput();
+        }
+
+        Dosen::findOrFail($dosen->nidn)->update([
+            'nidn' => $request->nidn,
+            'nama' => $request->nama,
+            'jabatan_id' => $request->jabatan_id,
+            'prodi_id' => $request->prodi_id,
+            'handphone' => $request->handphone,
+            'email' => $request->email,
+        ]);
+
+        Alert::success('Data Profile berhasil diubah', 'success');
+        return back();
+    }
+    public function updateProfile(Request $request)
     {
 
         $rules = [
@@ -124,7 +155,7 @@ class DosenController extends Controller
             'jabatan_id' => $request->jabatan,
             'prodi_id' => $prodi,
             'handphone' => $request->noHp,
-            'email' => $request->email
+            'email' => $request->email,
         ]);
 
         Alert::success('Data Profile berhasil diubah', 'success');
@@ -132,12 +163,6 @@ class DosenController extends Controller
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

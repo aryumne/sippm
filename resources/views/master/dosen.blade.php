@@ -14,10 +14,10 @@
                                 <h4 class="fw-400">Data Dosen</h4>
                             </div>
                             <div class="col-6 text-right">
-                                {{-- <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
                                     data-target="#importForm">
                                     <span class="material-icons">file_upload</span> Import
-                                </button> --}}
+                                </button>
                                 <button type="button" class="btn btn-rose mt-0" data-toggle="modal" data-target="#addForm">
                                     <span class="material-icons">person_add</span> Tambah
                                 </button>

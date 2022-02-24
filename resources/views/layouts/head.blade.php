@@ -3,65 +3,66 @@
     .async-hide {
         opacity: 0 !important
     }
+
 </style>
 <script>
     (function(a, s, y, n, c, h, i, d, e) {
-         s.className += ' ' + y;
-         h.start = 1 * new Date;
-         h.end = i = function() {
-             s.className = s.className.replace(RegExp(' ?' + y), '')
-         };
-         (a[n] = a[n] || []).hide = h;
-         setTimeout(function() {
-             i();
-             h.end = null
-         }, c);
-         h.timeout = c;
-     })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, {
-         'GTM-K9BGS8K': true
-     });
+        s.className += ' ' + y;
+        h.start = 1 * new Date;
+        h.end = i = function() {
+            s.className = s.className.replace(RegExp(' ?' + y), '')
+        };
+        (a[n] = a[n] || []).hide = h;
+        setTimeout(function() {
+            i();
+            h.end = null
+        }, c);
+        h.timeout = c;
+    })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, {
+        'GTM-K9BGS8K': true
+    });
 </script>
 
 <!-- Analytics-Optimize Snippet -->
 <script>
     (function(i, s, o, g, r, a, m) {
-         i['GoogleAnalyticsObject'] = r;
-         i[r] = i[r] || function() {
-             (i[r].q = i[r].q || []).push(arguments)
-         }, i[r].l = 1 * new Date();
-         a = s.createElement(o),
-             m = s.getElementsByTagName(o)[0];
-         a.async = 1;
-         a.src = g;
-         m.parentNode.insertBefore(a, m)
-     })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-     ga('create', 'UA-46172202-22', 'auto', {
-         allowLinker: true
-     });
-     ga('set', 'anonymizeIp', true);
-     ga('require', 'GTM-K9BGS8K');
-     ga('require', 'displayfeatures');
-     ga('require', 'linker');
-     ga('linker:autoLink', ["2checkout.com", "avangate.com"]);
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-46172202-22', 'auto', {
+        allowLinker: true
+    });
+    ga('set', 'anonymizeIp', true);
+    ga('require', 'GTM-K9BGS8K');
+    ga('require', 'displayfeatures');
+    ga('require', 'linker');
+    ga('linker:autoLink', ["2checkout.com", "avangate.com"]);
 </script>
 <!-- end Analytics-Optimize Snippet -->
 
 <!-- Google Tag Manager -->
 <script>
     (function(w, d, s, l, i) {
-         w[l] = w[l] || [];
-         w[l].push({
-             'gtm.start': new Date().getTime(),
-             event: 'gtm.js'
-         });
-         var f = d.getElementsByTagName(s)[0],
-             j = d.createElement(s),
-             dl = l != 'dataLayer' ? '&l=' + l : '';
-         j.async = true;
-         j.src =
-             'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-         f.parentNode.insertBefore(j, f);
-     });
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start': new Date().getTime(),
+            event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    });
 </script>
 <!-- End Google Tag Manager -->
 <meta charset="utf-8" />
@@ -70,9 +71,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>
     @isset($title)
-    {{ $title }}
+        {{ $title }}
     @else
-    SIPPM UNIPA
+        SIPPM UNIPA
     @endisset
 </title>
 
@@ -82,13 +83,20 @@
 <link rel="stylesheet" type="text/css"
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-<!-- CSS Files -->
-
+{{-- CSS Choices --}}
 <link href="{{ asset('/css/material-dashboard.css') }}" rel="stylesheet" />
+{{-- <link rel=" stylesheet " href=" https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css " /> --}}
+<link rel=" stylesheet " href=" https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css " />
 
+<!-- CSS Files -->
 <style>
     .fw-300 {
         font-weight: 300 !important;
+    }
+
+    .choices__list--single,
+    .choices__inner {
+        padding: 0px !important;
     }
 
     td {
@@ -107,4 +115,5 @@
     .fw-500 {
         font-weight: 500 !important;
     }
+
 </style>

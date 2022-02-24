@@ -16,6 +16,15 @@
                     <div class="card-body">
                         <div class="row pt-3 px-3" id="show">
                             <div class="col-12">
+                                <span class="form-group bmd-form-group email-error ">
+                                    @if ($errors->any())
+                                        @foreach ($errors->all() as $e)
+                                            <p class="
+                                description text-center text-danger">
+                                                {{ $e }}</p>
+                                        @endforeach
+                                    @endif
+                                </span>
                                 <div class="row">
                                     <div class="col-3">
                                         <h6>NIDN</h6>
@@ -95,89 +104,95 @@
                         </div>
                         <div class="row pt-3 px-3" id="edit">
                             <div class="col-12">
-                                <div class="row align-items-center">
-                                    <div class="col-3">
-                                        <h6>NIDN</h6>
-                                    </div>
-                                    <div class="col-9">
-                                        <input type="text" class="form-control pl-2" id="nidn" name="nidn" readonly
-                                            value="{{ str_pad($dosen->nidn, 10, '0', STR_PAD_LEFT) }}">
-                                    </div>
-                                </div>
-                                <div class="row pt-2 align-items-center">
-                                    <div class="col-3">
-                                        <h6>NAMA</h6>
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="card-title">
-                                            <input type="text" class="form-control pl-2" id="nama" name="nama" required
-                                                value="{{ old('nama', $dosen->nama) }}">
+                                <form action="{{ route('dosen.update', str_pad($dosen->nidn, 10, '0', STR_PAD_LEFT)) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="row align-items-center">
+                                        <div class="col-3">
+                                            <h6>NIDN</h6>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" class="form-control pl-2" id="nidn" name="nidn"
+                                                value="{{ str_pad($dosen->nidn, 10, '0', STR_PAD_LEFT) }}">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row pt-2 align-items-center">
-                                    <div class="col-3">
-                                        <h6>Jabatan</h6>
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="card-title">
-                                            <select class="form-control selectpicker" data-style="btn btn-link"
-                                                id="jabatan_id" name="jabatan_id" data-size="8" required>
-                                                @foreach ($jabatans as $jbt)
-                                                    <option value="{{ $jbt->id }}"
-                                                        {{ $dosen->jabatan_id == $jbt->id ? 'Selected' : '' }}>
-                                                        {{ $jbt->nama_jabatan }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                    <div class="row pt-2 align-items-center">
+                                        <div class="col-3">
+                                            <h6>NAMA</h6>
+                                        </div>
+                                        <div class="col-9">
+                                            <div class="card-title">
+                                                <input type="text" class="form-control pl-2" id="nama" name="nama" required
+                                                    value="{{ old('nama', $dosen->nama) }}">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row pt-2 align-items-center">
-                                    <div class="col-3">
-                                        <h6>Program Studi</h6>
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="card-title">
-                                            <select class="form-control selectpicker" data-style="btn btn-link"
-                                                id="prodi_id" name="prodi_id" data-size="8" required>
-                                                @foreach ($prodis as $pro)
-                                                    <option value="{{ $pro->id }}"
-                                                        {{ $dosen->prodi_id == $pro->id ? 'Selected' : '' }}>
-                                                        {{ $pro->nama_prodi }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                    <div class="row pt-2 align-items-center">
+                                        <div class="col-3">
+                                            <h6>Jabatan</h6>
+                                        </div>
+                                        <div class="col-9">
+                                            <div class="card-title">
+                                                <select class="form-control selectpicker" data-style="btn btn-link"
+                                                    id="jabatan_id" name="jabatan_id" data-size="8" required>
+                                                    @foreach ($jabatans as $jbt)
+                                                        <option value="{{ $jbt->id }}"
+                                                            {{ $dosen->jabatan_id == $jbt->id ? 'Selected' : '' }}>
+                                                            {{ $jbt->nama_jabatan }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row pt-2 align-items-center">
-                                    <div class="col-3">
-                                        <h6>Email</h6>
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="card-title">
-                                            <input type="email" class="form-control pl-2" id="email" name="email" required
-                                                value="{{ old('email', $dosen->email) }}">
+                                    <div class="row pt-2 align-items-center">
+                                        <div class="col-3">
+                                            <h6>Program Studi</h6>
+                                        </div>
+                                        <div class="col-9">
+                                            <div class="card-title">
+                                                <select class="form-control selectpicker" data-style="btn btn-link"
+                                                    id="prodi_id" name="prodi_id" data-size="8" required>
+                                                    @foreach ($prodis as $pro)
+                                                        <option value="{{ $pro->id }}"
+                                                            {{ $dosen->prodi_id == $pro->id ? 'Selected' : '' }}>
+                                                            {{ $pro->nama_prodi }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row pt-2 align-items-center">
-                                    <div class="col-3">
-                                        <h6>Hp</h6>
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="card-title">
-                                            <input type="number" class="form-control pl-2" id="handphone" name="handphone"
-                                                required value="{{ old('handphone', $dosen->handphone) }}">
+                                    <div class="row pt-2 align-items-center">
+                                        <div class="col-3">
+                                            <h6>Email</h6>
+                                        </div>
+                                        <div class="col-9">
+                                            <div class="card-title">
+                                                <input type="email" class="form-control pl-2" id="email" name="email"
+                                                    required value="{{ old('email', $dosen->email) }}">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-footer pt-3">
-                                    <button class="btn btn-secondary btn-sm" onclick="changePanelToEdit()">Batal</button>
-                                    <a class="btn btn-warning btn-sm"
-                                        href="{{ route('dosen.update', str_pad($dosen->nidn, 10, '0', STR_PAD_LEFT)) }}">Update</a>
-                                </div>
+                                    <div class="row pt-2 align-items-center">
+                                        <div class="col-3">
+                                            <h6>Hp</h6>
+                                        </div>
+                                        <div class="col-9">
+                                            <div class="card-title">
+                                                <input type="number" class="form-control pl-2" id="handphone"
+                                                    name="handphone" required
+                                                    value="{{ old('handphone', $dosen->handphone) }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer pt-3">
+                                        <button class="btn btn-secondary btn-sm"
+                                            onclick="changePanelToEdit()">Batal</button>
+                                        <button type="submit" class="btn btn-rose btn-sm">Update</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

@@ -14,7 +14,7 @@
                                 <h4 class="fw-400">Data Program Pendidikan</h4>
                             </div>
                             <div class="col-6 text-right">
-                                <button type="button" class="btn btn-sm btn-rose mt-0" data-toggle="modal"
+                                <button type="button" class="btn btn-sm btn-secondary text-rose mt-0" data-toggle="modal"
                                     data-target="#addProdi">
                                     <span class="material-icons">add</span> Prodi Baru
                                 </button>
@@ -115,7 +115,7 @@
                                 <h4 class="fw-400">Data Fakultas</h4>
                             </div>
                             <div class="col-md-6 text-right">
-                                <button type="button" class="btn btn-sm btn-rose mt-0" data-toggle="modal"
+                                <button type="button" class="btn btn-sm btn-secondary text-rose mt-0" data-toggle="modal"
                                     data-target="#addFakultas">
                                     <span class="material-icons">add</span> Fakultas Baru
                                 </button>

@@ -49,6 +49,7 @@
     {{-- <script src="{{ asset('/material/demo/jquery.sharrre.js') }}"></script> --}}
     {{-- <script src="{{ asset('/material/demo/tour.js') }}"></script> --}}
     <script src="https://cdn.ckeditor.com/ckeditor5/19.1.1/classic/ckeditor.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js "></script>
 
     <script>
         $(document).ready(function() {

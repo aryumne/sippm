@@ -8,13 +8,11 @@
                 </button>
             </div>
             <a class="navbar-brand" href="
-              @if (Auth::user()->role_id == 1)
-                    {{ route('admin.dashboard') }}
+              @if (Auth::user()->role_id == 1) {{ route('admin.dashboard') }}
                 @elseif (Auth::user()->role_id == 2)
                     {{ route('pengusul.dashboard') }}
                 @elseif (Auth::user()->role_id == 3)
-                    {{ route('reviewer.dashboard') }}
-                    @endif
+                    {{ route('reviewer.dashboard') }} @endif
             ">{{ Auth::user()->role->nama_role }}</a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
@@ -40,8 +38,9 @@
                         </p>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                        <a class="dropdown-item" href="#">Profile</a>
-                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('editProfile') }}">Profile</a>
+                        <div class=" dropdown-divider">
+                        </div>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <a class="dropdown-item" id="logout-btn" href="{{ route('logout') }}"
