@@ -25,14 +25,14 @@
                             <!--        Here you can write extra buttons/actions for the toolbar              -->
                         </div>
                         <div class="material-datatables">
-                            <table id="datatables-akhir" class="table table-striped table-no-bordered table-hover"
+                            <table id="datatables-publikasi" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>Judul Proposal</th>
                                         <th>Pengusul</th>
-                                        <th>Judul Jurnal</th>
-                                        <th>Nama Artikel</th>
+                                        <th>Judul Artikel</th>
+                                        <th>Nama Jurnal</th>
                                         <th>Jenis</th>
                                         <th>File</th>
                                         <th class="disabled-sorting text-right">Actions</th>
@@ -42,8 +42,8 @@
                                     <tr>
                                         <th>Judul Proposal</th>
                                         <th>Pengusul</th>
-                                        <th>Judul Jurnal</th>
-                                        <th>Nama Artikel</th>
+                                        <th>Judul Artikel</th>
+                                        <th>Nama Jurnal</th>
                                         <th>Jenis</th>
                                         <th>File</th>
                                         <th class="text-right">Actions</th>
@@ -61,8 +61,8 @@
                                                     @endif
                                                 @endforeach
                                             </td>
-                                            <td>{{ $publik->judul_jurnal }}</td>
-                                            <td>{{ $publik->nama_artikel }}</td>
+                                            <td>{{ $publik->judul_artikel }}</td>
+                                            <td>{{ $publik->nama_jurnal }}</td>
                                             <td>{{ $publik->jenis_jurnal->jurnal }}</td>
                                             <td><a href="{{ asset('storage/' . $publik->path_jurnal) }}" target="_blank"
                                                     class="badge badge-success">{{ substr($publik->path_jurnal, 9) }}</a>
@@ -284,7 +284,7 @@
                                 style="display: block;">{{ $message }}</span>
                         @enderror
                         <div class="form-group">
-                            <label for="judul" class="bmd-label-floating">Judul Jurnal</label>
+                            <label for="judul" class="bmd-label-floating">Judul Artikel</label>
                             <input type="text" class="form-control" id="judul" name="judul" value="{{ old('judul') }}"
                                 required>
                         </div>
@@ -293,28 +293,12 @@
                                 style="display: block;">{{ $message }}</span>
                         @enderror
 
-                        @if (Auth::user()->role_id == 1)
-                            <div class="form-group mt-3">
-                                <label for="judul" class="bmd-label-floating">Tanggal Upload</label>
-                                <input type="text" class="form-control datepicker" id="tanggal_upload" name="tanggal_upload"
-                                    placeholder="Tanggal Pengusulan" value="{{ now()->toDateString('Y-m-d') }}"
-                                    value="{{ old('tanggal_upload') }}" required>
-                            </div>
-                            @error('tanggal_upload')
-                                <span id="category_id-error" class="error text-danger" for="input-id"
-                                    style="display: block;">{{ $message }}</span>
-                            @enderror
-                        @endif
                         <!-- Dynamic Form Js -->
                         <div class="form-group" id="dynamic_form">
                             <div class="input-group baru-data">
-                                <label for="nama" class="bmd-label-floating">Nama Artikel</label>
+                                <label for="nama" class="bmd-label-floating">Nama Jurnal</label>
                                 <input type="text" class="form-control" id="nama" name="nama" value="{{ old('nama') }}"
                                     required>
-                                <!-- <span class="input-group-btn">
-                                                                            <button type="button" class="btn btn-success btn-tambah"><i class="fa fa-plus"></i></button>
-                                                                            <button type="button" class="btn btn-danger btn-hapus" style="display:none;"><i class="fa fa-times"></i></button>
-                                                                        </span> -->
                             </div>
                         </div>
                         @error('nama')
@@ -337,7 +321,6 @@
                             <span id="category_id-error" class="error text-danger" for="input-id"
                                 style="display: block;">{{ $message }}</span>
                         @enderror
-
                         <div class="form-group form-file-upload form-file-multiple">
                             <input type="file" name="path_publikasi" class="inputFileHidden" required>
                             <div class="input-group">
@@ -349,6 +332,18 @@
                                 </span>
                             </div>
                         </div>
+                        @if (Auth::user()->role_id == 1)
+                            <div class="form-group mt-3">
+                                <label for="judul" class="bmd-label-floating">Tanggal Upload</label>
+                                <input type="text" class="form-control datepicker" id="tanggal_upload" name="tanggal_upload"
+                                    placeholder="Tanggal Pengusulan" value="{{ now()->toDateString('Y-m-d') }}"
+                                    value="{{ old('tanggal_upload') }}" required>
+                            </div>
+                            @error('tanggal_upload')
+                                <span id="category_id-error" class="error text-danger" for="input-id"
+                                    style="display: block;">{{ $message }}</span>
+                            @enderror
+                        @endif
                         @error('path_publikasi')
                             <span id="category_id-error" class="error text-danger" for="input-id"
                                 style="display: block;">{{ $message }}</span>
@@ -367,7 +362,7 @@
 @section('customSCript')
     <script>
         $(document).ready(function() {
-            $('#datatables-akhir').DataTable({
+            $('#datatables-publikasi').DataTable({
                 //pagingType documentation : "https://datatables.net/reference/option/pagingType"
                 "pagingType": "first_last_numbers",
                 "lengthMenu": [
@@ -381,51 +376,17 @@
                 }
             });
 
-            // FileInput
-            $('.form-file-simple .inputFileVisible').click(function() {
-                $(this).siblings('.inputFileHidden').trigger('click');
-            });
-
-            $('.form-file-simple .inputFileHidden').change(function() {
-                var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
-                $(this).siblings('.inputFileVisible').val(filename);
-            });
-
-            $('.form-file-multiple .inputFileVisible, .form-file-multiple .input-group-btn').click(function() {
-                $(this).parent().parent().find('.inputFileHidden').trigger('click');
-                $(this).parent().parent().addClass('is-focused');
-            });
-
-            $('.form-file-multiple .inputFileHidden').change(function() {
-                var names = '';
-                for (var i = 0; i < $(this).get(0).files.length; ++i) {
-                    if (i < $(this).get(0).files.length - 1) {
-                        names += $(this).get(0).files.item(i).name + ',';
-                    } else {
-                        names += $(this).get(0).files.item(i).name;
-                    }
-                }
-                $(this).siblings('.input-group').find('.inputFileVisible').val(names);
-            });
-
-            $('.form-file-multiple .btn').on('focus', function() {
-                $(this).parent().siblings().trigger('focus');
-            });
-
-            $('.form-file-multiple .btn').on('focusout', function() {
-                $(this).parent().siblings().trigger('focusout');
-            });
         });
 
         function addForm() {
             var addrow = '<div class="input-group baru-data">\
-                                                                        <label for="nama" class="bmd-label-floating">Nama Artikel</label>\
-                                                                        <input type="text" class="form-control" id="nama[]" name="nama" required>\
-                                                                        <span class="input-group-btn">\
-                                                                            <button type="button" class="btn btn-success btn-tambah"><i class="fa fa-plus"></i></button>\
-                                                                            <button type="button" class="btn btn-danger btn-hapus" style="display:none;"><i class="fa fa-times"></i></button>\
-                                                                        </span>\
-                                                                    </div>'
+                                                                                                    <label for="nama" class="bmd-label-floating">Nama Artikel</label>\
+                                                                                                    <input type="text" class="form-control" id="nama[]" name="nama" required>\
+                                                                                                    <span class="input-group-btn">\
+                                                                                                        <button type="button" class="btn btn-success btn-tambah"><i class="fa fa-plus"></i></button>\
+                                                                                                        <button type="button" class="btn btn-danger btn-hapus" style="display:none;"><i class="fa fa-times"></i></button>\
+                                                                                                    </span>\
+                                                                                                </div>'
             $("#dynamic_form").append(addrow);
         }
 

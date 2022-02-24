@@ -9,7 +9,7 @@ class Publikasi extends Model
 {
     use HasFactory;
     // protected $guarded = ['id'];
-    protected $fillable = ['judul_jurnal', 'nama_artikel', 'path_jurnal', 'user_id', 'proposal_id', 'tanggal_upload', 'jenis_jurnal_id'];
+    protected $fillable = ['judul_artikel', 'nama_jurnal', 'path_jurnal', 'user_id', 'proposal_id', 'tanggal_upload', 'jenis_jurnal_id'];
 
     public function proposal()
     {

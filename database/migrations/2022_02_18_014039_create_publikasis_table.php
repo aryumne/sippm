@@ -15,8 +15,8 @@ class CreatePublikasisTable extends Migration
     {
         Schema::create('publikasis', function (Blueprint $table) {
             $table->id();
-            $table->text('judul_jurnal');
-            $table->text('nama_artikel');
+            $table->text('judul_artikel');
+            $table->text('nama_jurnal');
             $table->text('path_jurnal');
             $table->date('tanggal_upload');
             $table->foreignId('jenis_jurnal_id');
