@@ -10,7 +10,7 @@
                         </div>
                         <div class="row card-title">
                             <div class="col-6">
-                                <h4 class="fw-400">Daftar Pengabdian Kepada Masyarakat (PKM)</h4>
+                                <h4 class="fw-400">Daftar Pengabdian Kepada Masyarakat (PkM)</h4>
                             </div>
                             <div class="col-6 text-right">
                                 <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
@@ -22,7 +22,7 @@
                     </div>
                     <div class="card-body">
                         <div class="material-datatables">
-                            <table id="datatables-akhir" class="table table-striped table-no-bordered table-hover"
+                            <table id="datatables-pkm" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
@@ -306,6 +306,19 @@
 @section('customSCript')
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#datatables-pkm').DataTable({
+                //pagingType documentation : "https://datatables.net/reference/option/pagingType"
+                "pagingType": "first_last_numbers",
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search records",
+                }
+            });
 
             // Format mata uang.
             $('.dana').mask('000.000.000', {

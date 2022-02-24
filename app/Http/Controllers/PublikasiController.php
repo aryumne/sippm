@@ -88,8 +88,8 @@ class PublikasiController extends Controller
 
         Publikasi::create([
             'proposal_id' => $request->proposal_id,
-            'judul_jurnal' => $request->judul,
-            'nama_artikel' => $request->nama,
+            'judul_artikel' => $request->judul,
+            'nama_jurnal' => $request->nama,
             'jenis_jurnal_id' => $request->jenis,
             'path_jurnal' => $path_publikasi,
             'tanggal_upload' => $date,
@@ -144,8 +144,8 @@ class PublikasiController extends Controller
 
         publikasi::findOrFail($id)->update([
             'proposal_id' => $request->proposal_id,
-            'judul_jurnal' => $request->judul,
-            'nama_artikel' => $request->nama,
+            'judul_artikel' => $request->judul,
+            'nama_jurnal' => $request->nama,
             'jenis_jurnal_id' => $request->jenis,
             'path_jurnal' => $path_publikasi,
             'tanggal_upload' => $date,

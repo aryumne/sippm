@@ -25,7 +25,7 @@
                             <!--        Here you can write extra buttons/actions for the toolbar              -->
                         </div>
                         <div class="material-datatables">
-                            <table id="datatables-akhir" class="table table-striped table-no-bordered table-hover"
+                            <table id="datatables-buku" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
@@ -314,4 +314,25 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('customSCript')
+    <script>
+        $(document).ready(function() {
+            //datatables
+            $('#datatables-buku').DataTable({
+                //pagingType documentation : "https://datatables.net/reference/option/pagingType"
+                "pagingType": "first_last_numbers",
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search records",
+                }
+            });
+        });
+    </script>
 @endsection
