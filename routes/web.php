@@ -3,11 +3,13 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\HkiController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LapAkhirController;
 use App\Http\Controllers\LapKemajuanController;
 use App\Http\Controllers\PengusulController;
+use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\ReviewerController;
@@ -45,6 +47,10 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
     Route::resource('/kegiatan', KegiatanController::class)->except(['index', 'show', 'edit', 'destroy']);
     Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
 });
+Route::group(['prefix' => 'profile', 'middleware' => ['auth', 'verified', 'prevent-back-history']], function () {
+    Route::resource('/user', UserController::class);
+    Route::get('/editProfile/{id}', [DosenController::class, 'edit'])->name('editProfile');
+});
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin', 'prevent-back-history']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -65,6 +71,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     //Dosen
     Route::resource('/dosen', DosenController::class)->except(['create', 'edit', 'destroy']);
     Route::post('/import', [DosenController::class, 'import'])->name('importDosen');
+    //Prodi
+    Route::resource('/prodi', ProdiController::class)->only(['store', 'update']);
+    Route::resource('/faculty', FacultyController::class)->only(['index', 'store', 'update']);
 });
 
 Route::group(['prefix' => 'pengusul', 'middleware' => ['auth', 'verified', 'isPengusul', 'prevent-back-history']], function () {
@@ -90,9 +99,7 @@ Route::group(['prefix' => 'reviewer', 'middleware' => ['auth', 'verified', 'isRe
 });
 
 
-Route::resource('/user', UserController::class);
-Route::resource('/dosen', DosenController::class)->except(['index', 'edit']);
-Route::get('/editProfile/{id}', [DosenController::class, 'edit'])->name('editProfile');
+
 
 
 

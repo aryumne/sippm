@@ -2,81 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Prodi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProdiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama_prodi' => ['required', 'unique:prodis'],
+            'faculty_id' => ['required'],
+        ],
+            [
+                'nama_prodi.unique' => 'Prodi ini sudah ada',
+            ], );
+
+        if ($validator->fails()) {
+            Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
+            return back()->withErrors($validator)->withInput();
+        }
+
+        Prodi::create($request->all());
+        Alert::success('Berhasil', 'Prodi baru berhasil ditambahkan');
+        return back();
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(Request $request, Prodi $prodi)
     {
-        //
+        if ($prodi->nama_prodi != $request->nama_prodi) {
+            $validator = Validator::make($request->all(), [
+                'nama_prodi' => ['required', 'unique:prodis'],
+                'faculty_id' => ['required'],
+            ],
+                [
+                    'nama_prodi.unique' => 'Prodi ini sudah ada',
+                ], );
+
+            if ($validator->fails()) {
+                Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
+                return back()->withErrors($validator)->withInput();
+            }
+            $prodi->nama_prodi = $request->nama_prodi;
+        }
+        $prodi->save();
+        Alert::success('Berhasil', 'Prodi berhasil diubah');
+        return back();
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
