@@ -22,7 +22,7 @@
                     </div>
                     <div class="card-body">
                         <div class="material-datatables">
-                            <table id="datatables-akhir" class="table table-striped table-no-bordered table-hover"
+                            <table id="datatables-penelitian" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
@@ -306,7 +306,19 @@
 @section('customSCript')
     <script type="text/javascript">
         $(document).ready(function() {
-
+            $('#datatables-penelitian').DataTable({
+                //pagingType documentation : "https://datatables.net/reference/option/pagingType"
+                "pagingType": "first_last_numbers",
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search records",
+                }
+            });
             // Format mata uang.
             $('.dana').mask('000.000.000', {
                 reverse: true
