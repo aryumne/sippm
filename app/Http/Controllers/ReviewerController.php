@@ -6,6 +6,7 @@ use App\Models\Audit;
 use App\Models\HasilAudit;
 use App\Models\HasilMonev;
 use App\Models\Monev;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -17,7 +18,11 @@ class ReviewerController extends Controller
     public function index()
     {
         $title = " Dashboard Reviewer";
-        return view('reviewer.dashboard-reviewer', ['title' => $title]);
+        $notifications = Schedule::whereIn('jadwal_id', [4, 5])->get();
+        return view('reviewer.dashboard-reviewer', [
+            'title' => $title,
+            'notifications' => $notifications,
+        ]);
     }
 
     public function auditProposals()
