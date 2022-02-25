@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jabatan;
 use Illuminate\Http\Request;
 
 class JabatanController extends Controller
@@ -13,7 +14,12 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Daftar Jabatan";
+        $jabatans = Jabatan::all();
+        return view('master.jabatan', [
+            'title' => $title,
+            'jabatans' => $jabatans,
+        ]);
     }
 
     /**
