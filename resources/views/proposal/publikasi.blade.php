@@ -194,6 +194,9 @@
                                                                         </button>
                                                                     </span>
                                                                 </div>
+                                                                <small class="form-text text-muted text-left"><cite>File
+                                                                        yang diupload Maximal 2mb dan file
+                                                                        harus berformat .pdf</cite></small>
                                                             </div>
                                                             @error('path_publikasi')
                                                             <span id="category_id-error" class="error text-danger"
@@ -322,9 +325,11 @@
                                 </button>
                             </span>
                         </div>
+                        <small class="form-text text-muted text-left"><cite>File yang diupload Maximal 2mb dan file
+                                harus berformat .pdf</cite></small>
                     </div>
                     @if (Auth::user()->role_id == 1)
-                    <div class="form-group mt-3">
+                    <div class="form-group mt-3 pt-2">
                         <label for="judul" class="bmd-label-floating">Tanggal Upload</label>
                         <input type="text" class="form-control datepicker" id="tanggal_upload" name="tanggal_upload"
                             placeholder="Tanggal Pengusulan" value="{{ now()->toDateString('Y-m-d') }}"

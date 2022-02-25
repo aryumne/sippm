@@ -15,6 +15,7 @@ class AuthenticatedSessionController extends Controller
      *
      * @return \Illuminate\View\View
      */
+
     public function create()
     {
         return view('auth.login');
@@ -43,7 +44,6 @@ class AuthenticatedSessionController extends Controller
             Alert::toast("You don't have any access.!", 'error');
             return redirect()->route('login');
         }
-
     }
 
     /**

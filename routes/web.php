@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
-    return redirect()->intended('login');
+    return view('auth.index');
 });
 
 //ROUTE KHUSUS ADMIN

@@ -172,14 +172,14 @@
                     </div>
                 </li>
                 <li
-                    class="nav-item {{ request()->routeIs('dosen.*') || request()->routeIs('faculty.*') || request()->routeIs('prodi.*')? 'active': '' }}">
+                    class="nav-item {{ request()->routeIs('dosen.*') || request()->routeIs('faculty.*') || request()->routeIs('prodi.*') || request()->routeIs('jabatan.*')? 'active': '' }}">
                     <a class="nav-link" data-toggle="collapse" href="#master">
                         <i class="material-icons">storage</i>
                         <p> Data Master
                             <b class="caret"></b>
                         </p>
                     </a>
-                    <div class="collapse {{ request()->routeIs('dosen.*') || request()->routeIs('faculty.*') || request()->routeIs('prodi.*')? 'show': '' }}"
+                    <div class="collapse {{ request()->routeIs('dosen.*') || request()->routeIs('faculty.*') || request()->routeIs('prodi.*') || request()->routeIs('jabatan.*')? 'show': '' }}"
                         id="master">
                         <ul class="nav">
                             <li class="nav-item {{ request()->routeIs('dosen.*') ? 'active' : '' }}">
@@ -195,12 +195,12 @@
                                     <span class="sidebar-normal">Fakultas & Prodi </span>
                                 </a>
                             </li>
-                            {{-- <li class="nav-item {{ request()->routeIs('jabatan.*') ? 'active' : '' }}">
+                            <li class="nav-item {{ request()->routeIs('jabatan.*') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('jabatan.index') }}">
                                     <span class="sidebar-mini"> JB </span>
                                     <span class="sidebar-normal">Jabatan </span>
                                 </a>
-                            </li> --}}
+                            </li>
                         </ul>
                     </div>
                 </li>

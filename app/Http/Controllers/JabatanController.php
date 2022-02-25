@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class JabatanController extends Controller
 {
@@ -40,7 +42,18 @@ class JabatanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama_jabatan' => ['required', 'unique:jabatans', 'string'],
+        ]);
+        if ($validator->fails()) {
+            Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
+            return back()->withErrors($validator)->withInput();
+        }
+        Jabatan::create([
+            'nama_jabatan' => $request->nama_jabatan,
+        ]);
+        Alert::success('Berhasil', 'Data Jabatan baru telah ditambahkan');
+        return back();
     }
 
     /**
@@ -85,6 +98,8 @@ class JabatanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Jabatan::findOrFail($id)->delete();
+        Alert::success('Data Jabatan berhasil dihapus', 'success');
+        return back();
     }
 }

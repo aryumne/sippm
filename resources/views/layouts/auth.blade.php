@@ -7,7 +7,6 @@
         .error {
             margin-left: 54px;
         }
-
     </style>
 </head>
 
@@ -20,6 +19,9 @@
     <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
         <div class="container">
             <div class="navbar-wrapper">
+                <div class="photo">
+                    <img src="{{ asset('img/logo.png') }}" height="50">
+                </div>
                 <a class="navbar-brand" style="font-weight: 400;" href="{{ route('login') }}">SIPPM
                     UNIPA</a>
             </div>
@@ -33,13 +35,18 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a href="{{ route('login') }}" class="nav-link">
+                        <a href="/" class="nav-link">
                             <i class="material-icons">dashboard</i> Beranda
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="https://lppm.unipa.ac.id" class="nav-link">
                             <i class="material-icons">explore</i> Tentang LPPM
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('login') }}" class="nav-link">
+                            <i class="material-icons">fingerprint</i> Login
                         </a>
                     </li>
                     <li class="nav-item active">

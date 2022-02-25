@@ -17,6 +17,7 @@ class CreateBukusTable extends Migration
             $table->id();
             $table->text('judul_buku');
             $table->string('penerbit');
+            $table->string('isbn')->nullable();
             $table->text('path_buku');
             $table->date('tanggal_upload');
             $table->foreignId('proposal_id');
