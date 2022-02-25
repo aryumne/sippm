@@ -70,8 +70,10 @@ col-12 @endif
                                                         @foreach ($proposal->dosen as $agt)
                                                             @if ($agt->pivot->isLeader == true)
                                                                 @if ($agt->pivot->nidn == Auth::user()->nidn)
-                                                                    <a href="{{ route('usulan.edit', $proposal->id) }}"
-                                                                        class="card-link text-rose">Edit Berkas</a>
+                                                                    @can('pengusulan_proposal')
+                                                                        <a href="{{ route('usulan.edit', $proposal->id) }}"
+                                                                            class="card-link text-rose">Edit Berkas</a>
+                                                                    @endcan
                                                                 @endif
                                                             @endif
                                                         @endforeach

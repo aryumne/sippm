@@ -201,6 +201,14 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="card-footer">
+                                                                <button type="button" class="btn btn-secondary text-rose"
+                                                                    data-dismiss="modal">Kembali</button>
+                                                                @can('penilaian_proposal')
+                                                                    <a href="{{ route('reviewer.audit.edit', $ua->hasil->id) }}"
+                                                                        class="btn btn-sm btn-warning">Edit</a>
+                                                                @endcan
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
