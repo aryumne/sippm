@@ -81,10 +81,14 @@ Route::group(['prefix' => 'reviewer', 'middleware' => ['auth', 'verified', 'isRe
     Route::get('/audit', [ReviewerController::class, 'auditProposals'])->name('reviewer.audit.proposals');
     Route::get('/formAudit/{id}', [ReviewerController::class, 'formAudit'])->name('reviewer.audit.form');
     Route::post('/storeAudit/{id}', [ReviewerController::class, 'storeAudit'])->name('reviewer.audit.store');
+    Route::get('/editHasilAudit/{id}', [ReviewerController::class, 'editFormAudit'])->name('reviewer.audit.edit');
+    Route::put('/updateAudit/{id}', [ReviewerController::class, 'updateAudit'])->name('reviewer.audit.update');
     //Monev Laporan Kemajuan
     Route::get('/monev', [ReviewerController::class, 'monevKemajuan'])->name('reviewer.monev.kemajuan');
     Route::get('/formMonev/{id}', [ReviewerController::class, 'formMonev'])->name('reviewer.monev.form');
     Route::post('/storeMonev/{id}', [ReviewerController::class, 'storeMonev'])->name('reviewer.monev.store');
+    Route::get('/editHasilMonev/{id}', [ReviewerController::class, 'editFormMonev'])->name('reviewer.monev.edit');
+    Route::put('/updateMonev/{id}', [ReviewerController::class, 'updateMonev'])->name('reviewer.monev.update');
 });
 
 //ROUTE KHUSUS ADMIN DAN PENGUSUL

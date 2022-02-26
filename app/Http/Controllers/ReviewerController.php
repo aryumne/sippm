@@ -64,6 +64,21 @@ class ReviewerController extends Controller
         ]);
     }
 
+    public function editFormAudit($id)
+    {
+        if (!Gate::allows('penilaian_proposal')) {
+            abort(403);
+        }
+
+        $title = "Edit Penilaian Proposal";
+        //ambil data proposal dari data audit berdasarkan id audit
+        $hasilAudit = HasilAudit::find($id);
+        return view('reviewer.editAudit', [
+            'title' => $title,
+            'hasilAudit' => $hasilAudit,
+        ]);
+    }
+
     public function storeAudit(Request $request, $id)
     {
         if (!Gate::allows('penilaian_proposal')) {
@@ -100,8 +115,45 @@ class ReviewerController extends Controller
             'audit_id' => $id,
         ]);
 
+        Alert::success('Tersimpan', 'Data penilaian proposal telah diubah');
+        return redirect()->route('reviewer.audit.proposals');
+
+    }
+
+    public function updateAudit(Request $request, $id)
+    {
+        if (!Gate::allows('penilaian_proposal')) {
+            abort(403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'perumusan' => 'required',
+            'peluang' => 'required',
+            'metode' => 'required',
+            'tinjauan' => 'required',
+            'kelayakan' => 'required',
+            'total' => 'required',
+            'komentar' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast('Gagal menyimpan, cek kembali form penilaian', 'error');
+            return back()->withErrors($validator)->withInput();
+        }
+
+        HasilAudit::findOrFail($id)->update([
+            'perumusan' => $request->perumusan,
+            'peluang' => $request->peluang,
+            'metode' => $request->metode,
+            'tinjauan' => $request->tinjauan,
+            'kelayakan' => $request->kelayakan,
+            'total' => $request->total,
+            'komentar' => $request->komentar,
+        ]);
+
         Alert::success('Tersimpan', 'Data penilaian proposal telah disimpan');
         return redirect()->route('reviewer.audit.proposals');
+
     }
 
     public function monevKemajuan()
@@ -128,6 +180,20 @@ class ReviewerController extends Controller
             'title' => $title,
             'id' => $id,
             'monev' => $monev,
+        ]);
+    }
+
+    public function editFormMonev($id)
+    {
+        if (!Gate::allows('monev_laporan_kemajuan')) {
+            abort(403);
+        }
+
+        $title = "Edit MONEV Laporan Kemajuan ";
+        $hasilMonev = HasilMonev::find($id);
+        return view('reviewer.editMonev', [
+            'title' => $title,
+            'hasilMonev' => $hasilMonev,
         ]);
     }
 
@@ -177,6 +243,48 @@ class ReviewerController extends Controller
         ]);
 
         Alert::success('Tersimpan', 'Data monev laporan telah disimpan');
+        return redirect()->route('reviewer.monev.kemajuan');
+
+    }
+
+    public function updateMonev(Request $request, $id)
+    {
+        if (!Gate::allows('monev_laporan_kemajuan')) {
+            abort(403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'luaran_wajib' => 'required',
+            'komentar_luaran_wajib' => 'required',
+            'luaran_tambahan' => 'required',
+            'komentar_luaran_tambahan' => 'required',
+            'kesesuaian' => 'required',
+            'komentar_kesesuaian' => 'required',
+            'total' => 'required',
+            'komentar' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast('Gagal menyimpan, cek kembali form penilaian', 'error');
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $luaran_wajib['nilai'] = $request->luaran_wajib;
+        $luaran_wajib['komentar'] = $request->komentar_luaran_wajib;
+        $luaran_tambahan['nilai'] = $request->luaran_tambahan;
+        $luaran_tambahan['komentar'] = $request->komentar_luaran_tambahan;
+        $kesesuaian['nilai'] = $request->kesesuaian;
+        $kesesuaian['komentar'] = $request->komentar_kesesuaian;
+
+        HasilMonev::findOrFail($id)->update([
+            'luaran_wajib' => $luaran_wajib,
+            'luaran_tambahan' => $luaran_tambahan,
+            'kesesuaian' => $kesesuaian,
+            'total' => $request->total,
+            'komentar' => $request->komentar,
+        ]);
+
+        Alert::success('Tersimpan', 'Data monev laporan telah diubah');
         return redirect()->route('reviewer.monev.kemajuan');
 
     }

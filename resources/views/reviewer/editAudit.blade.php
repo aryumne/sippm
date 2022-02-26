@@ -17,10 +17,10 @@
                                         Judul Penelitian
                                     </div>
                                     <div class="col-8">
-                                        <p class="card-text">{{ $proposal->proposal->judul }}</p>
+                                        <p class="card-text">{{ $hasilAudit->audit->proposal->judul }}</p>
                                     </div>
                                 </div>
-                                @foreach ($proposal->proposal->dosen as $dsn)
+                                @foreach ($hasilAudit->audit->proposal->dosen as $dsn)
                                     @if ($dsn->pivot->isLeader == true)
                                         <div class="row py-1">
                                             <div class="col-4 fw-400">
@@ -50,8 +50,9 @@
                         {{-- form --}}
                         <div class="row pt-3 px-1">
                             <div class="col-12">
-                                <form action="{{ route('reviewer.audit.store', $id) }}" method="POST">
+                                <form action="{{ route('reviewer.audit.update', $hasilAudit->id) }}" method="POST">
                                     @csrf
+                                    @method('PUT')
                                     <div class="row">
                                         <div class="col-lg-8 d-none d-md-none d-lg-block">
                                             <h6>KRITERIA PENILAIAN</h6>
@@ -90,13 +91,24 @@
                                                     <h6 class="d-sm-block d-md-block d-lg-none">SKOR</h6>
                                                     <div class="form-group ">
                                                         <select required class="form-control text-center" id="point1">
-                                                            <option disabled selected></option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
+                                                            <option value="1"
+                                                                {{ $hasilAudit->perumusan / 25 == 1 ? 'Selected' : '' }}>
+                                                                1</option>
+                                                            <option value="2"
+                                                                {{ $hasilAudit->perumusan / 25 == 2 ? 'Selected' : '' }}>
+                                                                2</option>
+                                                            <option value="3"
+                                                                {{ $hasilAudit->perumusan / 25 == 3 ? 'Selected' : '' }}>
+                                                                3</option>
+                                                            <option value="5"
+                                                                {{ $hasilAudit->perumusan / 25 == 5 ? 'Selected' : '' }}>
+                                                                5</option>
+                                                            <option value="6"
+                                                                {{ $hasilAudit->perumusan / 25 == 6 ? 'Selected' : '' }}>
+                                                                6</option>
+                                                            <option value="7"
+                                                                {{ $hasilAudit->perumusan / 25 == 7 ? 'Selected' : '' }}>
+                                                                7</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -104,7 +116,9 @@
                                                     <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                     <div class="form-group">
                                                         <input type="number" class="form-control text-center"
-                                                            name="perumusan" value="" id="perumusan" readonly>
+                                                            name="perumusan"
+                                                            value="{{ old('perumusan', $hasilAudit->perumusan) }}"
+                                                            id="perumusan" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,12 +146,24 @@
                                                     <div class="form-group">
                                                         <select required class="form-control text-center" id="point2">
                                                             <option disabled selected></option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
+                                                            <option value="1"
+                                                                {{ $hasilAudit->peluang / 25 == 1 ? 'Selected' : '' }}>1
+                                                            </option>
+                                                            <option value="2"
+                                                                {{ $hasilAudit->peluang / 25 == 2 ? 'Selected' : '' }}>2
+                                                            </option>
+                                                            <option value="3"
+                                                                {{ $hasilAudit->peluang / 25 == 3 ? 'Selected' : '' }}>3
+                                                            </option>
+                                                            <option value="5"
+                                                                {{ $hasilAudit->peluang / 25 == 5 ? 'Selected' : '' }}>5
+                                                            </option>
+                                                            <option value="6"
+                                                                {{ $hasilAudit->peluang / 25 == 6 ? 'Selected' : '' }}>6
+                                                            </option>
+                                                            <option value="7"
+                                                                {{ $hasilAudit->peluang / 25 == 7 ? 'Selected' : '' }}>7
+                                                            </option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -145,7 +171,8 @@
                                                     <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                     <div class="form-group">
                                                         <input type="number" class="form-control text-center" name="peluang"
-                                                            value="" id="peluang" readonly>
+                                                            value="{{ old('peluang', $hasilAudit->peluang) }}"
+                                                            id="peluang" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -171,12 +198,24 @@
                                                     <div class="form-group">
                                                         <select required class="form-control text-center" id="point3">
                                                             <option disabled selected></option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
+                                                            <option value="1"
+                                                                {{ $hasilAudit->metode / 25 == 1 ? 'Selected' : '' }}>
+                                                                1</option>
+                                                            <option value="2"
+                                                                {{ $hasilAudit->metode / 25 == 2 ? 'Selected' : '' }}>
+                                                                2</option>
+                                                            <option value="3"
+                                                                {{ $hasilAudit->metode / 25 == 3 ? 'Selected' : '' }}>
+                                                                3</option>
+                                                            <option value="5"
+                                                                {{ $hasilAudit->metode / 25 == 5 ? 'Selected' : '' }}>
+                                                                5</option>
+                                                            <option value="6"
+                                                                {{ $hasilAudit->metode / 25 == 6 ? 'Selected' : '' }}>
+                                                                6</option>
+                                                            <option value="7"
+                                                                {{ $hasilAudit->metode / 25 == 7 ? 'Selected' : '' }}>
+                                                                7</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -184,7 +223,8 @@
                                                     <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                     <div class="form-group">
                                                         <input type="number" class="form-control text-center" name="metode"
-                                                            value="" id="metode" readonly>
+                                                            value="{{ old('metode', $hasilAudit->metode) }}" id="metode"
+                                                            readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -212,12 +252,24 @@
                                                     <div class="form-group">
                                                         <select required class="form-control text-center" id="point4">
                                                             <option disabled selected></option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
+                                                            <option value="1"
+                                                                {{ $hasilAudit->tinjauan / 15 == 1 ? 'Selected' : '' }}>
+                                                                1</option>
+                                                            <option value="2"
+                                                                {{ $hasilAudit->tinjauan / 15 == 2 ? 'Selected' : '' }}>
+                                                                2</option>
+                                                            <option value="3"
+                                                                {{ $hasilAudit->tinjauan / 15 == 3 ? 'Selected' : '' }}>
+                                                                3</option>
+                                                            <option value="5"
+                                                                {{ $hasilAudit->tinjauan / 15 == 5 ? 'Selected' : '' }}>
+                                                                5</option>
+                                                            <option value="6"
+                                                                {{ $hasilAudit->tinjauan / 15 == 6 ? 'Selected' : '' }}>
+                                                                6</option>
+                                                            <option value="7"
+                                                                {{ $hasilAudit->tinjauan / 15 == 7 ? 'Selected' : '' }}>
+                                                                7</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -225,7 +277,9 @@
                                                     <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                     <div class="form-group">
                                                         <input type="number" class="form-control text-center"
-                                                            name="tinjauan" value="" id="tinjauan" readonly>
+                                                            name="tinjauan"
+                                                            value="{{ old('tinjauan', $hasilAudit->tinjauan) }}"
+                                                            id="tinjauan" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,12 +307,24 @@
                                                     <div class="form-group">
                                                         <select required class="form-control text-center" id="point5">
                                                             <option disabled selected></option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
+                                                            <option value="1"
+                                                                {{ $hasilAudit->kelayakan / 10 == 1 ? 'Selected' : '' }}>
+                                                                1</option>
+                                                            <option value="2"
+                                                                {{ $hasilAudit->kelayakan / 10 == 2 ? 'Selected' : '' }}>
+                                                                2</option>
+                                                            <option value="3"
+                                                                {{ $hasilAudit->kelayakan / 10 == 3 ? 'Selected' : '' }}>
+                                                                3</option>
+                                                            <option value="5"
+                                                                {{ $hasilAudit->kelayakan / 10 == 5 ? 'Selected' : '' }}>
+                                                                5</option>
+                                                            <option value="6"
+                                                                {{ $hasilAudit->kelayakan / 10 == 6 ? 'Selected' : '' }}>
+                                                                6</option>
+                                                            <option value="7"
+                                                                {{ $hasilAudit->kelayakan / 10 == 7 ? 'Selected' : '' }}>
+                                                                7</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -266,7 +332,9 @@
                                                     <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                     <div class="form-group">
                                                         <input type="number" class="form-control text-center"
-                                                            name="kelayakan" value="" id="kelayakan" readonly>
+                                                            name="kelayakan"
+                                                            value="{{ old('kelayakan', $hasilAudit->kelayakan) }}"
+                                                            id="kelayakan" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -279,8 +347,8 @@
                                         </div>
                                         <div class="col-sm 4 col-md-4 col-lg-2">
                                             <div class="form-group">
-                                                <input type="number" class="form-control text-center" name="total" value=""
-                                                    id="total" readonly>
+                                                <input type="number" class="form-control text-center" name="total"
+                                                    value="{{ old('total', $hasilAudit->total) }}" id="total" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -289,13 +357,13 @@
                                             <div class="form-group">
                                                 <label for="exampleFormControlTextarea1">Catatan</label>
                                                 <textarea class="form-control" id="komentar" name="komentar" rows="3"
-                                                    required>{{ old('komentar') }}</textarea>
+                                                    required>{{ old('komentar', $hasilAudit->komentar) }}</textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="{{ route('reviewer.audit.proposals') }}"
-                                            class="btn btn-secondary">Batal</a>
+                                        <a href="{{ route('reviewer.audit.proposals') }}" class="btn btn-secondary"
+                                            data-dismiss="modal">Batal</a>
                                         <button type="submit" class="btn btn-rose">Simpan</button>
                                     </div>
                                 </form>

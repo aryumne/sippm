@@ -69,8 +69,10 @@ col-12 @endif
                                         @foreach ($proposal->dosen as $agt)
                                         @if ($agt->pivot->isLeader == true)
                                         @if ($agt->pivot->nidn == Auth::user()->nidn)
+                                        @can('pengusulan_proposal')
                                         <a href="{{ route('usulan.edit', $proposal->id) }}"
                                             class="card-link text-rose">Edit Berkas</a>
+                                        @endcan
                                         @endif
                                         @endif
                                         @endforeach
@@ -147,15 +149,116 @@ col-12 @endif
                                         </td>
                                     </tr>
                                     @endforeach
-                                </tbody>
-                            </table>
+                                    </h5>
+                                    <h6 class="fw-300">Anggota:</h6>
+                                    <div class="row">
+                                        @foreach ($proposal->dosen as $agt)
+                                        @if ($agt->pivot->isLeader == false)
+                                        <div class="col-md-6">
+                                            <p class="h5">{{ $agt->nama }}</p>
+                                            <p class="card-text" style="margin-top: -15px;">
+                                                {{ str_pad($agt->nidn, 10, '0', STR_PAD_LEFT) }}
+                                            </p>
+                                        </div>
+                                        @endif
+                                        @endforeach
+                                    </div>
                         </div>
-                        @endif
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <a href="{{ asset('storage/' . $proposal->path_proposal) }}" target="_blank"
+                                class="card-link text-rose">Download</a>
+                            @foreach ($proposal->dosen as $agt)
+                            @if ($agt->pivot->isLeader == true)
+                            @if ($agt->pivot->nidn == Auth::user()->nidn)
+                            <a href="{{ route('usulan.edit', $proposal->id) }}" class="card-link text-rose">Edit
+                                Berkas</a>
+                            @endif
+                            @endif
+                            @endforeach
+                        </div>
+                        <div class="col-4 text-right">
+                            <cite class="card-text text-capitalize ">
+                                @if ($proposal->status == 1)
+                                Menunggu
+                                @elseif($proposal->status == 2)
+                                Lanjut
+                                @elseif($proposal->status == 3)
+                                Tidak Lanjut
+                                @endif
+                            </cite>
+                        </div>
                     </div>
                 </div>
             </div>
+            @endforeach
+            @endforeach
+            @elseif(Auth::user()->role_id == 1)
+            <div class="material-datatables">
+                <table id="datatables-usulan" class="table table-striped table-no-bordered table-hover" cellspacing="0"
+                    width="100%" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Judul Proposal</th>
+                            <th>Pengusul</th>
+                            <th>Fakultas</th>
+                            <th>tanggal Upload</th>
+                            <th>Berkas Laporan</th>
+                            <th class="disabled-sorting text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Judul Proposal</th>
+                            <th>Pengusul</th>
+                            <th>Fakultas</th>
+                            <th>tanggal Upload</th>
+                            <th>Berkas Laporan</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach ($usulan as $lap)
+                        <tr>
+                            <td>{{ $lap->judul }}</td>
+                            <td>
+                                @foreach ($lap->dosen as $pvt)
+                                @if ($pvt->pivot->isLeader == true)
+                                {{ $pvt->nama }}
+                                @endif
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($lap->dosen as $pvt)
+                                @if ($pvt->pivot->isLeader == true)
+                                {{ $pvt->prodi->faculty->nama_faculty }}
+                                @endif
+                                @endforeach
+                            </td>
+                            <td>{{ $lap->tanggal_usul }}</td>
+                            <td><a href="{{ asset('storage/' . $lap->path_proposal) }}" target="_blank"
+                                    class="badge badge-success">{{ substr($lap->path_proposal, 9) }}</a>
+                            </td>
+                            <td class="text-right">
+                                <a href="{{ route('usulan.show', $lap->id) }}"
+                                    class="btn btn-link btn-info btn-just-icon like"><i
+                                        class="material-icons">read_more</i></a>
+                                <a href="{{ route('usulan.edit', $lap->id) }}"
+                                    class="btn btn-link btn-warning btn-just-icon edit"><i
+                                        class="material-icons">mode_edit</i></a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @endif
         </div>
     </div>
+</div>
+</div>
+</div>
 </div>
 @endsection
 

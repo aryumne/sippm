@@ -102,13 +102,13 @@ class ProposalController extends Controller
 
         //query cek pengusul sudah mengusulkan tahun ini atau belum
         if (Auth::user()->role_id == 2) {
-            $getnidnPengusul = Anggota::where('nidn', $nidn_pengusul)->whereYear('created_at', $getYear)->where('isLeader', 1)->get();
+            $getuserIdPengusul = Proposal::where('user_id', $user_id)->whereYear('created_at', $getYear)->get();
             //query cek anggota 1
             $getAgt1 = Anggota::where('nidn', $agt[0])->whereYear('created_at', $getYear)->get();
             //query cek anggota 2
             $getAgt2 = Anggota::where('nidn', $agt[1])->whereYear('created_at', $getYear)->get();
 
-            if (count($getnidnPengusul) >= 1) {
+            if (count($getuserIdPengusul) >= 1) {
                 Alert::toast('Pengusulan hanya dapat dilakukan sekali dalam satu periode', 'error');
                 return back()->withInput();
             }
