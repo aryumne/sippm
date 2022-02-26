@@ -49,7 +49,7 @@ class HkiController extends Controller
 
         // dd($dosen);
 
-        return view('proposal.Hki', [
+        return view('proposal.hki', [
             'title' => $title,
             'proposal' => $proposal,
             'jenisHki' => $jenisHki,

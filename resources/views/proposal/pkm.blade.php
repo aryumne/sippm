@@ -97,7 +97,7 @@
                                                                     @error('judul')
                                                                         <span id="category_id-error" class="error text-danger"
                                                                             for="input-id"
-                                                                            style="display: block;">{{                                                                             style="display: block;">$message }}</span>
+                                                                            style="display: block;">{{ $message }}</span>
                                                                     @enderror
 
                                                                     <div class="form-group pt-2">
@@ -112,7 +112,7 @@
                                                                     @error('dana')
                                                                         <span id="category_id-error" class="error text-danger"
                                                                             for="input-id"
-                                                                            style="display: block;">{{                                                                             style="display: block;">$message }}</span>
+                                                                            style="display: block;">{{ $message }}</span>
                                                                     @enderror
 
                                                                     <div class="form-group mt-3">
@@ -128,7 +128,7 @@
                                                                     @error('tanggal_kegiatan')
                                                                         <span id="category_id-error" class="error text-danger"
                                                                             for="input-id"
-                                                                            style="display: block;">{{                                                                             style="display: block;">$message }}</span>
+                                                                            style="display: block;">{{ $message }}</span>
                                                                     @enderror
 
                                                                     <div class="form-group text-left">
@@ -138,7 +138,7 @@
                                                                             name="sumberDana" required>
                                                                             @foreach ($sumberDana as $SD)
                                                                                 <option value="{{ $SD->id }}"
-                                                                                    {{                                                                                     $p->sumber_id == $SD->id ? 'Selected' : '' }}>
+                                                                                    {{ $p->sumber_id == $SD->id ? 'Selected' : '' }}>
                                                                                     {{ $SD->sumber }}
                                                                                 </option>
                                                                             @endforeach
@@ -147,7 +147,7 @@
                                                                     @error('sumberDana')
                                                                         <span id="category_id-error" class="error text-danger"
                                                                             for="input-id"
-                                                                            style="display: block;">{{                                                                             style="display: block;">$message }}</span>
+                                                                            style="display: block;">{{ $message }}</span>
                                                                     @enderror
 
                                                                     <div
@@ -173,7 +173,7 @@
                                                                     @error('path_kegiatan')
                                                                         <span id="category_id-error" class="error text-danger"
                                                                             for="input-id"
-                                                                            style="display: block;">{{                                                                             style="display: block;">$message }}</span>
+                                                                            style="display: block;">{{ $message }}</span>
                                                                     @enderror
 
                                                                 </div>
@@ -239,7 +239,7 @@
                         </div>
                         @error('judul')
                             <span id="category_id-error" class="error text-danger" for="input-id"
-                                style="display: block;">{{                                 style="display: block;">$message }}</span>
+                                style="display: block;">{{ $message }}</span>
                         @enderror
 
                         <div class="form-group">
@@ -249,7 +249,7 @@
                         </div>
                         @error('dana')
                             <span id="category_id-error" class="error text-danger" for="input-id"
-                                style="display: block;">{{                                 style="display: block;">$message }}</span>
+                                style="display: block;">{{ $message }}</span>
                         @enderror
 
                         <div class="form-group mt-3">
@@ -260,7 +260,7 @@
                         </div>
                         @error('tanggal_kegiatan')
                             <span id="category_id-error" class="error text-danger" for="input-id"
-                                style="display: block;">{{                                 style="display: block;">$message }}</span>
+                                style="display: block;">{{ $message }}</span>
                         @enderror
 
                         <div class="form-group">
@@ -276,7 +276,7 @@
                         </div>
                         @error('sumberDana')
                             <span id="category_id-error" class="error text-danger" for="input-id"
-                                style="display: block;">{{                                 style="display: block;">$message }}</span>
+                                style="display: block;">{{ $message }}</span>
                         @enderror
 
                         <div class="form-group form-file-upload form-file-multiple">
@@ -294,7 +294,7 @@
                         </div>
                         @error('path_kegiatan')
                             <span id="category_id-error" class="error text-danger" for="input-id"
-                                style="display: block;">{{                                 style="display: block;">$message }}</span>
+                                style="display: block;">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="modal-footer">
