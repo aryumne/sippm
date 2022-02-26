@@ -9,7 +9,7 @@ class Buku extends Model
 {
     use HasFactory;
     // protected $guarded = ['id'];
-    protected $fillable = ['judul_buku', 'penerbit', 'path_buku', 'user_id', 'proposal_id', 'tanggal_upload'];
+    protected $fillable = ['judul_buku', 'isbn', 'penerbit', 'path_buku', 'user_id', 'proposal_id', 'tanggal_upload'];
 
     public function proposal()
     {

@@ -56,14 +56,19 @@ class BukuController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'proposal_id' => ['required', 'numeric'],
             'judul' => ['required', 'string'],
             'penerbit' => ['required', 'string'],
             'path_buku' => ['required', 'file', 'mimes:pdf', 'max:2048'],
             'tanggal_upload' => ['required', 'string'],
-        ]);
+        ];
+
+        if ($request->isbn != NULL) {
+            $rules['isbn'] = ['unique:bukus', 'digits:13'];
+        }
+
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
@@ -80,6 +85,7 @@ class BukuController extends Controller
         Buku::create([
             'proposal_id' => $request->proposal_id,
             'judul_buku' => $request->judul,
+            'isbn' => $request->isbn,
             'penerbit' => $request->penerbit,
             'path_buku' => $path_buku,
             'tanggal_upload' => $date,
@@ -109,6 +115,10 @@ class BukuController extends Controller
             $rules['path_buku'] = ['required', 'file', 'mimes:pdf', 'max:2048'];
         }
 
+        if ($request->isbn != NULL) {
+            $rules['isbn'] = ['unique:bukus', 'digits:13'];
+        }
+
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
@@ -135,6 +145,7 @@ class BukuController extends Controller
         Buku::findOrFail($id)->update([
             'proposal_id' => $request->proposal_id,
             'judul_buku' => $request->judul,
+            'isbn' => $request->isbn,
             'penerbit' => $request->penerbit,
             'path_buku' => $path_buku,
             'tanggal_upload' => $date,

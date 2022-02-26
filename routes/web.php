@@ -5,6 +5,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\HkiController;
+use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LapAkhirController;
 use App\Http\Controllers\LapKemajuanController;
@@ -30,7 +31,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
-    return redirect()->intended('login');
+    return view('auth.index');
 });
 
 //ROUTE KHUSUS ADMIN
@@ -58,6 +59,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     //Prodi
     Route::resource('/prodi', ProdiController::class)->only(['store', 'update']);
     Route::resource('/faculty', FacultyController::class)->only(['index', 'store', 'update']);
+    //Jabatan
+    Route::resource('/jabatan', JabatanController::class);
 });
 
 //ROUTE KHUSUS PENGUSUL
