@@ -79,7 +79,7 @@ Selected @endif
                                     @enderror
                                 @endif
                                 <div class="form-group py-0 my-0">
-                                    <cite>Jika File berkas tidak ada perubahan, maka upload file dikosongkan
+                                    <cite>Jika File berkas tidak ada perubahan, upload file dikosongkan
                                         saja</cite>
                                 </div>
                                 <div class="form-group form-file-upload form-file-multiple">
@@ -92,6 +92,8 @@ Selected @endif
                                             </button>
                                         </span>
                                     </div>
+                                    <small class="form-text text-muted text-left"><cite>Maksimal 2Mb dengan format file
+                                            .pdf</cite></small>
                                 </div>
                                 @error('path_proposal')
                                     <span id="category_id-error" class="error text-danger" for="input-id"

@@ -18,11 +18,11 @@
 
 <body>
     <div id="vanilla-slideshow-container">
-        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
+        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white py-4">
             <div class="container">
                 <div class="navbar-wrapper">
-                    <div class="photo">
-                        <img src="{{ asset('img/logo.png') }}" height="50">
+                    <div class="photo" style=" filter: brightness(175%);">
+                        <img src="{{ asset('img/logo.png') }}" height="40">
                     </div>
                     <a class="navbar-brand" style="font-weight: 400;" href="{{ route('login') }}">SIPPM
                         UNIPA</a>
@@ -82,19 +82,25 @@
             <img src={{ asset('/img/arrow-previous.png') }} alt="slider arrow">
         </div>
         <div id="vanilla-slideshow-next">
-            <img src={{ asset("img/arrow-next.png") }} alt="slider arrow">
+            <img src={{ asset('img/arrow-next.png') }} alt="slider arrow">
         </div>
-        <div class="row bg-text">
-            <div class="col-md-10 col-lg-10 col-xl-10 ml-auto mr-auto mb-1 text-center">
-                <h1 style="font-weight: 500; font-size: 2.5rem">SISTEM INFORMASI
+        <div class=" bg-text headline">
+            <div class="col-12 mb-1 text-center">
+                <h1 style="font-weight: 500;">SISTEM INFORMASI
                 </h1>
-                <h2 style="font-weight: 500; font-size: 2rem; margin-top: 5px;">PENELITIAN DAN PENGABDIAN KEPADA
+                <h1 style="font-weight: 500; margin-top: 10px;">PENELITIAN DAN PENGABDIAN KEPADA
                     MASYARAKAT
-                </h2>
-                <h3 class="text-lead text-light mt-3 mb-0">
+                </h1>
+                <h4 class="text-lead text-light mt-2 mb-0">
                     UNIVERSITAS PAPUA
-                </h3>
+                </h4>
             </div>
+        </div>
+        <div class="copyright-landing">
+            Copyright &copy;
+            <script>
+                document.write(new Date().getFullYear())
+            </script>, LPPM Universitas Papua, All rights reserved.
         </div>
     </div>
     <script src={{ asset('/js/vanillaSlideshow.min.js') }}></script>

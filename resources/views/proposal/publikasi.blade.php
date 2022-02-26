@@ -113,8 +113,7 @@
                                                             </div>
                                                             @error('proposal_id')
                                                             <span id="category_id-error" class="error text-danger"
-                                                                for="input-id" style="display: block;">{{ $message
-                                                                }}</span>
+                                                                for="input-id" style="display: block;">{{ $message}}</span>
                                                             @enderror
 
                                                             <div class="form-group pt-2">
@@ -159,8 +158,7 @@
                                                             </div>
                                                             @error('nama')
                                                             <span id="category_id-error" class="error text-danger"
-                                                                for="input-id" style="display: block;">{{ $message
-                                                                }}</span>
+                                                                for="input-id" style="display: block;">{{ $message }}</span>
                                                             @enderror
                                                             <div class="form-group text-left">
                                                                 <label for="jenis">Jenis Publikasi</label>
@@ -176,8 +174,7 @@
                                                             </div>
                                                             @error('jenis')
                                                             <span id="category_id-error" class="error text-danger"
-                                                                for="input-id" style="display: block;">{{ $message
-                                                                }}</span>
+                                                                for="input-id" style="display: block;">{{ $message }}</span>
                                                             @enderror
 
                                                             <div class="form-group form-file-upload form-file-multiple">
@@ -194,14 +191,12 @@
                                                                         </button>
                                                                     </span>
                                                                 </div>
-                                                                <small class="form-text text-muted text-left"><cite>File
-                                                                        yang diupload Maximal 2mb dan file
-                                                                        harus berformat .pdf</cite></small>
+                                                                <small class="form-text text-muted text-left"><cite>Maksimal 2Mb dengan format file
+                                    .pdf</cite></small>
                                                             </div>
                                                             @error('path_publikasi')
                                                             <span id="category_id-error" class="error text-danger"
-                                                                for="input-id" style="display: block;">{{ $message
-                                                                }}</span>
+                                                                for="input-id" style="display: block;">{{ $message }}</span>
                                                             @enderror
                                                     </div>
                                                     <div class="modal-footer">
@@ -283,8 +278,7 @@
                             required>
                     </div>
                     @error('judul')
-                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{
-                        $message }}</span>
+                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                     @enderror
 
                     <!-- Dynamic Form Js -->
@@ -296,8 +290,7 @@
                         </div>
                     </div>
                     @error('nama')
-                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{
-                        $message }}</span>
+                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                     @enderror
                     <div class="form-group">
                         <label for="jenis">Jenis Publikasi</label>
@@ -312,8 +305,7 @@
                         </select>
                     </div>
                     @error('jenis')
-                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{
-                        $message }}</span>
+                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                     @enderror
                     <div class="form-group form-file-upload form-file-multiple">
                         <input type="file" name="path_publikasi" class="inputFileHidden" required>
@@ -325,8 +317,8 @@
                                 </button>
                             </span>
                         </div>
-                        <small class="form-text text-muted text-left"><cite>File yang diupload Maximal 2mb dan file
-                                harus berformat .pdf</cite></small>
+                        <small class="form-text text-muted text-left"><cite>Maksimal 2Mb dengan format file
+                                    .pdf</cite></small>
                     </div>
                     @if (Auth::user()->role_id == 1)
                     <div class="form-group mt-3 pt-2">
@@ -336,13 +328,11 @@
                             value="{{ old('tanggal_upload') }}" required>
                     </div>
                     @error('tanggal_upload')
-                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{
-                        $message }}</span>
+                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                     @enderror
                     @endif
                     @error('path_publikasi')
-                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{
-                        $message }}</span>
+                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="modal-footer">

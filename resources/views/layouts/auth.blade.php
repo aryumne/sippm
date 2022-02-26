@@ -7,6 +7,7 @@
         .error {
             margin-left: 54px;
         }
+
     </style>
 </head>
 
@@ -44,14 +45,14 @@
                             <i class="material-icons">explore</i> Tentang LPPM
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('login') ? 'active' : '' }}">
                         <a href="{{ route('login') }}" class="nav-link">
                             <i class="material-icons">fingerprint</i> Login
                         </a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item {{ request()->routeIs('register') ? 'active' : '' }}">
                         <a href="{{ route('register') }}" class="nav-link">
-                            <i class="material-icons">app_registration</i> Sign Up
+                            <i class="material-icons">app_registration</i> Register
                         </a>
                     </li>
                 </ul>

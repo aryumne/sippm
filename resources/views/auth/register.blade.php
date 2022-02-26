@@ -6,7 +6,7 @@
                 @csrf
                 <div class="card card-login card-hidden">
                     <div class="card-header card-header-info text-center">
-                        <h4 class="card-title">SIGN UP</h4>
+                        <h4 class="card-title">REGISTER</h4>
                         <div class="social-line">
                             <p>Pastikan NIDN anda terdaftar!</p>
                         </div>
@@ -54,7 +54,7 @@
                         </span>
                     </div>
                     <div class="card-footer justify-content-center" id="login">
-                        <button type="submit" class="btn btn-rose btn-link btn-lg">Sign up</button>
+                        <button type="submit" class="btn btn-rose btn-link btn-lg">Daftar</button>
                     </div>
                 </div>
             </form>
