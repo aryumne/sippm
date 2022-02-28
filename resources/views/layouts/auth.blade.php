@@ -21,6 +21,7 @@
         <div class="container">
             <div class="navbar-wrapper">
                 <div class="photo">
+                    <img src="{{ asset('img/kampusmerdeka.png') }}" height="40" style="padding-right: 5px;">
                     <img src="{{ asset('img/logo.png') }}" height="50">
                 </div>
                 <a class="navbar-brand" style="font-weight: 400;" href="{{ route('login') }}">SIPPM

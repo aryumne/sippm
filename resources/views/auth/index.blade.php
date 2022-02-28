@@ -21,8 +21,9 @@
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white py-4">
             <div class="container">
                 <div class="navbar-wrapper">
-                    <div class="photo" style=" filter: brightness(175%);">
-                        <img src="{{ asset('img/logo.png') }}" height="40">
+                    <div class="photo" style=" filter: brightness(200%);">
+                        <img src="{{ asset('img/kampusmerdeka.png') }}" height="40" style="padding-right: 5px;">
+                        <img src="{{ asset('img/logo.png') }}" height="50">
                     </div>
                     <a class="navbar-brand" style="font-weight: 400;" href="{{ route('login') }}">SIPPM
                         UNIPA</a>
