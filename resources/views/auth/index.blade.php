@@ -62,19 +62,66 @@
         </nav>
         <div id="vanilla-slideshow">
             <div class="vanilla-slide">
-                <img src="{{ asset('img/1.JPG') }}" alt="">
-            </div>
-            <div class="vanilla-slide">
-                <img src="{{ asset('img/2.JPG') }}" alt="">
-            </div>
-            <div class="vanilla-slide">
                 <img src="{{ asset('img/3.JPG') }}" alt="">
+                <div class=" bg-text headline">
+                    <div class="col-12 mb-1 text-center">
+                        <h1 style="font-weight: 500;">SISTEM INFORMASI
+                        </h1>
+                        <h1 style="font-weight: 500; margin-top: 10px;">PENELITIAN DAN PENGABDIAN KEPADA
+                            MASYARAKAT
+                        </h1>
+                        <h4 class="text-lead text-light mt-2 mb-0">
+                            UNIVERSITAS PAPUA
+                        </h4>
+                    </div>
+                </div>
             </div>
             <div class="vanilla-slide">
-                <img src="{{ asset('img/4.JPG') }}" alt="">
+                <img src="{{ asset('img/slider/1.png') }}" alt="">
+                <div class="bg-text headline" style="left:23%">
+                    <div class="col-12 mb-1 text-center">
+                        <h1 style="font-weight: 500;">Alat Ekstraksi Pati Sagu</h1>
+                        <h1 style="font-weight: 400;">Granted Paten </h1>
+                        <h4 style="font-weight: 500;" class="text-lead text-light mt-2 mb-0">
+                            IDS000001882
+                        </h4>
+                    </div>
+                </div>
             </div>
             <div class="vanilla-slide">
-                <img src="{{ asset('img/5.JPG') }}" alt="">
+                <img src="{{ asset('img/slider/2.png') }}" alt="">
+                <div class="bg-text headline" style="left:75%">
+                    <div class="col-12 mb-1 text-center">
+                        <h1 style="font-weight: 500;">Alat Pengering Pati dan Tepung Menggunakan Irradiasi Ultraviolet
+                        </h1>
+                        <h1 style="font-weight: 500;">Terdaftar Paten</h1>
+                        <h5 style="font-weight: 500;" class="text-lead text-light mt-2 mb-0">
+                            S00201810642
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="vanilla-slide">
+                <img src="{{ asset('img/slider/3.png') }}" alt="">
+                <div class="bg-text headline" style="left:20%">
+                    <div class="col-12 mb-1 text-center">
+                        <h1 style="font-weight: 500;">KKN Mahasiswa Universitas Papua</h1>
+                        <h5 style="font-weight: 500;" class="text-lead text-light mt-2 mb-0">
+                            Semester Genap 2020/2021
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="vanilla-slide">
+                <img src="{{ asset('img/slider/4.png') }}" alt="">
+                <div class="bg-text headline" style="left:80%">
+                    <div class="col-12 mb-1 text-center">
+                        <h1 style="font-weight: 500;">Sampling grouper (guropa) di</h1>
+                        <h5 style="font-weight: 500;" class="text-lead text-light mt-2 mb-0">
+                            Pintu Arus, Teluk Triton Kaimana
+                        </h5>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="vanilla-indicators"></div>
@@ -83,18 +130,6 @@
         </div>
         <div id="vanilla-slideshow-next">
             <img src={{ asset('img/arrow-next.png') }} alt="slider arrow">
-        </div>
-        <div class=" bg-text headline">
-            <div class="col-12 mb-1 text-center">
-                <h1 style="font-weight: 500;">SISTEM INFORMASI
-                </h1>
-                <h1 style="font-weight: 500; margin-top: 10px;">PENELITIAN DAN PENGABDIAN KEPADA
-                    MASYARAKAT
-                </h1>
-                <h4 class="text-lead text-light mt-2 mb-0">
-                    UNIVERSITAS PAPUA
-                </h4>
-            </div>
         </div>
         <div class="copyright-landing">
             Copyright &copy;

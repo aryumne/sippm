@@ -17,8 +17,9 @@ body {
 }
 
 img {
-    filter: brightness(50%);
+    filter: brightness(55%);
 }
+
 .bg-text {
     color: white;
     font-weight: bold;
@@ -116,7 +117,8 @@ img {
     transform: translate(-50%, -50%);
     bottom: 60px;
 }
-.copyright-landing{
+
+.copyright-landing {
     display: inline-block;
     z-index: 5;
     position: absolute;
@@ -145,36 +147,38 @@ img {
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 480px) {
-    h1{
+    h1 {
         font-size: 1.2rem !important;
     }
 }
+
 @media only screen and (min-width: 600px) {
-    h1{
+    h1 {
         font-size: 1.2rem !important;
     }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-      h1{
+    h1 {
         font-size: 1.3rem !important;
     }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-     h1{
+    h1 {
         font-size: 1.4rem !important;
     }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-     h1{
+    h1 {
         font-size: 1.8rem !important;
     }
-     h4{
+
+    h4 {
         font-size: 1.5rem !important;
     }
 }
