@@ -1,6 +1,5 @@
 <?php
 
-use Facade\Ignition\Tabs\Tab;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +20,7 @@ class CreateKegiatansTable extends Migration
             $table->integer('jumlah_dana');
             $table->date('tanggal_kegiatan');
             $table->text('path_kegiatan');
+            $table->foreignId('prodi_id');
             $table->foreignId('sumber_id');
             $table->foreignId('user_id');
             $table->timestamps();

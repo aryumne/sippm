@@ -57,7 +57,7 @@
                                             </td>
                                             <td>{{ $h->jenis_hki->hki }}</td>
                                             <td><a href="{{ asset('storage/' . $h->path_hki) }}" target="_blank"
-                                                    class="badge badge-success">{{ substr($h->path_hki, 9) }}</a>
+                                                    class="badge badge-success">download</a>
                                             </td>
                                             <td class="text-right">
                                                 <!-- <a href="#" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">read_more</i></a> -->

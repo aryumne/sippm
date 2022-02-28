@@ -29,34 +29,30 @@
                                         </td>
                                         <td class="text-left">
                                             <h5>
-                                                {{ $proposal->tanggal_usul }}
+                                                {{ $proposal->tanggal_usul->format('d M Y') }}
                                             </h5>
                                         </td>
                                     </tr>
-                                    @foreach ($proposal->dosen as $dsn)
-                                        @if ($dsn->pivot->isLeader == true)
-                                            <tr>
-                                                <td>
-                                                    <p>Fakultas</p>
-                                                </td>
-                                                <td class="text-left">
-                                                    <h5>
-                                                        {{ $dsn->prodi->faculty->nama_faculty }}
-                                                    </h5>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <p>Prodi</p>
-                                                </td>
-                                                <td class="text-left">
-                                                    <h5>
-                                                        {{ $dsn->prodi->nama_prodi }}
-                                                    </h5>
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
+                                    <tr>
+                                        <td>
+                                            <p>Fakultas</p>
+                                        </td>
+                                        <td class="text-left">
+                                            <h5>
+                                                {{ $proposal->prodi->faculty->nama_faculty }}
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Prodi</p>
+                                        </td>
+                                        <td class="text-left">
+                                            <h5>
+                                                {{ $proposal->prodi->nama_prodi }}
+                                            </h5>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td>
                                             <p>File Proposal</p>

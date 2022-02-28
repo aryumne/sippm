@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Audit;
 use App\Models\Dosen;
-use App\Models\Faculty;
 use App\Models\Monev;
+use App\Models\Faculty;
 use App\Models\Proposal;
+use App\Models\Schedule;
 use App\Models\LapKemajuan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -109,9 +110,13 @@ class AdminController extends Controller
         $data['FKED'] = $fked;
         $data['PASCA'] = $pasca;
         $jsonFakultas = json_encode($data);
+
+        $notifications = Schedule::all();
+
         return view('admin.dashboard-admin', [
             'title' => $title,
-            'jsonFakultas' => $jsonFakultas
+            'jsonFakultas' => $jsonFakultas,
+             'notifications' => $notifications,
     ]);
     }
 

@@ -99,6 +99,10 @@
         padding: 0px !important;
     }
 
+    .bootstrap-select .dropdown-toggle .filter-option {
+        padding-left: 15px;
+    }
+
     td {
         max-width: 350px;
     }

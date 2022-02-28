@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Anggota;
 use App\Models\Audit;
 use App\Models\Dosen;
+use App\Models\Faculty;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,30 +21,32 @@ class ProposalController extends Controller
         $title = "Daftar Usulan Proposal";
         $dosen = Dosen::all();
         $user = Auth::user()->nidn;
-        $usulan = Proposal::all();
+        $faculties = Faculty::all();
+
+        //using scope collection dalam model Proposal untuk query filter
+        $usulan = Proposal::Filter(request(['faculty_id', 'tahun_usul']))->get();
+
         if (Auth::user()->role_id == 2) {
             $usulan = Dosen::where('nidn', $user)->get();
         }
-        // foreach ($pengusul as $pgs) {
-        //     echo $pgs->proposal;
-        //     echo '<br>';
-        //     foreach ($pgs->proposal as $pps) {
-        //         echo $pps->judul;
-        //         echo '<br>';
-        //         echo $pps->pivot->isLeader;
-        //         echo '<br>';
-        //         foreach ($pps->dosen as $leader) {
-        //             if ($leader->pivot->isLeader == true) {
-        //                 echo $leader;
-        //                 echo '<br>';
-        //             }
-        //         }
-        //     }
+
+        // manual filter without scope
+        // if (request('tahun_usul') && request('faculty_id')) {
+        //     $fakultas = Faculty::find(request('faculty_id'));
+        //     $usulan = $fakultas->proposal()->whereYear('tanggal_usul', request('tahun_usul'))->get();
+        //     // dd($usulan);
+        // } else if (!request('tahun_usul') && request('faculty_id')) {
+        //     $fakultas = Faculty::find(request('faculty_id'));
+        //     $usulan = $fakultas->proposal;
+        // } else if (request('tahun_usul') && !request('faculty_id')) {
+        //     $usulan = Proposal::whereYear('tanggal_usul', request('tahun_usul'))->get();
         // }
+
         return view('proposal.usulan', [
             'title' => $title,
             'dosen' => $dosen,
             'usulan' => $usulan,
+            'faculties' => $faculties,
         ]);
     }
 
@@ -74,7 +77,7 @@ class ProposalController extends Controller
 
         $user_id = Auth::user()->id;
         $nidn_pengusul = $request->nidn_pengusul;
-
+        $pengusul = Dosen::find($nidn_pengusul);
         //ambil tahun sekarang
         $getYear = date("Y");
 
@@ -133,6 +136,7 @@ class ProposalController extends Controller
             'path_proposal' => $path_proposal,
             'user_id' => $user_id,
             'status' => $request->status,
+            'prodi_id' => $pengusul->prodi_id,
         ]);
 
         Anggota::create([
@@ -158,7 +162,7 @@ class ProposalController extends Controller
     public function show($id)
     {
         if (Auth::user()->role_id != 1) {
-            return redirect()->intended('login');
+            return redirect()->intended('/');
         }
         $title = "Detail Proposal";
         $proposal = Proposal::find($id);
@@ -255,6 +259,8 @@ class ProposalController extends Controller
                 return back()->withErrors($validator)->withInput();
             }
         }
+        //ambil data pengusul
+        $pengusul = Dosen::find($nidn_pengusul);
 
         //ambil tahun dari tanggal pengusulan
         $getYear = date("Y", strtotime($date));
@@ -302,6 +308,7 @@ class ProposalController extends Controller
             'path_proposal' => $path_proposal,
             'user_id' => Auth::user()->id,
             'status' => $status,
+            'prodi_id' => $pengusul->prodi_id,
         ]);
 
         //delete tim pengusul proposal ini di database anggota

@@ -109,7 +109,7 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
 
 //ROUTE UNTUK SEMUA YANG LOGIN
 Route::group(['prefix' => 'profile', 'middleware' => ['auth', 'verified', 'prevent-back-history']], function () {
-    Route::resource('/user', UserController::class);
+    Route::resource('/user', UserController::class)->only(['update']);
     Route::get('/editProfile', [DosenController::class, 'edit'])->name('editProfile');
 });
 

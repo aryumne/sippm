@@ -95,6 +95,68 @@ col-12 @endif
                                     @endforeach
                                 @endforeach
                             @elseif(Auth::user()->role_id == 1)
+                                <div class="toolbar mb-3 px-3">
+                                    <div class="card-collapse">
+                                        <div class="card-header" role="tab" id="headingOne">
+                                            <h5 class="mb-0">
+                                                <a data-toggle="collapse" href="#collapseOne"
+                                                    aria-expanded="{{ request('tahun_usul') != null || request('faculty_id') != null ? 'true' : 'false' }}"
+                                                    aria-controls="collapseOne" class="collapsed">
+                                                    Filter data
+                                                    <i class="material-icons">filter_alt</i>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseOne"
+                                            class="collapse {{ request('tahun_usul') != null || request('faculty_id') != null ? 'show' : '' }}"
+                                            role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                                            <div class="card-body">
+                                                <form action="{{ route('usulan.index') }}" method="GET">
+                                                    @csrf
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-3">
+                                                            <h6>Fakultas</h6>
+                                                        </div>
+                                                        <div class="col-md-9 px-0">
+                                                            <div class="form-group m-0">
+                                                                <select class="form-control selectpicker"
+                                                                    data-style="btn btn-link" id="faculty_id"
+                                                                    name="faculty_id">
+                                                                    <option value="">Semua</option>
+                                                                    @foreach ($faculties as $faculty)
+                                                                        <option value="{{ $faculty->id }}"
+                                                                            {{ request('faculty_id') == $faculty->id ? 'Selected' : '' }}>
+                                                                            {{ $faculty->nama_faculty }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-3">
+                                                            <h6>Tahun</h6>
+                                                        </div>
+                                                        <div class="col-md-9 px-0">
+                                                            <div class="form-group m-0">
+                                                                <input type="year" class="form-control pl-3" id="onlyYear"
+                                                                    value="{{ request('tahun_usul') }}"
+                                                                    name="tahun_usul" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                        </div>
+                                                        <div class="col-md-9 text-left pl-0">
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-rose">Filter</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="material-datatables">
                                     <table id="datatables-usulan" class="table table-striped table-no-bordered table-hover"
                                         cellspacing="0" width="100%" style="width:100%">
@@ -103,7 +165,7 @@ col-12 @endif
                                                 <th>Judul Proposal</th>
                                                 <th>Pengusul</th>
                                                 <th>Fakultas</th>
-                                                <th>tanggal Upload</th>
+                                                <th>Tahun</th>
                                                 <th>Berkas Laporan</th>
                                                 <th class="disabled-sorting text-right">Actions</th>
                                             </tr>
@@ -113,7 +175,7 @@ col-12 @endif
                                                 <th>Judul Proposal</th>
                                                 <th>Pengusul</th>
                                                 <th>Fakultas</th>
-                                                <th>tanggal Upload</th>
+                                                <th>Tahun</th>
                                                 <th>Berkas Laporan</th>
                                                 <th class="text-right">Actions</th>
                                             </tr>
@@ -129,17 +191,10 @@ col-12 @endif
                                                             @endif
                                                         @endforeach
                                                     </td>
-                                                    <td>
-                                                        @foreach ($lap->dosen as $pvt)
-                                                            @if ($pvt->pivot->isLeader == true)
-                                                                {{ $pvt->prodi->faculty->nama_faculty }}
-                                                            @endif
-                                                        @endforeach
-                                                    </td>
-                                                    <td>{{ $lap->tanggal_usul }}</td>
+                                                    <td>{{ $lap->prodi->faculty->nama_faculty }}</td>
+                                                    <td>{{ $lap->tanggal_usul->format('Y') }}</td>
                                                     <td><a href="{{ asset('storage/' . $lap->path_proposal) }}"
-                                                            target="_blank"
-                                                            class="badge badge-success">{{ substr($lap->path_proposal, 9) }}</a>
+                                                            target="_blank" class="badge badge-success">download</a>
                                                     </td>
                                                     <td class="text-right">
                                                         <a href="{{ route('usulan.show', $lap->id) }}"
@@ -282,11 +337,14 @@ col-12 @endif
 @endsection
 
 @section('customSCript')
-    <script>
-
-    </script>
     <script type="text/javascript">
         $(document).ready(function() {
+            //YearPicker
+            $('#onlyYear').datetimepicker({
+                viewMode: 'years',
+                format: 'YYYY'
+            });
+
             //datatables
             $('#datatables-usulan').DataTable({
                 //pagingType documentation : "https://datatables.net/reference/option/pagingType"

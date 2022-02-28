@@ -34,8 +34,8 @@
                                 @if (Auth::user()->role_id == 1)
                                     <div class="form-group mt-3">
                                         <input type="date" class="form-control" id="tanggal_usul" name="tanggal_usul"
-                                            placeholder="Tanggal Pengusulan"
-                                            value="{{ old('tanggal_usul', $proposal->tanggal_usul) }}">
+                                            placeholder="tanggal usul"
+                                            value="{{ $proposal->tanggal_usul->format('Y-m-d') }}">
                                     </div>
                                     @error('tanggal_usul')
                                         <span id="category_id-error" class="error text-danger" for="input-id"

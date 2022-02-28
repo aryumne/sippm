@@ -19,6 +19,7 @@ class CreateProposalsTable extends Migration
             $table->date('tanggal_usul');
             $table->text('path_proposal');
             $table->string('status');
+            $table->foreignId('prodi_id');
             $table->foreignId('user_id');
             $table->timestamps();
         });

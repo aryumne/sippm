@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
+use App\Models\Faculty;
 use App\Models\Kegiatan;
 use App\Models\SumberDana;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,33 +18,34 @@ class KegiatanController extends Controller
 
     public function index($kegiatan)
     {
-        $dataKegiatan = Kegiatan::all();
         $sumberDana = SumberDana::all();
+        $faculties = Faculty::all();
 
         if ($kegiatan == "penelitian") {
             $title = "Daftar Penelitian";
-            $data = 1;
-            $dataKegiatan = Kegiatan::where('jenis_kegiatan', $data)->get();
-
+            $kegiatan = Kegiatan::where('jenis_kegiatan', 1);
+            $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                $dataKegiatan = Kegiatan::where('jenis_kegiatan', $data)->where('user_id', Auth::user()->nidn)->get();
+                $dataKegiatan = Kegiatan::where('jenis_kegiatan', 1)->where('user_id', Auth::user()->nidn)->get();
             }
             return view('proposal.penelitian', [
                 'title' => $title,
                 'penelitian' => $dataKegiatan,
                 'sumberDana' => $sumberDana,
+                'faculties' => $faculties,
             ]);
         } else if ($kegiatan == "pkm") {
             $title = "Daftar Pkm";
-            $data = 2;
-            $dataKegiatan = Kegiatan::where('jenis_kegiatan', $data)->get();
+            $kegiatan = Kegiatan::where('jenis_kegiatan', 2);
+            $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                $dataKegiatan = Kegiatan::where('jenis_kegiatan', $data)->where('user_id', Auth::user()->nidn)->get();
+                $dataKegiatan = Kegiatan::where('jenis_kegiatan', 2)->where('user_id', Auth::user()->nidn)->get();
             }
             return view('proposal.pkm', [
                 'title' => $title,
                 'pkm' => $dataKegiatan,
                 'sumberDana' => $sumberDana,
+                'faculties' => $faculties,
             ]);
         } else {
             return abort(404);
@@ -64,6 +68,7 @@ class KegiatanController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        $dataUser = Dosen::find(Auth::user()->nidn);
         $date = strtotime($request->tanggal_kegiatan);
         $date = date('Y-m-d', $date);
         $jenisKegiatan = $request->jenis_kegiatan;
@@ -84,8 +89,9 @@ class KegiatanController extends Controller
             'jumlah_dana' => $dana,
             'jenis_kegiatan' => $jenisKegiatan,
             'path_kegiatan' => $path_kegiatan,
+            'prodi_id' => $dataUser->prodi_id,
             'tanggal_kegiatan' => $date,
-            'user_id' => Auth::user()->nidn,
+            'user_id' => str_pad(Auth::user()->nidn, 10, "0", STR_PAD_LEFT),
         ]);
 
         if ($jenisKegiatan == 1) {
@@ -120,6 +126,7 @@ class KegiatanController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        $dataUser = Dosen::find(Auth::user()->nidn);
         $date = $request->tanggal_kegiatan;
         $jenisKegiatan = $request->jenis_kegiatan;
         $dana = str_replace(".", "", $request->dana);
@@ -143,8 +150,9 @@ class KegiatanController extends Controller
             'jumlah_dana' => $dana,
             'jenis_kegiatan' => $jenisKegiatan,
             'path_kegiatan' => $path_kegiatan,
+            'prodi_id' => $dataUser->prodi_id,
             'tanggal_kegiatan' => $date,
-            'user_id' => Auth::user()->nidn,
+            'user_id' => str_pad(Auth::user()->nidn, 10, "0", STR_PAD_LEFT),
         ]);
 
         if ($request->jenis_kegiatan == 1) {

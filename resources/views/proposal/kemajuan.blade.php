@@ -61,7 +61,7 @@
                                             @endforeach
                                             <td>{{ $lap->tanggal_upload }}</td>
                                             <td><a href="{{ asset('storage/' . $lap->path_kemajuan) }}" target="_blank"
-                                                    class="badge badge-success">{{ substr($lap->path_kemajuan, 17) }}</a>
+                                                    class="badge badge-success">download</a>
                                             </td>
                                             <td class="text-right">
                                                 @if (Auth::user()->role_id == 1)

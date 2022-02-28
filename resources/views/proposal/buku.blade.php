@@ -65,7 +65,7 @@
                                             <td>{{ $b->penerbit }}</td>
                                             <td>{{ $b->isbn }}</td>
                                             <td><a href="{{ asset('storage/' . $b->path_buku) }}" target="_blank"
-                                                    class="badge badge-success">{{ substr($b->path_buku, 9) }}</a>
+                                                    class="badge badge-success">download</a>
                                             </td>
                                             <td class="text-right">
                                                 <!-- <a href="#" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">read_more</i></a> -->

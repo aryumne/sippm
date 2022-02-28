@@ -21,29 +21,119 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <div class="toolbar mb-3 px-3">
+                            <div class="card-collapse">
+                                <div class="card-header" role="tab" id="headingOne">
+                                    <h5 class="mb-0">
+                                        <a data-toggle="collapse" href="#collapseOne"
+                                            aria-expanded="{{ request('tahun_kegiatan') != null || request('faculty_id') != null || request('sumber_dana') != null? 'true': 'false' }}"
+                                            aria-controls="collapseOne" class="collapsed">
+                                            Filter data
+                                            <i class="material-icons">filter_alt</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapseOne"
+                                    class="collapse {{ request('tahun_kegiatan') != null || request('faculty_id') != null || request('sumber_dana') != null? 'show': '' }}"
+                                    role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                                    <div class="card-body">
+                                        <form action="{{ route('kegiatan.index', 'pkm') }}" method="GET">
+                                            @csrf
+                                            <div class="row align-items-center">
+                                                <div class="col-md-3">
+                                                    <h6>Fakultas</h6>
+                                                </div>
+                                                <div class="col-md-9 px-0">
+                                                    <div class="form-group m-0">
+                                                        <select class="form-control selectpicker" data-style="btn btn-link"
+                                                            id="faculty_id" name="faculty_id">
+                                                            <option value="">Semua</option>
+                                                            @foreach ($faculties as $faculty)
+                                                                <option value="{{ $faculty->id }}"
+                                                                    {{ request('faculty_id') == $faculty->id ? 'Selected' : '' }}>
+                                                                    {{ $faculty->nama_faculty }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center">
+                                                <div class="col-md-3">
+                                                    <h6>Sumber Dana</h6>
+                                                </div>
+                                                <div class="col-md-9 px-0">
+                                                    <div class="form-group m-0">
+                                                        <select class="form-control selectpicker" data-style="btn btn-link"
+                                                            id="sumber_dana" name="sumber_dana">
+                                                            <option value="">Semua</option>
+                                                            @foreach ($sumberDana as $sumber)
+                                                                <option value="{{ $sumber->sumber }}"
+                                                                    {{ request('sumber_dana') == $sumber->sumber ? 'Selected' : '' }}>
+                                                                    {{ $sumber->sumber }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center">
+                                                <div class="col-md-3">
+                                                    <h6>Tahun</h6>
+                                                </div>
+                                                <div class="col-md-9 px-0">
+                                                    <div class="form-group m-0">
+                                                        <input type="year" class="form-control pl-3" id="onlyYear"
+                                                            value="{{ request('tahun_kegiatan') }}"
+                                                            name="tahun_kegiatan" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                </div>
+                                                <div class="col-md-9 text-left pl-0">
+                                                    <button type="submit" class="btn btn-sm btn-rose">Filter</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (request('sumber_dana'))
+                                <div class="row py-2 align-items-center bg-light">
+                                    <div class="col-md-3 col-sm-6 text-md-right pt-3">
+                                        <h5 class="fw-400">TOTAL SUMBER DANA :</h5>
+                                    </div>
+                                    <div class="col-md-9 col-sm-7 pl-md-0">
+                                        <h5 class="fw-500 pt-3">
+                                            {{ 'Rp ' . number_format($pkm->sum('jumlah_dana'), 2, ',', '.') }}
+                                        </h5>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                         <div class="material-datatables">
                             <table id="datatables-pkm" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Judul Kegiatan</th>
+                                        <th>Nama Kegiatan</th>
                                         <th>Pengusul</th>
-                                        <th>Tanggal Kegiatan</th>
+                                        <th>Fakultas</th>
                                         <th>Sumber Dana</th>
                                         <th>Jumlah Dana</th>
-                                        <th>File Kegiatan</th>
-                                        <th class="disabled-sorting text-right">Actions</th>
+                                        <th>Tahun</th>
+                                        <th class="disabled-sorting text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>Judul Kegiatan</th>
+                                        <th>Nama Kegiatan</th>
                                         <th>Pengusul</th>
-                                        <th>Tanggal Kegiatan</th>
+                                        <th>Fakultas</th>
                                         <th>Sumber Dana</th>
                                         <th>Jumlah Dana</th>
-                                        <th>File Kegiatan</th>
-                                        <th class="text-right">Actions</th>
+                                        <th>Tahun</th>
+                                        <th class="text-center">Actions</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -51,14 +141,15 @@
                                         <tr>
                                             <td>{{ $p->judul_kegiatan }}</td>
                                             <td>{{ $p->dosen->nama }} </td>
-                                            <td>{{ $p->tanggal_kegiatan }}</td>
+                                            <td>{{ $p->prodi->faculty->nama_faculty }}</td>
                                             <td>{{ $p->sumberDana->sumber }}</td>
                                             <td>{{ 'Rp ' . number_format($p->jumlah_dana, 2, ',', '.') }}</td>
-                                            <td><a href="{{ asset('storage/' . $p->path_kegiatan) }}" target="_blank"
-                                                    class="badge badge-success">{{ substr($p->path_kegiatan, 19) }}</a>
-                                            </td>
-                                            <td class="text-right">
+                                            <td>{{ $p->tanggal_kegiatan->format('Y') }}</td>
+                                            <td class="text-center">
                                                 <!-- <a href="#" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">read_more</i></a> -->
+                                                <a href="{{ asset('storage/' . $p->path_kegiatan) }}" target="_blank"
+                                                    class="btn btn-link btn-success btn-just-icon edit">
+                                                    <i class="material-icons">file_download</i></a>
                                                 <button type="button" class="btn btn-link btn-warning btn-just-icon edit"
                                                     data-toggle="modal" data-target="#ubahKegiatan{{ $p->id }}">
                                                     <i class="material-icons">mode_edit</i></a>
@@ -77,7 +168,7 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <form class="form" id="EditKegiatan<alidation"
+                                                            <form class="form" id="EditKegiatanValidation"
                                                                 action="{{ route('kegiatan.update', $p->id) }}"
                                                                 method="POST" enctype="multipart/form-data">
                                                                 <div class="modal-body">
@@ -87,7 +178,7 @@
                                                                     <input type="hidden" name="path_kegiatan"
                                                                         value="{{ $p->path_kegiatan }}">
                                                                     <div class="form-group">
-                                                                        <label for="judul" class="bmd-label-floating">Judul
+                                                                        <label for="judul" class="bmd-label-floating">Nama
                                                                             Kegiatan</label>
                                                                         <input type="text" class="form-control" id="judul"
                                                                             name="judul"
@@ -116,13 +207,12 @@
                                                                     @enderror
 
                                                                     <div class="form-group mt-3">
-                                                                        <label for="judul"
+                                                                        <label for="tanggal_kegiatan"
                                                                             class="bmd-label-floating">Tanggal
                                                                             Kegiatan</label>
                                                                         <input type="date" class="form-control"
                                                                             id="tanggal_kegiatan" name="tanggal_kegiatan"
-                                                                            placeholder="Tanggal Kegiatan"
-                                                                            value="{{ old('tanggal_kegiatan', $p->tanggal_kegiatan) }}"
+                                                                            value="{{ old('tanggal_kegiatan', $p->tanggal_kegiatan->format('Y-m-d')) }}"
                                                                             required>
                                                                     </div>
                                                                     @error('tanggal_kegiatan')
@@ -233,7 +323,7 @@
                         @csrf
                         <input type="hidden" name="jenis_kegiatan" value="2">
                         <div class="form-group">
-                            <label for="judul" class="bmd-label-floating">Judul Kegiatan</label>
+                            <label for="judul" class="bmd-label-floating">Nama Kegiatan</label>
                             <input type="text" class="form-control" id="judul" name="judul" value="{{ old('judul') }}"
                                 required>
                         </div>
@@ -254,9 +344,10 @@
 
                         <div class="form-group mt-3">
                             <label for="judul" class="bmd-label-floating">Tanggal Kegiatan</label>
-                            <input type="text" class="form-control datepicker" id="tanggal_kegiatan" name="tanggal_kegiatan"
-                                placeholder="Tanggal Kegiatan" value="{{ now()->toDateString('Y-m-d') }}"
-                                value="{{ old('tanggal_kegiatan') }}" required>
+                            <input type="text" class="form-control datepicker" id="tanggal_kegiatan"
+                                name="tanggal_kegiatan" placeholder="Tanggal Kegiatan"
+                                value="{{ now()->toDateString('Y-m-d') }}" value="{{ old('tanggal_kegiatan') }}"
+                                required>
                         </div>
                         @error('tanggal_kegiatan')
                             <span id="category_id-error" class="error text-danger" for="input-id"

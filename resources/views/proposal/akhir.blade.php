@@ -63,10 +63,10 @@
                                             @endforeach
                                             <td>{{ $akhr->tanggal_upload }}</td>
                                             <td><a href="{{ asset('storage/' . $akhr->path_akhir) }}" target="_blank"
-                                                    class="badge badge-success">{{ substr($akhr->path_akhir, 14) }}</a>
+                                                    class="badge badge-success">download</a>
                                             </td>
                                             <td><a href="{{ asset('storage/' . $akhr->path_keuangan) }}" target="_blank"
-                                                    class="badge badge-success">{{ substr($akhr->path_keuangan, 17) }}</a>
+                                                    class="badge badge-success">download</a>
                                             </td>
                                             <td class="text-right">
                                                 @can('upload_laporan_akhir')

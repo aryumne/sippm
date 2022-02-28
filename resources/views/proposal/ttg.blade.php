@@ -59,7 +59,7 @@
                                             </td>
                                             <td>{{ $t->bidang }}</td>
                                             <td><a href="{{ asset('storage/' . $t->path_ttg) }}" target="_blank"
-                                                    class="badge badge-success">{{ substr($t->path_ttg, 9) }}</a>
+                                                    class="badge badge-success">download</a>
                                             </td>
                                             <td class="text-right">
                                                 <!-- <a href="#" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">read_more</i></a> -->
