@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             'nama' => 'DEV TIK UNIPA',
             'jabatan_id' => 1,
             'prodi_id' => 1,
-            'handphone' => '081234567890',
+            'handphone' => '081245395373',
             'email' => 'dev.tik@unipa.ac.id',
         ]);
 
