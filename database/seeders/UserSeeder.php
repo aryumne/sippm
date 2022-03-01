@@ -24,6 +24,14 @@ class UserSeeder extends Seeder
             'role_id' => 1,
         ]);
 
+        User::create([
+            'nidn' => '0000000000',
+            'email' => 'lp2m@unipa.ac.id',
+            'email_verified_at' => now(),
+            'password' => Hash::make('admin_LP2M'),
+            'role_id' => 1,
+        ]);
+
         Dosen::create([
             'nidn' => '0000000000',
             'nama' => 'DEV TIK UNIPA',
@@ -31,6 +39,15 @@ class UserSeeder extends Seeder
             'prodi_id' => 1,
             'handphone' => '081234567890',
             'email' => 'dev.tik@unipa.ac.id',
+        ]);
+
+        Dosen::create([
+            'nidn' => '1111111111',
+            'nama' => 'LPPM UNIPA',
+            'jabatan_id' => 1,
+            'prodi_id' => 1,
+            'handphone' => '081234567890',
+            'email' => 'lp2m@unipa.ac.id',
         ]);
     }
 }
