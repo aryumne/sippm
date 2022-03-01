@@ -6,10 +6,10 @@ use App\Models\Buku;
 use App\Models\Dosen;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class BukuController extends Controller
 {
@@ -64,7 +64,7 @@ class BukuController extends Controller
             'tanggal_upload' => ['required', 'string'],
         ];
 
-        if ($request->isbn != NULL) {
+        if ($request->isbn != null) {
             $rules['isbn'] = ['unique:bukus', 'digits:13'];
         }
 
@@ -115,7 +115,7 @@ class BukuController extends Controller
             $rules['path_buku'] = ['required', 'file', 'mimes:pdf', 'max:2048'];
         }
 
-        if ($request->isbn != NULL) {
+        if ($request->isbn != $buku->isbn) {
             $rules['isbn'] = ['unique:bukus', 'digits:13'];
         }
 
@@ -130,7 +130,7 @@ class BukuController extends Controller
         $date = date('Y-m-d', $date);
 
         $path_buku = $request->file('path_buku');
-        if ($path_buku != NULL) {
+        if ($path_buku != null) {
             $fileName = $path_buku->getClientOriginalName();
             $cekFileName = Buku::where('path_buku', 'laporan-buku/' . str_replace(" ", "-", $fileName))->get();
             // if (count($cekFileName) != 0) {
