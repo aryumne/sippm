@@ -15,26 +15,12 @@
 
                         @foreach ($data as $d)
                             <div class="card-body">
-                                <form action="{{ route('dosen.update', $d->nidn) }}" method="POST"
-                                    enctype="multipart/form-data" class="form-horizontal">
+                                <form action="{{ route('updateProfile', str_pad($d->nidn, 10, '0', STR_PAD_LEFT)) }}"
+                                    method="POST" enctype="multipart/form-data" class="form-horizontal">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name="nidn" value="{{ $d->nidn }}">
-                                    <div class="row">
-                                        <label class="col-sm-2 col-form-label">NIDN</label>
-                                        <div class="col-sm-9">
-                                            <div class="form-group bmd-form-group is-filled">
-                                                <input class="form-control" name="nidn" id="nidn" type="text"
-                                                    value="{{ old('nidn', $d->nidn) }}" required="true"
-                                                    aria-required="true" disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @error('nidn')
-                                        <span id="category_id-error" class="error text-danger" for="input-id"
-                                            style="display: block;">{{ $message }}</span>
-                                    @enderror
-
+                                    <input type="hidden" name="nidn"
+                                        value="{{ str_pad($d->nidn, 10, '0', STR_PAD_LEFT) }}">
                                     <div class="row">
                                         <label class="col-sm-2 col-form-label">Nama</label>
                                         <div class="col-sm-9">
@@ -71,7 +57,6 @@
                                         <span id="category_id-error" class="error text-danger" for="input-id"
                                             style="display: block;">{{ $message }}</span>
                                     @enderror
-
                                     <div class="row">
                                         <label class="col-sm-2 col-form-label" for="prodi">prodi</label>
                                         <div class="col-sm-9">

@@ -128,7 +128,7 @@
                                                                     @error('judul')
                                                                         <span id="category_id-error" class="error text-danger"
                                                                             for="input-id"
-                                                                            style="display: block;">{{                                                                             style="display: block;">$message }}</span>
+                                                                            style="display: block;">{{ $message }}</span>
                                                                     @enderror
 
                                                                     @if (Auth::user()->role_id == 1)
@@ -147,7 +147,7 @@
                                                                         @error('tanggal_upload')
                                                                             <span id="category_id-error"
                                                                                 class="error text-danger" for="input-id"
-                                                                                style="display: block;">{{                                                                                 style="display: block;">$message }}</span>
+                                                                                style="display: block;">{{ $message }}</span>
                                                                         @enderror
                                                                     @endif
                                                                     <!-- Dynamic Form Js -->
@@ -283,7 +283,7 @@
                         </div>
                         @error('proposal_id')
                             <span id="category_id-error" class="error text-danger" for="input-id"
-                                style="display: block;">{{                                 style="display: block;">$message }}</span>
+                                style="display: block;">{{ $message }}</span>
                         @enderror
                         <div class="form-group">
                             <label for="judul" class="bmd-label-floating">Judul Artikel</label>

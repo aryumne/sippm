@@ -6,6 +6,7 @@ use App\Imports\DosenImport;
 use App\Models\Dosen;
 use App\Models\Jabatan;
 use App\Models\Prodi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -96,6 +97,7 @@ class DosenController extends Controller
 
     public function update(Request $request, Dosen $dosen)
     {
+        // dd($request->all());
         $rules = [
             'nama' => ['required', 'string'],
             'jabatan_id' => ['required', 'numeric'],
@@ -126,8 +128,12 @@ class DosenController extends Controller
             'email' => $request->email,
         ]);
 
+        User::where('nidn', $dosen->nidn)->update([
+            'nidn' => $request->nidn,
+        ]);
+
         Alert::success('Data Profile berhasil diubah', 'success');
-        return back();
+        return redirect()->route('dosen.show', $request->nidn);
     }
     public function updateProfile(Request $request)
     {
@@ -159,12 +165,7 @@ class DosenController extends Controller
         ]);
 
         Alert::success('Data Profile berhasil diubah', 'success');
-        // return redirect()->route('dosen.show', $nidn);
         return back();
     }
 
-    public function destroy($id)
-    {
-        //
-    }
 }

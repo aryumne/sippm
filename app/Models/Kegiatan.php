@@ -32,11 +32,6 @@ class Kegiatan extends Model
         return $this->belongsTo(SumberDana::class, 'sumber_id');
     }
 
-    public function dosen()
-    {
-        return $this->belongsTo(Dosen::class, 'user_id');
-    }
-
     public function scopeFilterPenelitian($query, array $filters)
     {
         //  ?? new feature in php 7 untuk gabungan isset dan ternary operator

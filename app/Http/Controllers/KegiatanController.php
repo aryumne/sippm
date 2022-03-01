@@ -26,7 +26,7 @@ class KegiatanController extends Controller
             $kegiatan = Kegiatan::where('jenis_kegiatan', 1);
             $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                $dataKegiatan = Kegiatan::where('jenis_kegiatan', 1)->where('user_id', Auth::user()->nidn)->get();
+                $dataKegiatan = Kegiatan::where('jenis_kegiatan', 1)->where('user_id', Auth::user()->id)->get();
             }
             return view('proposal.penelitian', [
                 'title' => $title,
@@ -39,7 +39,7 @@ class KegiatanController extends Controller
             $kegiatan = Kegiatan::where('jenis_kegiatan', 2);
             $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                $dataKegiatan = Kegiatan::where('jenis_kegiatan', 2)->where('user_id', Auth::user()->nidn)->get();
+                $dataKegiatan = Kegiatan::where('jenis_kegiatan', 2)->where('user_id', Auth::user()->id)->get();
             }
             return view('proposal.pkm', [
                 'title' => $title,
@@ -91,7 +91,7 @@ class KegiatanController extends Controller
             'path_kegiatan' => $path_kegiatan,
             'prodi_id' => $dataUser->prodi_id,
             'tanggal_kegiatan' => $date,
-            'user_id' => str_pad(Auth::user()->nidn, 10, "0", STR_PAD_LEFT),
+            'user_id' => Auth::user()->id,
         ]);
 
         if ($jenisKegiatan == 1) {
@@ -152,7 +152,7 @@ class KegiatanController extends Controller
             'path_kegiatan' => $path_kegiatan,
             'prodi_id' => $dataUser->prodi_id,
             'tanggal_kegiatan' => $date,
-            'user_id' => str_pad(Auth::user()->nidn, 10, "0", STR_PAD_LEFT),
+            'user_id' => Auth::user()->id,
         ]);
 
         if ($request->jenis_kegiatan == 1) {

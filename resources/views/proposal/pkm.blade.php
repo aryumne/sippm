@@ -140,7 +140,7 @@
                                     @foreach ($pkm as $p)
                                         <tr>
                                             <td>{{ $p->judul_kegiatan }}</td>
-                                            <td>{{ $p->dosen->nama }} </td>
+                                            <td>{{ $p->user->dosen->nama }} </td>
                                             <td>{{ $p->prodi->faculty->nama_faculty }}</td>
                                             <td>{{ $p->sumberDana->sumber }}</td>
                                             <td>{{ 'Rp ' . number_format($p->jumlah_dana, 2, ',', '.') }}</td>

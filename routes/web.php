@@ -111,6 +111,7 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
 Route::group(['prefix' => 'profile', 'middleware' => ['auth', 'verified', 'prevent-back-history']], function () {
     Route::resource('/user', UserController::class)->only(['update']);
     Route::get('/editProfile', [DosenController::class, 'edit'])->name('editProfile');
+    Route::put('/updateProfile/{id}', [DosenController::class, 'updateProfile'])->name('updateProfile');
 });
 
 require __DIR__ . '/auth.php';
