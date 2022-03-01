@@ -23,7 +23,7 @@
                     </div>
                     <div class="card-body">
                         <div class="material-datatables">
-                            <table id="datatables-audit" class="table table-striped table-no-bordered table-hover"
+                            <table id="datatables-monev" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
@@ -143,7 +143,7 @@
     <script>
         $(document).ready(function() {
             //datatables
-            $('#datatables-audit').DataTable({
+            $('#datatables-monev').DataTable({
                 //pagingType documentation : "https://datatables.net/reference/option/pagingType"
                 "pagingType": "first_last_numbers",
                 "lengthMenu": [
