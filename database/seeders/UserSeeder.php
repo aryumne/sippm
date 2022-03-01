@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'nidn' => '0000000000',
+            'nidn' => '1111111111',
             'email' => 'lp2m@unipa.ac.id',
             'email_verified_at' => now(),
             'password' => Hash::make('admin_LP2M'),
