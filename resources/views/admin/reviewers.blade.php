@@ -92,6 +92,10 @@
                                             </select>
                                         </div>
                                     </div>
+                                    @error('nidn')
+                                        <span id="category_id-error" class="error text-danger pl-3" for="input-id"
+                                            style="display: block;">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group bmd-form-group">
                                     <div class="input-group">
@@ -102,6 +106,10 @@
                                         <input type="email" class="form-control" name="email" id="email"
                                             placeholder="Email" required value="{{ old('email') }}">
                                     </div>
+                                    @error('email')
+                                        <span id="category_id-error" class="error text-danger pl-3" for="input-id"
+                                            style="display: block;">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group bmd-form-group">
                                     <div class="input-group">
@@ -115,7 +123,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer justify-content-center">
-                                <button type="submit" class="btn btn-rose btn-link btn-wd btn-lg">Continue</button>
+                                <button type="submit" class="btn btn-rose btn-link btn-wd btn-lg">Tambah</button>
                             </div>
                         </form>
                     </div>

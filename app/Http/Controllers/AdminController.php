@@ -142,6 +142,8 @@ class AdminController extends Controller
                 'email' => ['required', 'email:dns', 'max:255', 'unique:users',  'regex:/(.*)@unipa\.ac\.id/i'],
                 'password' => ['required', Rules\Password::defaults()],
             ], [
+                'nidn.unique' => "Dosen ini sudah memiliki akun",
+                'email.unique' => "Email sudah terdaftar",
                 'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
                 'email' => "Email tidak valid, harus menggunakan email UNIPA",
                 'password.min' => "Password minimal 8 digit",
