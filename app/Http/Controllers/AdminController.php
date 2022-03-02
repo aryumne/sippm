@@ -139,13 +139,19 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'nidn' => ['required', 'numeric', 'unique:users'],
-                'email' => ['required', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'email:dns', 'max:255', 'unique:users',  'regex:/(.*)@unipa\.ac\.id/i'],
                 'password' => ['required', Rules\Password::defaults()],
+            ], [
+                'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
+                'email' => "Email tidak valid, harus menggunakan email UNIPA",
+                'password.min' => "Password minimal 8 digit",
             ]);
+
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
+
         $nidn = Dosen::where('nidn', $request->nidn)->get();
         if (count($nidn) > 0) {
             User::create([
@@ -159,7 +165,7 @@ class AdminController extends Controller
 
         } else {
             Alert::toast('NIDN tidak valid', 'error');
-            return back();
+            return back()->withInput();
         }
     }
 

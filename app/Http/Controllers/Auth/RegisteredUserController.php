@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\Dosen;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Models\Dosen;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Validator;
 
 class RegisteredUserController extends Controller
 {
@@ -22,11 +23,21 @@ class RegisteredUserController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nidn' => ['required', 'numeric', 'digits:10', 'unique:users'],
-            'email' => ['required', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'email:dns','regex:/(.*)@unipa\.ac\.id/i', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
+            'email' => "Email tidak valid, harus menggunakan email UNIPA",
+            'password.min' => "Password minimal 8 digit",
         ]);
+
+        if ($validator->fails()) {
+            Alert::toast('Gagal registrasi, cek kembali inputan anda', 'error');
+            return back()->withErrors($validator)->withInput();
+        }
+
 
         $nidn = Dosen::where('nidn', $request->nidn)->get();
         if (count($nidn) > 0) {
@@ -52,7 +63,7 @@ class RegisteredUserController extends Controller
             }
         } else {
             Alert::toast('NIDN tidak valid', 'error');
-            return back();
+            return back()->withInput();
         }
     }
 }

@@ -38,11 +38,13 @@ class DosenController extends Controller
             'nama' => ['required', 'string'],
             'jabatan_id' => ['required'],
             'prodi_id' => ['required'],
-            'email' => ['required', 'email', 'max:255', 'unique:dosens'],
+            'email' => ['required', 'email:dns', 'max:255', 'unique:dosens', 'regex:/(.*)@unipa\.ac\.id/i'],
             'handphone' => ['required', 'numeric'],
         ], [
             'nidn.unique' => 'NIDN ini sudah terdaftar',
             'email.unique' => 'Email ini sudah terdaftar',
+            'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
+            'email' => "Email tidak valid, harus menggunakan email UNIPA",
         ]);
 
         // dd($request->all());
@@ -103,15 +105,22 @@ class DosenController extends Controller
             'jabatan_id' => ['required', 'numeric'],
             'prodi_id' => ['required', 'numeric'],
             'handphone' => ['required', 'string'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email:dns', 'regex:/(.*)@unipa\.ac\.id/i'],
         ];
 
         if ($request->nidn != $dosen->nidn) {
             $rules['nidn'] = ['required', 'unique:dosens,nidn'];
         }
 
+        if ($request->email != $dosen->email) {
+            $rules['email'] = ['required', 'unique:dosens,email', 'regex:/(.*)@unipa\.ac\.id/i'];
+        }
+
         $validator = Validator::make($request->all(), $rules, [
             'nidn.unique' => 'NIDN sudah terdaftar',
+            'email.unique' => 'Email sudah terdaftar',
+            'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
+            'email' => "Email tidak valid, harus menggunakan email UNIPA",
         ]);
 
         if ($validator->fails()) {

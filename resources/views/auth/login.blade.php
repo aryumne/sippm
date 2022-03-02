@@ -30,6 +30,10 @@
                                 </div>
                                 <input type="email" class="form-control" name="email" id="email" placeholder="Email"
                                     required autofocus value="{{ old('email') }}">
+                                @error('email')
+                                    <span id="category_id-error" class="error text-danger" for="input-id"
+                                        style="display: block;">{{ $message }}</span>
+                                @enderror
                             </div>
                         </span>
                         <span class="form-group bmd-form-group">
