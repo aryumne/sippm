@@ -5,7 +5,7 @@
             <form class="form" id="RegisterValidation" method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="card card-login card-hidden">
-                    <div class="card-header card-header-info text-center">
+                    <div class="card-header card-header-rose text-center">
                         <h4 class="card-title">REGISTER</h4>
                         <div class="social-line">
                             <p>Pastikan NIDN anda terdaftar!</p>

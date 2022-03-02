@@ -62,15 +62,18 @@
     <div id="vanilla-slideshow-container">
         <div id="vanilla-slideshow">
             <div class="vanilla-slide">
-                <img src="{{ asset('img/3.JPG') }}" alt="">
+                <img src="{{ asset('img/3.JPG') }}" style="filter: brightness(35%);" alt="Rektorat Unipa">
                 <div class=" bg-text headline">
                     <div class="col-12 mb-1 text-center">
-                        <h1 style="font-weight: 500;">SISTEM INFORMASI
+                        <h1 style="font-weight: 600; text-shadow: 0 1px 2px #ffffff;  letter-spacing: 2px;"
+                            class="text-warning">SISTEM
+                            INFORMASI
                         </h1>
-                        <h1 style="font-weight: 500;">PENELITIAN DAN PENGABDIAN KEPADA
+                        <h1 style="font-weight: 600; text-shadow: 0 1px 2px #ffffff;  letter-spacing: 2px;"
+                            class="text-warning">PENELITIAN DAN PENGABDIAN KEPADA
                             MASYARAKAT
                         </h1>
-                        <h4 class="text-lead text-light mt-2 mb-0">
+                        <h4 style="font-weight: 500;  letter-spacing: 2px;" class="text-light mt-2 mb-0">
                             UNIVERSITAS PAPUA
                         </h4>
                     </div>
@@ -81,10 +84,7 @@
                 <div class="bg-text headline" id="slide-2">
                     <div class="col-12 mb-1 text-center">
                         <h1 style="font-weight: 500;">Alat Ekstraksi Pati Sagu</h1>
-                        <h1 style="font-weight: 400;">Granted Paten </h1>
-                        <h4 class="text-lead text-light mt-2 mb-0">
-                            IDS000001882
-                        </h4>
+                        <h1 style="font-weight: 500;" class="text-info">(Granted Paten IDS000001882)</h1>
                     </div>
                 </div>
             </div>
@@ -92,11 +92,10 @@
                 <img src="{{ asset('img/slider/2.png') }}" alt="">
                 <div class="bg-text headline" id="slide-3">
                     <div class="col-12 mb-1 text-center">
-                        <h1 style="font-weight: 500;">Alat Pengering Pati dan Tepung Menggunakan Irradiasi Ultraviolet
+                        <h1 style="font-weight: 500;">
+                            Alat Pengering Pati dan Tepung Menggunakan Irradiasi Ultraviolet
                         </h1>
-                        <h4 class="text-lead text-light mt-2 mb-0">
-                            Terdaftar Paten: S00201810642
-                        </h4>
+                        <h1 style="font-weight: 500;" class="text-info">(Terdaftar Paten S00201810642)</h1>
                     </div>
                 </div>
             </div>
@@ -104,10 +103,9 @@
                 <img src="{{ asset('img/slider/3.png') }}" alt="">
                 <div class="bg-text headline" id="slide-4">
                     <div class="col-12 mb-1 text-center">
-                        <h1 style="font-weight: 500;">KKN Mahasiswa Universitas Papua</h1>
-                        <h4 class="text-lead text-light mt-2 mb-0">
-                            Semester Genap 2020/2021
-                        </h4>
+                        <h1 style="font-weight: 500;">KKN Mahasiswa Universitas Papua
+                        </h1>
+                        <h1 style="font-weight: 500;" class="text-warning">Semester Genap 2020/2021</h1>
                     </div>
                 </div>
             </div>
@@ -115,10 +113,8 @@
                 <img src="{{ asset('img/slider/4.png') }}" alt="">
                 <div class="bg-text headline" id="slide-5">
                     <div class="col-12 mb-1 text-center">
-                        <h1 style="font-weight: 500;">Sampling grouper (guropa) di</h1>
-                        <h4 class="text-lead text-light mt-2 mb-0">
-                            Pintu Arus, Teluk Triton Kaimana
-                        </h4>
+                        <h1 style="font-weight: 500;">Sampling Grouper (Guropa) <br> di Pintu Arus, Teluk Triton Kaimana
+                        </h1>
                     </div>
                 </div>
             </div>
