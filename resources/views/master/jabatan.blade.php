@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 col-lg-6">
                 <div class="card">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
@@ -27,14 +27,14 @@
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Nomor</th>
+                                        <th>#</th>
                                         <th>Jabatan</th>
                                         <th class="disabled-sorting text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>Nomor</th>
+                                        <th>#</th>
                                         <th>Jabatan</th>
                                         <th class="disabled-sorting text-right">Actions</th>
                                     </tr>
@@ -46,22 +46,54 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $j->nama_jabatan }}</td>
                                             <td class="text-right">
-                                                {{-- <a href="" class="btn btn-link btn-info btn-just-icon like"><i
-                                                class="material-icons">mode_edit</i></a> --}}
-
-                                                <a href="" class="btn btn-link btn-danger btn-just-icon remove">
-                                                    <form class="form"
-                                                        action="{{ route('jabatan.destroy', $j->id) }}" method="POST"
-                                                        id="DeteleJabatanValidation">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="btn btn-link btn-danger btn-just-icon remove"
-                                                            onclick="return confirm('Anda Yakin Menghapus Data ini?');">
-                                                            <i class="material-icons">close</i>
-                                                        </button>
-                                                    </form>
-                                                </a>
+                                                <button type="button" class="btn btn-link btn-warning btn-just-icon like"
+                                                    data-toggle="modal" data-target="#editJabatan{{ $j->id }}">
+                                                    <span class="material-icons">mode_edit</span>
+                                                </button>
+                                                {{-- Modal Edit Jabatan --}}
+                                                <div class="modal fade" id="editJabatan{{ $j->id }}"
+                                                    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Edit
+                                                                    Jabatan
+                                                                </h5>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form class="form"
+                                                                action="{{ route('jabatan.update', $j) }}" method="POST">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="nama_jabatan">Nama Jabatan</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="nama_jabatan" name="nama_jabatan"
+                                                                            value="{{ old('nama_jabatan', $j->nama_jabatan) }}"
+                                                                            required>
+                                                                        @error('nama_jabatan')
+                                                                            <span id="category_id-error"
+                                                                                class="error text-danger" for="input-id"
+                                                                                style="display: block;">{{ $message }}</span>
+                                                                        @enderror
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-sm btn-secondary"
+                                                                        data-dismiss="modal">Close</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-rose">Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{-- End Modal --}}
                                             </td>
                                         </tr>
                                     @endforeach

@@ -60,7 +60,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     Route::resource('/prodi', ProdiController::class)->only(['store', 'update']);
     Route::resource('/faculty', FacultyController::class)->only(['index', 'store', 'update']);
     //Jabatan
-    Route::resource('/jabatan', JabatanController::class);
+    Route::resource('/jabatan', JabatanController::class)->only(['index', 'store', 'update']);
 });
 
 //ROUTE KHUSUS PENGUSUL

@@ -123,7 +123,7 @@ class AdminController extends Controller
     public function reviewers()
     {
         $title = "Daftar Akun Reviewer";
-        $dosen = Dosen::all();
+        $dosen = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         $reviewers = User::where('role_id', 3)->get();
         return view('admin.reviewers', [
             'title' => $title,

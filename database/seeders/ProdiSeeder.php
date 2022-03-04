@@ -214,6 +214,10 @@ class ProdiSeeder extends Seeder
             'faculty_id' => 13,
             'nama_prodi' => 'S2 Ilmu Lingkungan',
         ]);
+        Prodi::create([
+            'faculty_id' => 13,
+            'nama_prodi' => 'S2 Ilmu Peternakan',
+        ]);
 
     }
 }

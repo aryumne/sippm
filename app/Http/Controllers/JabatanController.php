@@ -24,27 +24,13 @@ class JabatanController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'nama_jabatan' => ['required', 'unique:jabatans', 'string'],
-        ]);
+        ], [
+            'nama_jabatan.unique' => 'Jabatan ini sudah ada',
+        ], );
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
@@ -56,50 +42,26 @@ class JabatanController extends Controller
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(Request $request, Jabatan $jabatan)
     {
-        //
-    }
+        if ($jabatan->nama_jabatan != $request->nama_jabatan) {
+            $validator = Validator::make($request->all(), [
+                'nama_jabatan' => ['required', 'unique:jabatans'],
+            ],
+                [
+                    'nama_jabatan.unique' => 'Jabatan ini sudah ada',
+                ], );
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        Jabatan::findOrFail($id)->delete();
-        Alert::success('Data Jabatan berhasil dihapus', 'success');
+            if ($validator->fails()) {
+                Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
+                return back()->withErrors($validator)->withInput();
+            }
+            $jabatan->nama_jabatan = $request->nama_jabatan;
+        }
+        $jabatan->save();
+        Alert::success('Berhasil', 'jabatan berhasil diubah');
         return back();
+
     }
+
 }

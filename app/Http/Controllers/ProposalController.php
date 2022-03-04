@@ -19,7 +19,7 @@ class ProposalController extends Controller
     public function index()
     {
         $title = "Daftar Usulan Proposal";
-        $dosen = Dosen::all();
+        $dosen = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         $user = Auth::user()->nidn;
         $faculties = Faculty::all();
 

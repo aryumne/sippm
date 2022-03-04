@@ -19,7 +19,8 @@ class DosenController extends Controller
     public function index()
     {
         $title = "Daftar Dosen";
-        $dosens = Dosen::all();
+        // $dosens = Dosen::all();
+        $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         $prodis = Prodi::all()->sortBy('nama_prodi');
         $jabatans = Jabatan::all();
         return view('master.dosen', [
@@ -100,7 +101,7 @@ class DosenController extends Controller
 
     public function update(Request $request, Dosen $dosen)
     {
-        // dd($request->all());
+        // dd($dosen);
         $rules = [
             'nama' => ['required', 'string'],
             'jabatan_id' => ['required', 'numeric'],
@@ -109,7 +110,9 @@ class DosenController extends Controller
             'email' => ['required', 'email:dns', 'regex:/(.*)@unipa\.ac\.id/i'],
         ];
 
-        if ($request->nidn != $dosen->nidn) {
+        $nidn = str_pad($request->nidn, 10, "0", STR_PAD_LEFT);
+        // dd($nidn);
+        if ($nidn != $dosen->nidn) {
             $rules['nidn'] = ['required', 'unique:dosens,nidn'];
         }
 
@@ -135,7 +138,7 @@ class DosenController extends Controller
         }
 
         Dosen::findOrFail($dosen->nidn)->update([
-            'nidn' => $request->nidn,
+            'nidn' => $nidn,
             'nama' => $request->nama,
             'jabatan_id' => $request->jabatan_id,
             'prodi_id' => $request->prodi_id,
@@ -143,12 +146,16 @@ class DosenController extends Controller
             'email' => $request->email,
         ]);
 
-        User::where('nidn', $dosen->nidn)->update([
-            'nidn' => $request->nidn,
-        ]);
+        $account = User::where('nidn', $dosen->nidn)->get();
+
+        if ($account != null) {
+            User::where('nidn', $dosen->nidn)->update([
+                'nidn' => $nidn,
+            ]);
+        }
 
         Alert::success('Data Profile berhasil diubah', 'success');
-        return redirect()->route('dosen.show', $request->nidn);
+        return redirect()->route('dosen.show', $nidn);
     }
 
     public function updateProfile(Request $request)
