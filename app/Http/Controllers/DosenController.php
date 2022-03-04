@@ -39,7 +39,7 @@ class DosenController extends Controller
             'jabatan_id' => ['required'],
             'prodi_id' => ['required'],
             'email' => ['required', 'email:dns', 'max:255', 'unique:dosens', 'regex:/(.*)@unipa\.ac\.id/i'],
-            'handphone' => ['required', 'numeric', 'unique:dosens'],
+            'handphone' => ['required', 'numeric', 'unique:dosens,handphone'],
         ], [
             'nidn.unique' => 'NIDN ini sudah terdaftar',
             'handphone.unique' => 'Nomor Hp ini sudah terdaftar',
@@ -124,6 +124,7 @@ class DosenController extends Controller
         $validator = Validator::make($request->all(), $rules, [
             'nidn.unique' => 'NIDN sudah terdaftar',
             'email.unique' => 'Email sudah terdaftar',
+            'handphone.unique' => 'Nomor ini sudah terdaftar',
             'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
             'email' => "Email tidak valid, harus menggunakan email UNIPA",
         ]);
@@ -149,19 +150,33 @@ class DosenController extends Controller
         Alert::success('Data Profile berhasil diubah', 'success');
         return redirect()->route('dosen.show', $request->nidn);
     }
+
     public function updateProfile(Request $request)
     {
-
+        $nidn = Auth::user()->nidn;
+        $dosen = Dosen::find($nidn);
         $rules = [
             'nidn' => ['required', 'string'],
             'nama' => ['required', 'string'],
             'jabatan' => ['required', 'numeric'],
             'prodi' => ['required', 'numeric'],
-            'noHp' => ['required', 'string'],
-            'email' => ['required', 'email'],
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        if ($request->email != $dosen->email) {
+            $rules['email'] = ['required', 'unique:dosens,email', 'regex:/(.*)@unipa\.ac\.id/i'];
+        }
+
+        if ($request->handphone != $dosen->handphone) {
+            $rules['handphone'] = ['required', 'unique:dosens,handphone'];
+        }
+
+        $validator = Validator::make($request->all(), $rules, [
+            'nidn.unique' => 'NIDN sudah terdaftar',
+            'email.unique' => 'Email sudah terdaftar',
+            'handphone.unique' => 'Nomor ini sudah terdaftar',
+            'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
+            'email' => "Email tidak valid, harus menggunakan email UNIPA",
+        ]);
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
@@ -174,7 +189,7 @@ class DosenController extends Controller
             'nama' => $request->nama,
             'jabatan_id' => $request->jabatan,
             'prodi_id' => $prodi,
-            'handphone' => $request->noHp,
+            'handphone' => $request->handphone,
             'email' => $request->email,
         ]);
 

@@ -63,7 +63,7 @@
         <div id="vanilla-slideshow">
             <div class="vanilla-slide">
                 <img src="{{ asset('img/3.JPG') }}" style="filter: brightness(35%);" alt="Rektorat Unipa">
-                <div class=" bg-text headline">
+                <div class="bg-text headline">
                     <div class="col-12 mb-1 text-center">
                         <h1 style="font-weight: 600; text-shadow: 0 1px 2px #ffffff;  letter-spacing: 2px;"
                             class="text-warning">SISTEM

@@ -22,6 +22,8 @@ img {
 }
 
 .bg-text {
+    display: flex;
+    flex-wrap: wrap;
     color: white;
     font-weight: bold;
     font-size: 80px;
@@ -150,7 +152,7 @@ img {
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 350px) {
     h1 {
-        font-size: 1.2rem !important;
+        font-size: 1rem !important;
     }
 }
 
@@ -198,7 +200,7 @@ img {
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
     h1 {
-        font-size: 1.8rem !important;
+        font-size: 1.6rem !important;
     }
 
     h4 {

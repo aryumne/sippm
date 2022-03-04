@@ -33,6 +33,7 @@ class RegisteredUserController extends Controller
             'password.min' => "Password minimal 8 digit",
         ]);
 
+
         if ($validator->fails()) {
             Alert::toast('Gagal registrasi, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
@@ -47,6 +48,11 @@ class RegisteredUserController extends Controller
                 'password' => Hash::make($request->password),
                 'role_id' => 2,
             ]);
+
+            Dosen::findOrFail($request->nidn)->update([
+                'email' => $request->email
+            ]);
+
             event(new Registered($user));
 
             Auth::login($user);
