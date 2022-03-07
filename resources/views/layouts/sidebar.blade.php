@@ -1,5 +1,4 @@
-<div class="sidebar" data-color="rose" data-background-color="black"
-    data-image="{{ asset('img/sidebar.png') }}">
+<div class="sidebar" data-color="rose" data-background-color="black" data-image="{{ asset('img/sidebar.png') }}">
 
     <div class="logo">
         <a href="#" class="simple-text logo-mini">
@@ -30,76 +29,75 @@
                     <p>Dashboard</p>
                 </a>
             </li>
-            @if (Auth::user()->role_id <= 2)
-                <li
-                    class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') ||request()->routeIs('hki*')? 'active': '' }}">
-                    <a class="nav-link" data-toggle="collapse" href="#proposal" aria-expanded=&quot;true&quot;>
-                        <i class="material-icons">article</i>
-                        <p>Proposal
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') ||request()->routeIs('hki*') ||request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}"
-                        id="proposal">
-                        <ul class="nav">
-                            <li class="nav-item {{ request()->routeIs('usulan*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('usulan.index') }} ">
-                                    <span class="sidebar-mini"> UP </span>
-                                    <span class="sidebar-normal">Usulan Proposal </span>
-                                </a>
-                            </li>
-                            <li class="nav-item {{ request()->routeIs('laporan-kemajuan*') ? 'active' : '' }}">
-                                <a class="nav-link" href=" {{ route('laporan-kemajuan.index') }} ">
-                                    <span class="sidebar-mini"> LK </span>
-                                    <span class="sidebar-normal">Laporan Kemajuan </span>
-                                </a>
-                            </li>
-                            <li class="nav-item {{ request()->routeIs('laporan-akhir*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('laporan-akhir.index') }}">
-                                    <span class="sidebar-mini"> LA </span>
-                                    <span class="sidebar-normal">Laporan akhir </span>
-                                </a>
-                            </li>
-                            <li
-                                class="nav-item {{ request()->routeIs('publikasi*') ||request()->routeIs('hki*') ||request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'active': '' }}">
-                                <a class="nav-link" data-toggle="collapse" href="#luaran">
-                                    <i class="material-icons">task</i>
-                                    <p> Luaran
-                                        <b class="caret"></b>
-                                    </p>
-                                </a>
-                                <div class="collapse {{ request()->routeIs('publikasi*') ||request()->routeIs('hki*') ||request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}"
-                                    id="luaran">
-                                    <ul class="nav">
-                                        <li class="nav-item {{ request()->routeIs('publikasi*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('publikasi.index') }}">
-                                                <span class="sidebar-mini"> P </span>
-                                                <span class="sidebar-normal">Publikasi </span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item {{ request()->routeIs('hki*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('hki.index') }}">
-                                                <span class="sidebar-mini"> H </span>
-                                                <span class="sidebar-normal">HKI </span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item {{ request()->routeIs('buku*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('buku.index') }}">
-                                                <span class="sidebar-mini"> B </span>
-                                                <span class="sidebar-normal">Buku </span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item {{ request()->routeIs('ttg*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('ttg.index') }}">
-                                                <span class="sidebar-mini"> TG </span>
-                                                <span class="sidebar-normal">Teknologi Tepat Guna </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+            @if (Auth::user()->role_id <= 2) <li
+                class="nav-item {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') ||request()->routeIs('hki*')? 'active': '' }}">
+                <a class="nav-link" data-toggle="collapse" href="#proposal" aria-expanded=&quot;true&quot;>
+                    <i class="material-icons">article</i>
+                    <p>Proposal
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse {{ request()->routeIs('usulan*') ||request()->routeIs('laporan-kemajuan*') ||request()->routeIs('laporan-akhir*') ||request()->routeIs('publikasi*') ||request()->routeIs('hki*') ||request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}"
+                    id="proposal">
+                    <ul class="nav">
+                        <li class="nav-item {{ request()->routeIs('usulan*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('usulan.index') }} ">
+                                <span class="sidebar-mini"> UP </span>
+                                <span class="sidebar-normal">Usulan Proposal </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ request()->routeIs('laporan-kemajuan*') ? 'active' : '' }}">
+                            <a class="nav-link" href=" {{ route('laporan-kemajuan.index') }} ">
+                                <span class="sidebar-mini"> LK </span>
+                                <span class="sidebar-normal">Laporan Kemajuan </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ request()->routeIs('laporan-akhir*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('laporan-akhir.index') }}">
+                                <span class="sidebar-mini"> LA </span>
+                                <span class="sidebar-normal">Laporan akhir </span>
+                            </a>
+                        </li>
+                        <li
+                            class="nav-item {{ request()->routeIs('publikasi*') ||request()->routeIs('hki*') ||request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'active': '' }}">
+                            <a class="nav-link" data-toggle="collapse" href="#luaran">
+                                <i class="material-icons">task</i>
+                                <p> Luaran
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse {{ request()->routeIs('publikasi*') ||request()->routeIs('hki*') ||request()->routeIs('buku*') ||request()->routeIs('ttg*')? 'show': '' }}"
+                                id="luaran">
+                                <ul class="nav">
+                                    <li class="nav-item {{ request()->routeIs('publikasi*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('publikasi.index') }}">
+                                            <span class="sidebar-mini"> P </span>
+                                            <span class="sidebar-normal">Publikasi </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{ request()->routeIs('hki*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('hki.index') }}">
+                                            <span class="sidebar-mini"> H </span>
+                                            <span class="sidebar-normal">HKI </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{ request()->routeIs('buku*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('buku.index') }}">
+                                            <span class="sidebar-mini"> B </span>
+                                            <span class="sidebar-normal">Buku </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{ request()->routeIs('ttg*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('ttg.index') }}">
+                                            <span class="sidebar-mini"> TG </span>
+                                            <span class="sidebar-normal">Teknologi Tepat Guna </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 </li>
                 <li class="nav-item {{ request()->routeIs('kegiatan*') ? 'active' : '' }}">
                     <a class="nav-link" data-toggle="collapse" href="#laporan">
@@ -125,9 +123,9 @@
                         </ul>
                     </div>
                 </li>
-            @endif
+                @endif
 
-            @if (Auth::user()->role_id == 1)
+                @if (Auth::user()->role_id == 1)
                 <li class="nav-item {{ request()->routeIs('admin.reviewers.*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.reviewers.index') }}">
                         <i class="material-icons">manage_accounts</i>
@@ -175,14 +173,14 @@
                     </div>
                 </li>
                 <li
-                    class="nav-item {{ request()->routeIs('dosen.*') ||request()->routeIs('faculty.*') ||request()->routeIs('prodi.*') ||request()->routeIs('jabatan.*')? 'active': '' }}">
+                    class="nav-item {{ request()->routeIs('dosen.*') ||request()->routeIs('faculty.*') ||request()->routeIs('prodi.*') ||request()->routeIs('jabatan.*') ||request()->routeIs('sumberDana.*') ? 'active': '' }}">
                     <a class="nav-link" data-toggle="collapse" href="#master">
                         <i class="material-icons">storage</i>
                         <p> Data Master
                             <b class="caret"></b>
                         </p>
                     </a>
-                    <div class="collapse {{ request()->routeIs('dosen.*') ||request()->routeIs('faculty.*') ||request()->routeIs('prodi.*') ||request()->routeIs('jabatan.*')? 'show': '' }}"
+                    <div class="collapse {{ request()->routeIs('dosen.*') ||request()->routeIs('faculty.*') ||request()->routeIs('prodi.*') ||request()->routeIs('jabatan.*') ||request()->routeIs('sumberDana.*')? 'show': '' }}"
                         id="master">
                         <ul class="nav">
                             <li class="nav-item {{ request()->routeIs('dosen.*') ? 'active' : '' }}">
@@ -204,6 +202,12 @@
                                     <span class="sidebar-normal">Jabatan </span>
                                 </a>
                             </li>
+                            <li class="nav-item {{ request()->routeIs('sumberDana.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('sumberDana.index') }}">
+                                    <span class="sidebar-mini"> SB </span>
+                                    <span class="sidebar-normal">Sumber Dana </span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -213,9 +217,9 @@
                         <p>Penjadwalan </p>
                     </a>
                 </li>
-            @endif
+                @endif
 
-            @if (Auth::user()->role_id == 3)
+                @if (Auth::user()->role_id == 3)
                 <li class="nav-item {{ request()->routeIs('reviewer.audit.*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('reviewer.audit.proposals') }}">
                         <i class="material-icons">assignment</i>
@@ -228,24 +232,24 @@
                         <p>Monitoring & Evaluasi </p>
                     </a>
                 </li>
-            @endif
+                @endif
 
-            <li class="nav-item  {{ request()->routeIs('editProfile') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('editProfile') }}">
-                    <i class="material-icons">person</i>
-                    <p>Profile </p>
-                </a>
-            </li>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();this.closest('form').submit();">
-                        <i class="material-icons">logout</i>
-                        <p>Log Out </p>
+                <li class="nav-item  {{ request()->routeIs('editProfile') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('editProfile') }}">
+                        <i class="material-icons">person</i>
+                        <p>Profile </p>
                     </a>
                 </li>
-            </form>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();this.closest('form').submit();">
+                            <i class="material-icons">logout</i>
+                            <p>Log Out </p>
+                        </a>
+                    </li>
+                </form>
         </ul>
     </div>
 </div>

@@ -15,6 +15,7 @@ use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\ReviewerController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\SumberDanaController;
 use App\Http\Controllers\TeknologiTepatGunaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     Route::resource('/faculty', FacultyController::class)->only(['index', 'store', 'update']);
     //Jabatan
     Route::resource('/jabatan', JabatanController::class)->only(['index', 'store', 'update']);
+    //Sumber Dana
+    Route::resource('/sumberDana', SumberDanaController::class)->only(['index', 'store', 'update']);
 });
 
 //ROUTE KHUSUS PENGUSUL
