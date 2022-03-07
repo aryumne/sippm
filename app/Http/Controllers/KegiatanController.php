@@ -27,7 +27,9 @@ class KegiatanController extends Controller
             $kegiatan = Kegiatan::where('jenis_kegiatan', 1);
             $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                $dataKegiatan = Kegiatan::where('jenis_kegiatan', 1)->where('user_id', Auth::user()->id)->get();
+                $kegiatan = Kegiatan::where('jenis_kegiatan', 1)->where('user_id', Auth::user()->id);
+                $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
+
             }
             return view('proposal.penelitian', [
                 'title' => $title,
@@ -41,7 +43,9 @@ class KegiatanController extends Controller
             $kegiatan = Kegiatan::where('jenis_kegiatan', 2);
             $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                $dataKegiatan = Kegiatan::where('jenis_kegiatan', 2)->where('user_id', Auth::user()->id)->get();
+                $kegiatan = Kegiatan::where('jenis_kegiatan', 2)->where('user_id', Auth::user()->id);
+                $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
+
             }
             return view('proposal.pkm', [
                 'title' => $title,
