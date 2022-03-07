@@ -152,9 +152,11 @@
                                                 <a href="{{ route('kegiatan.show', $p) }}"
                                                     class="btn btn-link btn-info btn-just-icon like"><i
                                                         class="material-icons">read_more</i></a>
-                                                <a href="{{ route('kegiatan.edit', $p) }}"
-                                                    class="btn btn-link btn-warning btn-just-icon edit"><i
-                                                        class="material-icons">mode_edit</i></a>
+                                                @if (Auth::user()->id == $p->user_id)
+                                                    <a href="{{ route('kegiatan.edit', $p) }}"
+                                                        class="btn btn-link btn-warning btn-just-icon edit"><i
+                                                            class="material-icons">mode_edit</i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

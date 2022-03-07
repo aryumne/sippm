@@ -93,7 +93,7 @@
                                         </td>
                                         <td class="text-left">
                                             <a href="{{ asset('storage/' . $kegiatan->path_kegiatan) }}" target="_blank"
-                                                class="badge badge-success">downloa file</a>
+                                                class="badge badge-success">download file laporan</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -102,8 +102,10 @@
                     </div>
                     <div class="card-footer">
                         <div class=""></div>
-                        <a href="{{ route('kegiatan.edit', $kegiatan) }}"
-                            class="btn btn-sm btn-warning text-right">Edit</a>
+                        @if (Auth::user()->id == $kegiatan->user_id)
+                            <a href="{{ route('kegiatan.edit', $kegiatan) }}"
+                                class="btn btn-sm btn-warning text-right">Edit</a>
+                        @endif
                     </div>
                 </div>
             </div>

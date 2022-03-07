@@ -27,7 +27,13 @@ class KegiatanController extends Controller
             $kegiatan = Kegiatan::where('jenis_kegiatan', 1);
             $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                $kegiatan = Kegiatan::where('jenis_kegiatan', 1)->where('user_id', Auth::user()->id);
+                //ambil data kegiatan yang mana user ini sebagai ketua di kegiatan tersebut
+                $kegiatan = Kegiatan::where('user_id', Auth::user()->id)->get();
+                //gabungkan dengan data kegiatan yang mana user ini sebagai anggota di kegiatan tersebut
+                $merged = $kegiatan->merge(Auth::user()->dosen->kegiatan);
+                //ubah hasil gabung dari eloquent collection ke eloquent builder
+                $kegiatan = $merged->toQuery()->where('jenis_kegiatan', 1);
+                //jika ada request maka data akan difilter dahulu
                 $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
 
             }
@@ -43,7 +49,13 @@ class KegiatanController extends Controller
             $kegiatan = Kegiatan::where('jenis_kegiatan', 2);
             $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                $kegiatan = Kegiatan::where('jenis_kegiatan', 2)->where('user_id', Auth::user()->id);
+                //ambil data kegiatan yang mana user ini sebagai ketua di kegiatan tersebut
+                $kegiatan = Kegiatan::where('user_id', Auth::user()->id)->get();
+                //gabungkan dengan data kegiatan yang mana user ini sebagai anggota di kegiatan tersebut
+                $merged = $kegiatan->merge(Auth::user()->dosen->kegiatan);
+                //ubah hasil gabung dari eloquent collection ke eloquent builder
+                $kegiatan = $merged->toQuery()->where('jenis_kegiatan', 2);
+                //jika ada request maka data akan difilter dahulu
                 $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
 
             }
@@ -146,6 +158,9 @@ class KegiatanController extends Controller
     public function edit(Kegiatan $kegiatan)
     {
         // dd($kegiatan);
+        if (Auth::user()->id != $kegiatan->user_id) {
+            return abort(403);
+        }
         $title = "Edit Data Kegiatan";
         $dosen = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         $sumberDana = SumberDana::all();
@@ -162,7 +177,9 @@ class KegiatanController extends Controller
 
     public function update(Request $request, Kegiatan $kegiatan)
     {
-
+        if (Auth::user()->id != $kegiatan->user_id) {
+            return abort(403);
+        }
         $rules = [
             'judul' => ['required', 'string'],
             'dana' => ['required'],
