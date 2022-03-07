@@ -16,21 +16,73 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        //Admin DEV TIK
         User::create([
-            'nidn' => '0000000000',
+            'nidn' => 'DVTIKADMIN',
             'email' => 'dev.tik@unipa.ac.id',
             'email_verified_at' => now(),
-            'password' => Hash::make('12341234'),
+            'password' => Hash::make('l4r4v3ldev'),
             'role_id' => 1,
         ]);
 
         Dosen::create([
-            'nidn' => '0000000000',
+            'nidn' => 'DVTIKADMIN',
             'nama' => 'DEV TIK UNIPA',
-            'jabatan_id' => 1,
+            'jabatan_id' => 4,
             'prodi_id' => 1,
-            'handphone' => '081234567890',
             'email' => 'dev.tik@unipa.ac.id',
         ]);
+
+        //Kepala Admin LPPM
+        User::create([
+            'nidn' => 'KADMINLPPM',
+            'email' => 'lp2m@unipa.ac.id',
+            'email_verified_at' => now(),
+            'password' => Hash::make('lp2mKAdmin'),
+            'role_id' => 1,
+        ]);
+
+        Dosen::create([
+            'nidn' => 'KADMINLPPM',
+            'nama' => 'kEPALA ADMIN LPPM',
+            'jabatan_id' => 1,
+            'prodi_id' => 1,
+            'email' => 'lp2m@unipa.ac.id',
+        ]);
+
+        //Admin 1 LPPM
+        User::create([
+            'nidn' => 'ADMINLPPM1',
+            'email' => 'lp2m1@unipa.ac.id',
+            'email_verified_at' => now(),
+            'password' => Hash::make('lp2mAdmin1'),
+            'role_id' => 1,
+        ]);
+
+        Dosen::create([
+            'nidn' => 'ADMINLPPM1',
+            'nama' => 'ADMIN 1 LPPM',
+            'jabatan_id' => 1,
+            'prodi_id' => 1,
+            'email' => 'lp2m1@unipa.ac.id',
+        ]);
+
+        //Admin 2 LPPM
+        User::create([
+            'nidn' => 'ADMINLPPM2',
+            'email' => 'lp2m2@unipa.ac.id',
+            'email_verified_at' => now(),
+            'password' => Hash::make('lp2mAdmin2'),
+            'role_id' => 1,
+        ]);
+
+        Dosen::create([
+            'nidn' => 'ADMINLPPM2',
+            'nama' => 'ADMIN 2 LPPM',
+            'jabatan_id' => 1,
+            'prodi_id' => 1,
+            'email' => 'lp2m2@unipa.ac.id',
+        ]);
+
     }
 }

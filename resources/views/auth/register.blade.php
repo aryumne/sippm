@@ -5,7 +5,7 @@
             <form class="form" id="RegisterValidation" method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="card card-login card-hidden">
-                    <div class="card-header card-header-info text-center">
+                    <div class="card-header card-header-rose text-center">
                         <h4 class="card-title">REGISTER</h4>
                         <div class="social-line">
                             <p>Pastikan NIDN anda terdaftar!</p>
@@ -21,6 +21,10 @@
                                 <input type="number" class="form-control" name="nidn" id="nidn" placeholder="NIDN"
                                     required value="{{ old('nidn') }}" number="true" minlength="10" maxlength="10">
                             </div>
+                            @error('nidn')
+                                <span id="category_id-error" class="error text-danger" for="input-id"
+                                    style="display: block;">{{ $message }}</span>
+                            @enderror
                         </span>
                         <span class="form-group bmd-form-group">
                             <div class="input-group">
@@ -31,6 +35,10 @@
                                 <input type="email" class="form-control" name="email" id="email" placeholder="Email"
                                     required value="{{ old('email') }}">
                             </div>
+                            @error('email')
+                                <span id="category_id-error" class="error text-danger" for="input-id"
+                                    style="display: block;">{{ $message }}</span>
+                            @enderror
                         </span>
                         <span class="form-group bmd-form-group">
                             <div class="input-group">
@@ -41,6 +49,10 @@
                                 <input type="password" id="password2" name="password" placeholder="Password"
                                     class="form-control" required>
                             </div>
+                            @error('password')
+                                <span id="category_id-error" class="error text-danger" for="input-id"
+                                    style="display: block;">{{ $message }}</span>
+                            @enderror
                         </span>
                         <span class="form-group bmd-form-group">
                             <div class="input-group">

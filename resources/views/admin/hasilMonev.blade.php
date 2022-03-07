@@ -10,14 +10,14 @@
                             <i class="material-icons">assignment_turned_in</i>
                         </div>
                         <div class="row card-title">
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <h4 class="fw-400">Hasil MONEV Laporan Kemajuan</h4>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="material-datatables">
-                            <table id="datatables-hasilAudit" class="table table-striped table-no-bordered table-hover"
+                            <table id="datatables-hasilMonev" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
@@ -58,7 +58,7 @@
 @section('customSCript')
     <script>
         $(document).ready(function() {
-            $('#datatables-hasilAudit').DataTable({
+            $('#datatables-hasilMonev').DataTable({
                 //pagingType documentation : "https://datatables.net/reference/option/pagingType"
                 "pagingType": "first_last_numbers",
                 "lengthMenu": [

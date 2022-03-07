@@ -19,7 +19,8 @@ class DosenController extends Controller
     public function index()
     {
         $title = "Daftar Dosen";
-        $dosens = Dosen::all();
+        // $dosens = Dosen::all();
+        $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         $prodis = Prodi::all()->sortBy('nama_prodi');
         $jabatans = Jabatan::all();
         return view('master.dosen', [
@@ -38,11 +39,14 @@ class DosenController extends Controller
             'nama' => ['required', 'string'],
             'jabatan_id' => ['required'],
             'prodi_id' => ['required'],
-            'email' => ['required', 'email', 'max:255', 'unique:dosens'],
-            'handphone' => ['required', 'numeric'],
+            'email' => ['required', 'email:dns', 'max:255', 'unique:dosens', 'regex:/(.*)@unipa\.ac\.id/i'],
+            'handphone' => ['required', 'numeric', 'unique:dosens,handphone'],
         ], [
             'nidn.unique' => 'NIDN ini sudah terdaftar',
+            'handphone.unique' => 'Nomor Hp ini sudah terdaftar',
             'email.unique' => 'Email ini sudah terdaftar',
+            'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
+            'email' => "Email tidak valid, harus menggunakan email UNIPA",
         ]);
 
         // dd($request->all());
@@ -97,21 +101,35 @@ class DosenController extends Controller
 
     public function update(Request $request, Dosen $dosen)
     {
-        // dd($request->all());
+        // dd($dosen);
         $rules = [
             'nama' => ['required', 'string'],
             'jabatan_id' => ['required', 'numeric'],
             'prodi_id' => ['required', 'numeric'],
             'handphone' => ['required', 'string'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email:dns', 'regex:/(.*)@unipa\.ac\.id/i'],
         ];
 
-        if ($request->nidn != $dosen->nidn) {
+        $nidn = str_pad($request->nidn, 10, "0", STR_PAD_LEFT);
+        // dd($nidn);
+        if ($nidn != $dosen->nidn) {
             $rules['nidn'] = ['required', 'unique:dosens,nidn'];
+        }
+
+        if ($request->email != $dosen->email) {
+            $rules['email'] = ['required', 'unique:dosens,email', 'regex:/(.*)@unipa\.ac\.id/i'];
+        }
+
+        if ($request->handphone != $dosen->handphone) {
+            $rules['handphone'] = ['required', 'unique:dosens,handphone'];
         }
 
         $validator = Validator::make($request->all(), $rules, [
             'nidn.unique' => 'NIDN sudah terdaftar',
+            'email.unique' => 'Email sudah terdaftar',
+            'handphone.unique' => 'Nomor ini sudah terdaftar',
+            'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
+            'email' => "Email tidak valid, harus menggunakan email UNIPA",
         ]);
 
         if ($validator->fails()) {
@@ -120,7 +138,7 @@ class DosenController extends Controller
         }
 
         Dosen::findOrFail($dosen->nidn)->update([
-            'nidn' => $request->nidn,
+            'nidn' => $nidn,
             'nama' => $request->nama,
             'jabatan_id' => $request->jabatan_id,
             'prodi_id' => $request->prodi_id,
@@ -128,26 +146,44 @@ class DosenController extends Controller
             'email' => $request->email,
         ]);
 
-        User::where('nidn', $dosen->nidn)->update([
-            'nidn' => $request->nidn,
-        ]);
+        $account = User::where('nidn', $dosen->nidn)->get();
+
+        if ($account != null) {
+            User::where('nidn', $dosen->nidn)->update([
+                'nidn' => $nidn,
+            ]);
+        }
 
         Alert::success('Data Profile berhasil diubah', 'success');
-        return redirect()->route('dosen.show', $request->nidn);
+        return redirect()->route('dosen.show', $nidn);
     }
+
     public function updateProfile(Request $request)
     {
-
+        $nidn = Auth::user()->nidn;
+        $dosen = Dosen::find($nidn);
         $rules = [
             'nidn' => ['required', 'string'],
             'nama' => ['required', 'string'],
             'jabatan' => ['required', 'numeric'],
             'prodi' => ['required', 'numeric'],
-            'noHp' => ['required', 'string'],
-            'email' => ['required', 'email'],
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        if ($request->email != $dosen->email) {
+            $rules['email'] = ['required', 'unique:dosens,email', 'regex:/(.*)@unipa\.ac\.id/i'];
+        }
+
+        if ($request->handphone != $dosen->handphone) {
+            $rules['handphone'] = ['required', 'unique:dosens,handphone'];
+        }
+
+        $validator = Validator::make($request->all(), $rules, [
+            'nidn.unique' => 'NIDN sudah terdaftar',
+            'email.unique' => 'Email sudah terdaftar',
+            'handphone.unique' => 'Nomor ini sudah terdaftar',
+            'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
+            'email' => "Email tidak valid, harus menggunakan email UNIPA",
+        ]);
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
@@ -160,7 +196,7 @@ class DosenController extends Controller
             'nama' => $request->nama,
             'jabatan_id' => $request->jabatan,
             'prodi_id' => $prodi,
-            'handphone' => $request->noHp,
+            'handphone' => $request->handphone,
             'email' => $request->email,
         ]);
 

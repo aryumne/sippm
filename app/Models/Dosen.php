@@ -14,6 +14,7 @@ class Dosen extends Model
     use HasFactory;
 
     protected $primaryKey = 'nidn';
+    public $incrementing = false;
 
     protected $fillable = [
         'nidn',

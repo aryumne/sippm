@@ -1,8 +1,8 @@
 @extends('layouts.main')
 @section('content')
-    .<div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
@@ -23,12 +23,9 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="toolbar">
-                            <!--        Here you can write extra buttons/actions for the toolbar              -->
-                        </div>
                         <div class="material-datatables">
-                            <table id="datatables-kemajuan" class="table table-striped table-no-bordered table-hover"
-                                cellspacing="0" width="100%" style="width:100%">
+                            <table id="kemajuans" class="table table-striped table-no-bordered table-hover" cellspacing="0"
+                                width="100%" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>Judul Proposal</th>
@@ -271,10 +268,10 @@
 @endsection
 
 @section('customSCript')
-    <script>
+    <script type="text/javascript">
         $(document).ready(function() {
             //datatables
-            $('#datatables-kemajuan').DataTable({
+            $('#kemajuans').DataTable({
                 //pagingType documentation : "https://datatables.net/reference/option/pagingType"
                 "pagingType": "first_last_numbers",
                 "lengthMenu": [

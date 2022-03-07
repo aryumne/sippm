@@ -28,13 +28,13 @@
                                                 <input class="form-control" name="nama" id="nama" type="text"
                                                     value="{{ old('nama', $d->nama) }}" required="true"
                                                     aria-required="true">
+                                                @error('nama')
+                                                    <span id="category_id-error" class="error text-danger" for="input-id"
+                                                        style="display: block;">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    @error('nama')
-                                        <span id="category_id-error" class="error text-danger" for="input-id"
-                                            style="display: block;">{{ $message }}</span>
-                                    @enderror
 
                                     <div class="row">
                                         <label class="col-sm-2 col-form-label">Jabatan</label>
@@ -49,20 +49,19 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                </select>
+                                                @error('jabatan')
+                                                    <span id="category_id-error" class="error text-danger" for="input-id"
+                                                        style="display: block;">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    @error('jabatan')
-                                        <span id="category_id-error" class="error text-danger" for="input-id"
-                                            style="display: block;">{{ $message }}</span>
-                                    @enderror
                                     <div class="row">
                                         <label class="col-sm-2 col-form-label" for="prodi">prodi</label>
                                         <div class="col-sm-9">
                                             <div class="form-group bmd-form-group is-filled">
                                                 <select class="form-control selectpicker" data-style=" btn btn-link"
-                                                    data-size="8" name="prodi" id="prodi_id">
+                                                    data-size="8" name="prodi" id="prodi">
                                                     @foreach ($prodi as $k)
                                                         <option value="{{ $k->id }}"
                                                             {{ $k->id == $d->prodi_id ? 'Selected' : '' }}>
@@ -70,28 +69,29 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                                @error('prodi')
+                                                    <span id="category_id-error" class="error text-danger" for="input-id"
+                                                        style="display: block;">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    @error('prodi')
-                                        <span id="category_id-error" class="error text-danger" for="input-id"
-                                            style="display: block;">{{ $message }}</span>
-                                    @enderror
 
                                     <div class="row">
-                                        <label class="col-sm-2 col-form-label mt-4">Nomor Hp</label>
-                                        <div class="col-sm-9 mt-4">
+                                        <label class="col-sm-2 col-form-label">Nomor Hp</label>
+                                        <div class="col-sm-9">
                                             <div class="form-group bmd-form-group is-filled">
-                                                <input class="form-control" name="noHp" id="noHp" type="text"
-                                                    value="{{ old('noHp', $d->handphone) }}" required="true"
+                                                <input class="form-control" name="handphone" id="handphone" type="text"
+                                                    value="{{ old('handphone', $d->handphone) }}" required="true"
                                                     aria-required="true">
+                                                @error('handphone')
+                                                    <span id="category_id-error" class="error text-danger" for="input-id"
+                                                        style="display: block;">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    @error('noHp')
-                                        <span id="category_id-error" class="error text-danger" for="input-id"
-                                            style="display: block;">{{ $message }}</span>
-                                    @enderror
+
 
                                     <div class="row">
                                         <label class="col-sm-2 col-form-label">Email</label>
@@ -100,13 +100,13 @@
                                                 <input class="form-control" name="email" id="email" type="email"
                                                     value="{{ old('email', $d->email) }}" required="true"
                                                     aria-required="true">
+                                                @error('email')
+                                                    <span id="category_id-error" class="error text-danger" for="input-id"
+                                                        style="display: block;">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    @error('email')
-                                        <span id="category_id-error" class="error text-danger" for="input-id"
-                                            style="display: block;">{{ $message }}</span>
-                                    @enderror
 
                                     <button type="submit" class="btn btn-rose pull-right">Ubah Profile</button>
                                     <div class="clearfix"></div>

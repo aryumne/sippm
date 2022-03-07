@@ -10,7 +10,7 @@
                             <i class="material-icons">assignment_turned_in</i>
                         </div>
                         <div class="row card-title">
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <h4 class="fw-400">Hasil Penilaian Proposal</h4>
                             </div>
                         </div>

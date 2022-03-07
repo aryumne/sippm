@@ -30,7 +30,7 @@ class FacultySeeder extends Seeder
             'nama_faculty' => 'Sastra dan Budaya',
         ]);
         Faculty::create([
-            'nama_faculty' => 'Teknologi Hasil Pertanian',
+            'nama_faculty' => 'Teknologi Pertanian',
         ]);
         Faculty::create([
             'nama_faculty' => 'Pertanian',

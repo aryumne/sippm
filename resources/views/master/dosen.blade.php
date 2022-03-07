@@ -10,15 +10,16 @@
                             <i class="material-icons">assignment</i>
                         </div>
                         <div class="row card-title">
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <h4 class="fw-400">Data Dosen</h4>
                             </div>
-                            <div class="col-6 text-right">
-                                <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                            <div class="col-md-6 text-right">
+                                {{-- <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
                                     data-target="#importForm">
                                     <span class="material-icons">file_upload</span> Import
-                                </button>
-                                <button type="button" class="btn btn-rose mt-0" data-toggle="modal" data-target="#addForm">
+                                </button> --}}
+                                <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                    data-target="#addForm">
                                     <span class="material-icons">person_add</span> Tambah
                                 </button>
                             </div>
@@ -127,15 +128,6 @@
                 <form class="form" id="AddDosenValidation" action="{{ route('dosen.store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
-                        <span class="form-group bmd-form-group email-error ">
-                            @if ($errors->any())
-                                @foreach ($errors->all() as $e)
-                                    <p class="
-                                description text-center text-danger">
-                                        {{ $e }}</p>
-                                @endforeach
-                            @endif
-                        </span>
                         <div class="row align-items-center">
                             <div class="col-3">
                                 <h6>NIDN</h6>
@@ -232,7 +224,7 @@
                         </div>
                     </div>
                     <div class="modal-footer pt-3">
-                        <button class="btn btn-secondary" type="button">Batal</button>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-rose">Simpan</button>
                     </div>
                 </form>

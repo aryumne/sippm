@@ -10,10 +10,10 @@
                             <i class="material-icons">assignment</i>
                         </div>
                         <div class="row card-title">
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <h4 class="fw-400">Data Program Pendidikan</h4>
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-md-6 text-right">
                                 <button type="button" class="btn btn-sm btn-secondary text-rose mt-0" data-toggle="modal"
                                     data-target="#addProdi">
                                     <span class="material-icons">add</span> Prodi Baru
