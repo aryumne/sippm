@@ -204,7 +204,7 @@
                             </li>
                             <li class="nav-item {{ request()->routeIs('sumberDana.*') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('sumberDana.index') }}">
-                                    <span class="sidebar-mini"> SB </span>
+                                    <span class="sidebar-mini"> SD </span>
                                     <span class="sidebar-normal">Sumber Dana </span>
                                 </a>
                             </li>
