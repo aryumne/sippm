@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Dosen;
 use App\Models\Prodi;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Kegiatan extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    // protected $fillable = ['judul_kegiatan', 'jenis_kegiatan', 'jumlah_dana', 'tanggal_kegiatan', 'path_kegiatan', 'sumber_id', 'user_id'];
-    // protected $table = "kegiatans";
 
     protected $casts = [
         'tanggal_kegiatan' => 'datetime',
@@ -30,6 +29,11 @@ class Kegiatan extends Model
     public function sumberDana()
     {
         return $this->belongsTo(SumberDana::class, 'sumber_id');
+    }
+
+    public function anggotaKegiatan()
+    {
+        return $this->belongsToMany(Dosen::class, 'anggota_kegiatans', 'kegiatan_id', 'nidn');
     }
 
     public function scopeFilterPenelitian($query, array $filters)

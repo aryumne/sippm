@@ -33,5 +33,9 @@ class KegiatanSeeder extends Seeder
         SumberDana::create([
             "sumber" => "UNIPA",
         ]);
+
+        SumberDana::create([
+            "sumber" => "Kementerian/Badan",
+        ]);
     }
 }

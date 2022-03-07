@@ -103,8 +103,9 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
     Route::resource('/laporan-akhir', LapAkhirController::class)->except(['create', 'show', 'edit', 'destroy']);
     Route::resource('/buku', BukuController::class)->except(['create', 'show', 'edit', 'destroy']);
     Route::resource('/ttg', TeknologiTepatGunaController::class)->except(['create', 'show', 'edit', 'destroy']);
-    Route::resource('/kegiatan', KegiatanController::class)->except(['index', 'show', 'edit', 'destroy']);
+    Route::resource('/kegiatan', KegiatanController::class)->only(['store', 'edit', 'update']);
     Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
+    Route::get('/kegiatan/show/{kegiatan}', [KegiatanController::class, 'show'])->name('kegiatan.show');
 });
 
 //ROUTE UNTUK SEMUA YANG LOGIN

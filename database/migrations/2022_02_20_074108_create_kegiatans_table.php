@@ -18,7 +18,7 @@ class CreateKegiatansTable extends Migration
             $table->string('judul_kegiatan');
             $table->boolean('jenis_kegiatan');
             $table->integer('jumlah_dana');
-            $table->date('tanggal_kegiatan');
+            $table->timestamp('tanggal_kegiatan')->nullable();
             $table->text('path_kegiatan');
             $table->foreignId('prodi_id');
             $table->foreignId('sumber_id');

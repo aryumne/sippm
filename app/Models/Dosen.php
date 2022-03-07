@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Prodi;
 use App\Models\Anggota;
 use App\Models\Jabatan;
-use App\Models\Prodi;
+use App\Models\Kegiatan;
 use App\Models\Proposal;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Dosen extends Model
 {
@@ -38,6 +39,11 @@ class Dosen extends Model
     public function proposal()
     {
         return $this->belongsToMany(Proposal::class, 'anggotas', 'nidn')->withPivot('isLeader');
+    }
+
+    public function kegiatan()
+    {
+        return $this->belongsToMany(Kegiatan::class, 'anggota_kegiatans', 'nidn');
     }
 
     public function anggota()
