@@ -13,7 +13,7 @@
                                 <h4 class="fw-400">Daftar Kegiatan Penelitian</h4>
                             </div>
                             <div class="col-md-6 text-right">
-                                <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                <button type="button" class="btn btn-rose btn-round mt-0" data-toggle="modal"
                                     data-target="#formKegiatan">
                                     <span class=" material-icons">add</span> Laporan baru
                                 </button>
@@ -235,24 +235,6 @@
                                 style="display: block;">{{ $message }}</span>
                         @enderror
 
-                        <div class="form-group form-file-upload form-file-multiple">
-                            <input type="file" name="path_kegiatan" class="inputFileHidden" required>
-                            <div class="input-group">
-                                <input type="text" class="form-control inputFileVisible" placeholder="Single File" require>
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-fab btn-round btn-primary">
-                                        <i class="material-icons">attach_file</i>
-                                    </button>
-                                </span>
-                            </div>
-                            <small class="form-text text-muted text-left"><cite>Maksimal 8Mb dengan format file
-                                    .pdf</cite></small>
-                        </div>
-                        @error('path_kegiatan')
-                            <span id="category_id-error" class="error text-danger" for="input-id"
-                                style="display: block;">{{ $message }}</span>
-                        @enderror
-
                         <div class="form-group">
                             <label for=" nidn_anggota">Tambah Anggota</label>
                             <select multiple class="form-control" data-size="10" title="Pilih Anggota" data-color="rose"
@@ -267,6 +249,24 @@
                             </select>
                         </div>
                         @error('nidn_anggota')
+                            <span id="category_id-error" class="error text-danger" for="input-id"
+                                style="display: block;">{{ $message }}</span>
+                        @enderror
+
+                        <div class="form-group form-file-upload form-file-multiple">
+                            <input type="file" name="path_kegiatan" class="inputFileHidden" required>
+                            <div class="input-group">
+                                <input type="text" class="form-control inputFileVisible" placeholder="Single File" require>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-fab btn-round btn-primary">
+                                        <i class="material-icons">attach_file</i>
+                                    </button>
+                                </span>
+                            </div>
+                            <small class="form-text text-muted text-left"><cite>Maksimal 8Mb dengan format file
+                                    .pdf</cite></small>
+                        </div>
+                        @error('path_kegiatan')
                             <span id="category_id-error" class="error text-danger" for="input-id"
                                 style="display: block;">{{ $message }}</span>
                         @enderror

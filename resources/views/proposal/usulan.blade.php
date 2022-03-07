@@ -20,7 +20,7 @@ col-12 @endif
                                 </div>
                                 @can('pengusulan_proposal')
                                     <div class="col-md-6 text-right">
-                                        <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                        <button type="button" class="btn btn-rose btn-round mt-0" data-toggle="modal"
                                             data-target="#formProposal">
                                             <span class="material-icons">add</span> Proposal Baru
                                         </button>
@@ -291,23 +291,6 @@ col-12 @endif
                                     style="display: block;">{{ $message }}</span>
                             @enderror
                         @endif
-                        <div class="form-group form-file-upload form-file-multiple">
-                            <input type="file" name="path_proposal" class="inputFileHidden" required>
-                            <div class="input-group">
-                                <input type="text" class="form-control inputFileVisible" placeholder="Pilih File">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-fab btn-round btn-rose">
-                                        <i class="material-icons">attach_file</i>
-                                    </button>
-                                </span>
-                            </div>
-                            <small class="form-text text-muted text-left"><cite>Maksimal 2Mb dengan format file
-                                    .pdf</cite></small>
-                        </div>
-                        @error('path_proposal')
-                            <span id="category_id-error" class="error text-danger" for="input-id"
-                                style="display: block;">{{ $message }}</span>
-                        @enderror
                         <div class="form-group">
                             <label for=" nidn_anggota">Tambah Anggota</label>
                             <select multiple class="form-control" data-size="10" title="Pilih Anggota" data-color="rose"
@@ -322,6 +305,23 @@ col-12 @endif
                             </select>
                         </div>
                         @error('nidn_anggota')
+                            <span id="category_id-error" class="error text-danger" for="input-id"
+                                style="display: block;">{{ $message }}</span>
+                        @enderror
+                        <div class="form-group form-file-upload form-file-multiple">
+                            <input type="file" name="path_proposal" class="inputFileHidden" required>
+                            <div class="input-group">
+                                <input type="text" class="form-control inputFileVisible" placeholder="Pilih File">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-fab btn-round btn-rose">
+                                        <i class="material-icons">attach_file</i>
+                                    </button>
+                                </span>
+                            </div>
+                            <small class="form-text text-muted text-left"><cite>Maksimal 2Mb dengan format file
+                                    .pdf</cite></small>
+                        </div>
+                        @error('path_proposal')
                             <span id="category_id-error" class="error text-danger" for="input-id"
                                 style="display: block;">{{ $message }}</span>
                         @enderror

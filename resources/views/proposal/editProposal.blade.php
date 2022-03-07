@@ -78,27 +78,7 @@ Selected @endif
                                             style="display: block;">{{ $message }}</span>
                                     @enderror
                                 @endif
-                                <div class="form-group py-0 my-0">
-                                    <cite>Jika File berkas tidak ada perubahan, upload file dikosongkan
-                                        saja</cite>
-                                </div>
-                                <div class="form-group form-file-upload form-file-multiple">
-                                    <input type="file" name="path_proposal" class="inputFileHidden">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control inputFileVisible" placeholder="Pilih File">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-fab btn-round btn-primary">
-                                                <i class="material-icons">attach_file</i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <small class="form-text text-muted text-left"><cite>Maksimal 2Mb dengan format file
-                                            .pdf</cite></small>
-                                </div>
-                                @error('path_proposal')
-                                    <span id="category_id-error" class="error text-danger" for="input-id"
-                                        style="display: block;">{{ $message }}</span>
-                                @enderror
+
                                 <div class="form-group">
                                     <label for=" nidn_anggota"> Anggota</label>
                                     <select multiple class="form-control" data-color="rose" data-size="10"
@@ -128,6 +108,28 @@ Selected @endif
                                     </select>
                                 </div>
                                 @error('nidn_anggota')
+                                    <span id="category_id-error" class="error text-danger" for="input-id"
+                                        style="display: block;">{{ $message }}</span>
+                                @enderror
+
+                                <div class="form-group py-0 my-0">
+                                    <cite>Jika File berkas tidak ada perubahan, upload file dikosongkan
+                                        saja</cite>
+                                </div>
+                                <div class="form-group form-file-upload form-file-multiple">
+                                    <input type="file" name="path_proposal" class="inputFileHidden">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control inputFileVisible" placeholder="Pilih File">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-fab btn-round btn-primary">
+                                                <i class="material-icons">attach_file</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <small class="form-text text-muted text-left"><cite>Maksimal 2Mb dengan format file
+                                            .pdf</cite></small>
+                                </div>
+                                @error('path_proposal')
                                     <span id="category_id-error" class="error text-danger" for="input-id"
                                         style="display: block;">{{ $message }}</span>
                                 @enderror

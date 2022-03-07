@@ -13,7 +13,7 @@
                                 <h4 class="fw-400">Daftar Publikasi</h4>
                             </div>
                             <div class="col-md-6 text-right">
-                                <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                <button type="button" class="btn btn-rose btn-round mt-0" data-toggle="modal"
                                     data-target="#formPublikasi">
                                     <span class="material-icons">add</span> Laporan baru
                                 </button>
@@ -320,19 +320,7 @@
                             <span id="category_id-error" class="error text-danger" for="input-id"
                                 style="display: block;">{{ $message }}</span>
                         @enderror
-                        <div class="form-group form-file-upload form-file-multiple">
-                            <input type="file" name="path_publikasi" class="inputFileHidden" required>
-                            <div class="input-group">
-                                <input type="text" class="form-control inputFileVisible" placeholder="Single File">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-fab btn-round btn-primary">
-                                        <i class="material-icons">attach_file</i>
-                                    </button>
-                                </span>
-                            </div>
-                            <small class="form-text text-muted text-left"><cite>Maksimal 2Mb dengan format file
-                                    .pdf</cite></small>
-                        </div>
+
                         @if (Auth::user()->role_id == 1)
                             <div class="form-group mt-3 pt-2">
                                 <label for="judul" class="bmd-label-floating">Tanggal Upload</label>
@@ -349,6 +337,20 @@
                             <span id="category_id-error" class="error text-danger" for="input-id"
                                 style="display: block;">{{ $message }}</span>
                         @enderror
+
+                        <div class="form-group form-file-upload form-file-multiple">
+                            <input type="file" name="path_publikasi" class="inputFileHidden" required>
+                            <div class="input-group">
+                                <input type="text" class="form-control inputFileVisible" placeholder="Single File">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-fab btn-round btn-primary">
+                                        <i class="material-icons">attach_file</i>
+                                    </button>
+                                </span>
+                            </div>
+                            <small class="form-text text-muted text-left"><cite>Maksimal 2Mb dengan format file
+                                    .pdf</cite></small>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

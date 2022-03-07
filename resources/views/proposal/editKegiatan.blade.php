@@ -74,28 +74,6 @@
                                         style="display: block;">{{ $message }}</span>
                                 @enderror
 
-                                <div class="form-group py-0 my-0">
-                                    <cite>Jika File berkas tidak ada perubahan, upload file dikosongkan
-                                        saja</cite>
-                                </div>
-                                <div class="form-group form-file-upload form-file-multiple">
-                                    <input type="file" name="path_kegiatan" class="inputFileHidden">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control inputFileVisible" placeholder="Single File">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-fab btn-round btn-primary">
-                                                <i class="material-icons">attach_file</i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <small class="form-text text-muted text-left"><cite>Maksimal 8Mb dengan format file
-                                            .pdf</cite></small>
-                                </div>
-                                @error('path_kegiatan')
-                                    <span id="category_id-error" class="error text-danger" for="input-id"
-                                        style="display: block;">{{ $message }}</span>
-                                @enderror
-
                                 <div class="form-group">
                                     <label for=" nidn_anggota"> Anggota Pelaksana </label>
                                     <select multiple class="form-control" data-color="rose" data-size="10"
@@ -118,6 +96,29 @@
                                     <span id="category_id-error" class="error text-danger" for="input-id"
                                         style="display: block;">{{ $message }}</span>
                                 @enderror
+
+                                <div class="form-group py-0 my-0">
+                                    <cite>Jika File berkas tidak ada perubahan, upload file dikosongkan
+                                        saja</cite>
+                                </div>
+                                <div class="form-group form-file-upload form-file-multiple">
+                                    <input type="file" name="path_kegiatan" class="inputFileHidden">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control inputFileVisible" placeholder="Single File">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-fab btn-round btn-primary">
+                                                <i class="material-icons">attach_file</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <small class="form-text text-muted text-left"><cite>Maksimal 8Mb dengan format file
+                                            .pdf</cite></small>
+                                </div>
+                                @error('path_kegiatan')
+                                    <span id="category_id-error" class="error text-danger" for="input-id"
+                                        style="display: block;">{{ $message }}</span>
+                                @enderror
+
                                 <div class="card-footer">
                                     <a href="{{ route('kegiatan.show', $kegiatan) }}" class="btn btn-secondary"
                                         data-dismiss="modal">Batal</a>
@@ -165,10 +166,10 @@
     </script>
     <script type="text/javaScript">
         $(document).ready(function() {
-                            // Format mata uang.
-                            $('.dana').mask('000.000.000', {
-                                reverse: true
+                                // Format mata uang.
+                                $('.dana').mask('000.000.000', {
+                                    reverse: true
+                                });
                             });
-                        });
-                    </script>
+                        </script>
 @endsection

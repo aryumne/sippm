@@ -18,7 +18,7 @@
                                     data-target="#importForm">
                                     <span class="material-icons">file_upload</span> Import
                                 </button> --}}
-                                <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                <button type="button" class="btn btn-rose btn-round mt-0" data-toggle="modal"
                                     data-target="#addForm">
                                     <span class="material-icons">person_add</span> Tambah
                                 </button>

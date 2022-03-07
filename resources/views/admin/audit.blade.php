@@ -14,7 +14,7 @@
                                 <h4 class="fw-400">Reviewer Proposal</h4>
                             </div>
                             <div class="col-md-6 text-right">
-                                <button type="button" class="btn btn-secondary text-rose mt-0" data-toggle="modal"
+                                <button type="button" class="btn btn-rose btn-round mt-0" data-toggle="modal"
                                     data-target="#formKemajuan">
                                     <span class="material-icons">add</span> Reviewer Proposal
                                 </button>

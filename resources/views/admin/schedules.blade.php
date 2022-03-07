@@ -15,9 +15,6 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="toolbar">
-                            <!--        Here you can write extra buttons/actions for the toolbar              -->
-                        </div>
                         <div class="material-datatables">
                             <table id="datatables-kemajuan" class="table table-striped table-no-bordered table-hover"
                                 cellspacing="0" width="100%" style="width:100%">
