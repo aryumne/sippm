@@ -236,12 +236,7 @@ col-12 @endif
                         @csrf
                         @if (Auth::user()->role_id == 2)
                             <input type="hidden" name="nidn_pengusul" value="{{ Auth::user()->nidn }}">
-                            <input type="hidden" name="status" value="menunggu">
-                            <input type="hidden" name="tanggal_usul" value="{{ now()->toDateString('Y-m-d') }}">
-                        @endif
-                        @if (Auth::user()->role_id == 2)
-                            <input type="hidden" name="nidn_pengusul" value="{{ Auth::user()->nidn }}">
-                            <input type="hidden" name="status" value="menunggu">
+                            <input type="hidden" name="status" value="1">
                             <input type="hidden" name="tanggal_usul" value="{{ now()->toDateString('Y-m-d') }}">
                         @endif
                         <div class="form-group">

@@ -170,12 +170,14 @@ class ProposalController extends Controller
         //     echo 'Proposal = ' . $a->proposal . '<br>';
         // }
 
-        return view('proposal.showProposal',
+        return view(
+            'proposal.showProposal',
             [
                 'title' => $title,
                 'proposal' => $proposal,
                 'audits' => $audits,
-            ]);
+            ]
+        );
     }
 
     public function edit($id)
@@ -263,7 +265,6 @@ class ProposalController extends Controller
                     return back()->withInput();
                 }
             }
-
         }
 
 
@@ -319,5 +320,4 @@ class ProposalController extends Controller
         Alert::success('Data berhasil diubah', 'success');
         return Auth::user()->id == 1 ? redirect()->route('usulan.index') : redirect()->route('usulan.show', $id);
     }
-
 }
