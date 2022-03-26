@@ -21,8 +21,4 @@ class TeknologiTepatGuna extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function dosen()
-    {
-        return $this->belongsToMany(Dosen::class, 'anggotas', 'proposal_id', 'nidn')->withPivot('isLeader');
-    }
 }

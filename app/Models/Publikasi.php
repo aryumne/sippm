@@ -26,8 +26,4 @@ class Publikasi extends Model
         return $this->belongsTo(Jenis_jurnal::class);
     }
 
-    public function dosen()
-    {
-        return $this->belongsToMany(Dosen::class, 'anggotas', 'proposal_id', 'nidn')->withPivot('isLeader');
-    }
 }

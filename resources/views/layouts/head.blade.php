@@ -21,6 +21,7 @@
     })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, {
         'GTM-K9BGS8K': true
     });
+
 </script>
 
 <!-- Analytics-Optimize Snippet -->
@@ -30,8 +31,8 @@
         i[r] = i[r] || function() {
             (i[r].q = i[r].q || []).push(arguments)
         }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0];
+        a = s.createElement(o)
+            , m = s.getElementsByTagName(o)[0];
         a.async = 1;
         a.src = g;
         m.parentNode.insertBefore(a, m)
@@ -44,6 +45,7 @@
     ga('require', 'displayfeatures');
     ga('require', 'linker');
     ga('linker:autoLink', ["2checkout.com", "avangate.com"]);
+
 </script>
 <!-- end Analytics-Optimize Snippet -->
 
@@ -52,17 +54,18 @@
     (function(w, d, s, l, i) {
         w[l] = w[l] || [];
         w[l].push({
-            'gtm.start': new Date().getTime(),
-            event: 'gtm.js'
+            'gtm.start': new Date().getTime()
+            , event: 'gtm.js'
         });
-        var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s),
-            dl = l != 'dataLayer' ? '&l=' + l : '';
+        var f = d.getElementsByTagName(s)[0]
+            , j = d.createElement(s)
+            , dl = l != 'dataLayer' ? '&l=' + l : '';
         j.async = true;
         j.src =
             'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
         f.parentNode.insertBefore(j, f);
     });
+
 </script>
 <!-- End Google Tag Manager -->
 <meta charset="utf-8" />
@@ -71,17 +74,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>
     @isset($title)
-        {{ $title }}
+    {{ $title }}
     @else
-        SIPPM UNIPA
+    SIPPM UNIPA
     @endisset
 </title>
 
-<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-    name='viewport' />
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 <!--     Fonts and icons     -->
-<link rel="stylesheet" type="text/css"
-    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 {{-- CSS Choices --}}
 <link href="{{ asset('/css/material-dashboard.css') }}" rel="stylesheet" />
@@ -118,6 +119,11 @@
 
     .fw-500 {
         font-weight: 500 !important;
+    }
+
+    .text-checkbox {
+        font-size: 12px;
+        font-weight: 400;
     }
 
 </style>

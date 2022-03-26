@@ -27,8 +27,4 @@ class Hki extends Model
         return $this->belongsTo(Jenis_hki::class);
     }
 
-    public function dosen()
-    {
-        return $this->belongsToMany(Dosen::class, 'anggotas', 'proposal_id', 'nidn')->withPivot('isLeader');
-    }
 }

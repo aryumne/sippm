@@ -1,24 +1,25 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\BukuController;
-use App\Http\Controllers\DosenController;
-use App\Http\Controllers\FacultyController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HkiController;
+use App\Http\Controllers\BukuController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DosenController;
+use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LapAkhirController;
-use App\Http\Controllers\LapKemajuanController;
 use App\Http\Controllers\PengusulController;
-use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\ReviewerController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\SumberDanaController;
+use App\Http\Controllers\LapKemajuanController;
+use App\Http\Controllers\LapPublikasiController;
 use App\Http\Controllers\TeknologiTepatGunaController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +96,7 @@ Route::group(['prefix' => 'reviewer', 'middleware' => ['auth', 'verified', 'isRe
 });
 
 //ROUTE KHUSUS ADMIN DAN PENGUSUL
+//Prefix Proposal
 Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAdminOrPengusul', 'prevent-back-history']], function () {
     Route::resource('/usulan', ProposalController::class);
     Route::resource('/laporan-kemajuan', LapKemajuanController::class);
@@ -106,9 +108,13 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
     Route::resource('/laporan-akhir', LapAkhirController::class)->except(['create', 'show', 'edit', 'destroy']);
     Route::resource('/buku', BukuController::class)->except(['create', 'show', 'edit', 'destroy']);
     Route::resource('/ttg', TeknologiTepatGunaController::class)->except(['create', 'show', 'edit', 'destroy']);
+});
+//NO Prefix
+Route::group([ 'middleware' => ['auth', 'verified', 'isAdminOrPengusul', 'prevent-back-history']], function () {
     Route::resource('/kegiatan', KegiatanController::class)->only(['store', 'edit', 'update']);
     Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
     Route::get('/kegiatan/show/{kegiatan}', [KegiatanController::class, 'show'])->name('kegiatan.show');
+    Route::resource('luaran-publikasi', LapPublikasiController::class);
 });
 
 //ROUTE UNTUK SEMUA YANG LOGIN
