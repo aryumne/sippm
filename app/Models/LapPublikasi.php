@@ -26,7 +26,7 @@ class LapPublikasi extends Model
 
     public function timIntern()
     {
-        return $this->belongsToMany(Dosen::class, 'tim_intern_publikasi', 'lap_publikasi_id', 'nidn')->withPivot('isLeader');
+        return $this->belongsToMany(Dosen::class, 'tim_intern_publikasis', 'lap_publikasi_id', 'nidn')->withPivot('isLeader');
     }
 
     public function timExtern()

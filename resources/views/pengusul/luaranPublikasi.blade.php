@@ -24,7 +24,7 @@
                         <table id="luaran-publikasi" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Ketua Penulis</th>
+                                    <th>Penulis</th>
                                     <th>Judul Artikel</th>
                                     <th>Nama Jurnal</th>
                                     <th>Tahun Publikasi</th>
@@ -34,7 +34,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Ketua Penulis</th>
+                                    <th>Penulis</th>
                                     <th>Judul Artikel</th>
                                     <th>Nama Jurnal</th>
                                     <th>Tahun Publikasi</th>

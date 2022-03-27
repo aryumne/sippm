@@ -113,25 +113,28 @@ class LapPublikasiController extends Controller
                     $ketuaPublikasi = TimExternPublikasi::where('lap_publikasi_id', $publikasi->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->get();
                     //kalau ada, redirect ke detail data yang sama.
                     if($ketuaPublikasi) {
-                        Alert::toast('Gagal menyimpan, Data yang diinputkan sama dengan data ini', 'warning');
+                        Alert::toast('Kami melihat data yang sama, mungkin data ini yang ada maksud.', 'warning');
                         return redirect()->route('luaran-publikasi.show', $publikasi);
                     }
                 }
             }
 
             //cek apakah ketua juga ditambahkan sebagai anggota atau tidak
-            foreach($nama_anggota as $extern)
-            {
-                //cek kesamaan inputan ketua dan anggota luar
-                $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
-                $hasil = $similiar/strlen($request->nama_ketua) * 100;
-                //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
-                if((int)$hasil >= 80)
+           if($nama_anggota != null)
+           {
+                foreach($nama_anggota as $extern)
                 {
-                    Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
-                    return back()->withInput();
+                    //cek kesamaan inputan ketua dan anggota luar
+                    $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
+                    $hasil = $similiar/strlen($request->nama_ketua) * 100;
+                    //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
+                    if((int)$hasil >= 80)
+                    {
+                        Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
+                        return back()->withInput();
+                    }
                 }
-            }
+           }
         }
 
         //upload file ke folder laporan-publikasi
@@ -174,36 +177,76 @@ class LapPublikasiController extends Controller
             ]);
         }
 
-        if(count($nama_anggota) >= 1 && $nama_anggota[0] != null) {
-            for($i = 0; $i < count($nama_anggota); $i++ )
-            {
-                TimExternPublikasi::create([
-                    'lap_publikasi_id' => $newPublikasi->id,
-                    'nama' => $nama_anggota[$i],
-                    'asal_institusi' => $asal_anggota[$i],
-                    'isLeader' => false,
-                ]);
-            }
+        if($nama_anggota != null)
+        {
+                for($i = 0; $i < count($nama_anggota); $i++ )
+                {
+                    TimExternPublikasi::create([
+                        'lap_publikasi_id' => $newPublikasi->id,
+                        'nama' => $nama_anggota[$i],
+                        'asal_institusi' => $asal_anggota[$i],
+                        'isLeader' => false,
+                    ]);
+                }
         }
 
-         Alert::success('Tersimpan', 'Luaran Publikasi telah ditambahkan');
-         return redirect()->route('luaran-publikasi.show', $newPublikasi->id);
+        Alert::success('Tersimpan', 'Luaran Publikasi telah ditambahkan');
+        return redirect()->route('luaran-publikasi.show', $newPublikasi->id);
 
     }
 
     public function show($id)
     {
-        dd(LapPublikasi::find($id));
+        $title = "Detail Luaran Publikasi";
+        $lapPublikasi = LapPublikasi::find($id);
+        if(Auth::user()->role_id == 2)
+        {
+            if($lapPublikasi->user_id != Auth::user()->id)
+            {
+                return abort(403);
+            }
+            $isUserAnggota = TimInternPublikasi::where('lap_publikasi_id', $lapPublikasi->id)->where('nidn', Auth::user()->nidn)->get();
+            if(count($isUserAnggota) < 1)
+            {
+                return abort(403);
+            }
+        }
+        return view('pengusul.showLuaranPublikasi', [
+            'title' => $title,
+            'lapPublikasi' => $lapPublikasi,
+        ]);
+
     }
 
     public function edit($id)
     {
-        //
+        $title = "Tambah Luaran Publikasi";
+        $lapPublikasi = LapPublikasi::find($id);
+        $jenisJurnals = Jenis_jurnal::all();
+        $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
+        if(Auth::user()->role_id == 2)
+        {
+            if($lapPublikasi->user_id != Auth::user()->id)
+            {
+                return abort(403);
+            }
+            $isUserAnggota = TimInternPublikasi::where('lap_publikasi_id', $lapPublikasi->id)->where('nidn', Auth::user()->nidn)->get();
+            if(count($isUserAnggota) < 1)
+            {
+                return abort(403);
+            }
+        }
+        return view('pengusul.editLuaranPublikasi', [
+            'title' => $title,
+            'jenisJurnals' => $jenisJurnals,
+            'dosens' => $dosens,
+            'lapPublikasi' => $lapPublikasi,
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        dd($request->all());
     }
 
     public function destroy($id)

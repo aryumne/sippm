@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-lg-10 col-xl-8">
             <div class="card">
-                <div class="card-header card-header-info card-header-icon">
+                <div class="card-header card-header-warning card-header-icon">
                     <div class="card-icon">
                         <i class="material-icons">assignment</i>
                     </div>
@@ -16,14 +16,15 @@
                 </div>
                 <div class="card-body">
                     <div class="pt-2 px-md-3">
-                        <form action="{{route('luaran-publikasi.store')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('luaran-publikasi.update', $lapPublikasi->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
                                     <label class="label-control">Judul Artikel</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('judul')}}" name="judul" id="judul" required />
+                                    <input type="text" class="form-control pl-2" value="{{ old('judul', $lapPublikasi->judul)}}" name="judul" id="judul" required />
                                     @error('judul')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
@@ -34,7 +35,7 @@
                                     <label class="label-control">Nama jurnal</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('nama')}}" name="nama" id="nama" required />
+                                    <input type="text" class="form-control pl-2" value="{{ old('nama', $lapPublikasi->nama)}}" name="nama" id="nama" required />
                                     @error('nama')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
@@ -45,7 +46,7 @@
                                     <label class="label-control">Laman jurnal</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('laman')}}" name="laman" id="laman" required />
+                                    <input type="text" class="form-control pl-2" value="{{ old('laman', $lapPublikasi->nama)}}" name="laman" id="laman" required />
                                     @error('laman')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
@@ -56,7 +57,7 @@
                                     <label class="label-control">Tahun Publikasi</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="year" class="form-control pl-2" value="{{ old('tahun')}}" name="tahun" id="tahun" required />
+                                    <input type="year" class="form-control pl-2" value="{{ old('tahun', $lapPublikasi->tahun)}}" name="tahun" id="tahun" required />
                                     @error('tahun')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
@@ -69,7 +70,7 @@
                                 <div class="col-md-9">
                                     <select class="form-control selectpicker" data-style="btn btn-link" id="jenis_jurnal_id" name="jenis_jurnal_id" data-style="btn btn-primary btn-round" required>
                                         @foreach ($jenisJurnals as $jenis)
-                                        <option value="{{ $jenis->id }}" {{ old('jenis_jurnal_id') == $jenis->id ? 'Selected' : ''}}>
+                                        <option value="{{ $jenis->id }}" {{ old('jenis_jurnal_id', $lapPublikasi->jenis_jurnal_id) == $jenis->id ? 'Selected' : ''}}>
                                             {{ $jenis->jurnal }}
                                         </option>
                                         @endforeach
@@ -84,10 +85,13 @@
                                     <label class="label-control">Ketua Penulis</label>
                                 </div>
                                 <div class="col-md-9">
+                                    {{-- Ketua dari dalam UNIPA --}}
+                                    @foreach ($lapPublikasi->timIntern as $internKetua)
+                                    @if ($internKetua->pivot->isLeader == true)
                                     <div id="nidn_ketua">
                                         <select class="form-control" data-size="10" data-color="rose" id="choices-tag-ketua" name="nidn_ketua" required>
                                             @foreach ($dosens as $ds)
-                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
+                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" {{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) == $internKetua->nidn ? 'Selected' : '' }}>
                                                 {{ $ds->nama }}
                                             </option>
                                             @endforeach
@@ -97,7 +101,39 @@
                                         <input type="checkbox" name="checkKetua" id="checkKetua">
                                         <span class="text-checkbox">Ketua Penulis dari Luar Universitas Papua</span>
                                     </label>
+                                    @endif
+                                    @endforeach
+                                    <div id="nidn_ketua" style="display: none">
+                                        <select class="form-control" data-size="10" data-color="rose" id="choices-tag-ketua" required>
+                                            @foreach ($dosens as $ds)
+                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
+                                                {{ $ds->nama }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    {{-- Ketua dari Luar UNIPA --}}
+                                    @foreach ($lapPublikasi->timExtern as $externKetua)
+                                    @if($externKetua->isLeader == true)
+                                    <label id="labelCheckboxKetua">
+                                        <input type="checkbox" name="checkKetua" id="checkKetua" checked>
+                                        <span class="text-checkbox">Ketua Penulis dari Luar Universitas Papua</span>
+                                    </label>
                                     <div class="row" id="ketua_luar">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control " value="{{ old('nama_ketua', $externKetua->nama)}}" name="nama_ketua" id="nama_ketua" placeholder="Nama Ketua Penulis" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" value="{{ old('asal_ketua', $externKetua->asal_institusi)}}" name="asal_ketua" id="asal_ketua" placeholder="Asal Instansi" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    @endforeach
+                                    <div class="row" id="ketua_luar" style="display: none">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <input type="text" class="form-control " value="{{ old('nama_ketua')}}" name="nama_ketua" id="nama_ketua" placeholder="Nama Ketua Penulis" />
@@ -109,7 +145,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                             <div class="row py-2">
@@ -119,10 +154,14 @@
                                 <div class="col-md-9">
                                     <div id="nidn_anggota">
                                         <select multiple class="form-control" data-size="10" data-color="rose" id="choices-tag-anggota" name="nidn_anggota[]" required>
+                                            @foreach ($lapPublikasi->timIntern as $internAnggota)
+                                            @if($internAnggota->pivot->isLeader == false)
                                             @foreach ($dosens as $ds)
-                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
+                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" {{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) == $internAnggota->nidn ? 'Selected' : '' }}>
                                                 {{ $ds->nama }}
                                             </option>
+                                            @endforeach
+                                            @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -133,6 +172,19 @@
                                                     <i class="material-icons">add</i> Anggota dari luar
                                                 </button>
                                             </div>
+                                            @foreach ($lapPublikasi->timExtern as $externAnggota)
+                                            @if($externAnggota->isLeader == false)
+                                            <div class="row" id="anggotaKe-{{ $loop->iteration }}">
+                                                <div class="col-md-6">
+                                                    <div class="form-group"> <input type="text" value="{{ $externAnggota->nama }}" class="form-control" name="nama_anggota[]" id="nama_anggota" placeholder="Nama anggota Penulis" /></div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="form-group"><input type="text" value="{{ $externAnggota->asal_institusi }}" class="form-control" name="asal_anggota[]" id="asal_anggota" placeholder="Asal Instansi" /></div>
+                                                </div><button type="button" class="btn btn-sm btn-danger btn-just-icon" onclick="removeRowAnggota('{{ $loop->iteration }}')"><i class="material-icons">remove</i>
+
+                                            </div>
+                                            @endif
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +195,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="form-group form-file-upload form-file-multiple" id="unggah_artikel">
-                                        <input type="file" name="path_publikasi" class="inputFileHidden" required>
+                                        <input type="file" name="path_publikasi" class="inputFileHidden">
                                         <div class="input-group">
                                             <input type="text" id="path_publikasi" class="form-control inputFileVisible" placeholder="single file">
                                             <span class="input-group-btn">
@@ -152,7 +204,7 @@
                                                 </button>
                                             </span>
                                         </div>
-                                        <small class="form-text text-muted text-left"><cite>Maksimal 8 Mb dengan format file .pdf</cite></small>
+                                        <small class="form-text text-muted text-left"><cite>Jika tidak ada perubahan pada file sebelumnya tidak perlu mengunggah ulang, ( maksimal 8 Mb dengan format file .pdf)</cite></small>
                                         @error('path_publikasi')
                                         <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                         @enderror
@@ -185,13 +237,16 @@
     }
 
     function removeRowAnggota(y) {
-        $('#anggotaKe-' + y).remove();
+        var confirmCheck = confirm("Apakah penulis ini tidak termasuk?");
+        if (confirmCheck === true) {
+            $('#anggotaKe-' + y).remove();
+        }
     }
 
 </script>
 <script>
     $(document).ready(function() {
-        $('#ketua_luar').hide();
+
         //checkbox Ketua Luar
         $('#checkKetua').change(function() {
             if ($(this).is(":checked")) {
@@ -201,7 +256,8 @@
                 $('#nama_ketua').prop('required', true);
                 $('#asal_ketua').prop('required', true);
             } else {
-                $("#nidn_ketua").show();
+                $("#nidn_ketua").css('display', "block");
+                $("#choices-tag-ketua").prop('name', "nidn_ketua");
                 $('#ketua_luar').hide();
                 $('#nama_ketua').prop('required', false);
                 $('#asal_ketua').prop('required', false);
@@ -213,22 +269,6 @@
             viewMode: 'years'
             , format: 'Y'
         });
-
-        //choices-tag-ketua
-        var choicesTagsKetua = document.getElementById('choices-tag-ketua');
-        var color = choicesTagsKetua.dataset.color;
-        if (choicesTagsKetua) {
-            const example = new Choices(choicesTagsKetua, {
-                maxItemCount: 40
-                , removeItemButton: false
-                , addItems: true
-                , itemSelectText: ''
-                , classNames: {
-                    item: 'btn btn-sm btn-link btn-' + color + ' me-2'
-                , }
-            });
-        }
-        $('.choices').css("margin-bottom", "3px");
 
         //choices-tag-anggota
         var choicesTagsAnggota = document.getElementById('choices-tag-anggota');
@@ -244,6 +284,26 @@
                 , }
             });
         }
+    });
+
+</script>
+<script>
+    $(document).ready(function() {
+        //choices-tag-ketua
+        var choicesTagsKetua = document.getElementById('choices-tag-ketua');
+        var color = choicesTagsKetua.dataset.color;
+        if (choicesTagsKetua) {
+            const example = new Choices(choicesTagsKetua, {
+                maxItemCount: 40
+                , removeItemButton: false
+                , addItems: true
+                , itemSelectText: ''
+                , classNames: {
+                    item: 'btn btn-sm btn-link btn-' + color + ' me-2'
+                , }
+            });
+        }
+        $('.choices').css("margin-bottom", "3px");
 
     });
 
