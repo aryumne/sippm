@@ -86,6 +86,10 @@
                                 </div>
                                 <div class="col-md-9">
                                     {{-- Ketua dari dalam UNIPA --}}
+                                    {{-- cek intern ketua ada atau tidak
+                                        kalau ada tampilkan ketua dan checkboxnya off
+                                        kalau tidak ada checkboxnya
+                                        --}}
                                     @foreach ($lapPublikasi->timIntern as $internKetua)
                                     @if ($internKetua->pivot->isLeader == true)
                                     <div id="nidn_ketua">
@@ -101,10 +105,25 @@
                                         <input type="checkbox" name="checkKetua" id="checkKetua">
                                         <span class="text-checkbox">Ketua Penulis dari Luar Universitas Papua</span>
                                     </label>
+                                    <div class="row" id="ketua_luar" style="display: none">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control " value="{{ old('nama_ketua')}}" name="nama_ketua" id="nama_ketua" placeholder="Nama Ketua Penulis" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" value="{{ old('asal_ketua')}}" name="asal_ketua" id="asal_ketua" placeholder="Asal Instansi" />
+                                            </div>
+                                        </div>
+                                    </div>
                                     @endif
                                     @endforeach
+                                    {{-- Ketua dari Luar UNIPA --}}
+                                    @foreach ($lapPublikasi->timExtern as $externKetua)
+                                    @if($externKetua->isLeader == true)
                                     <div id="nidn_ketua" style="display: none">
-                                        <select class="form-control" data-size="10" data-color="rose" id="choices-tag-ketua" required>
+                                        <select class="form-control" data-size="10" name="nidn_ketua" data-color="rose" id="choices-tag-ketua" required>
                                             @foreach ($dosens as $ds)
                                             <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
                                                 {{ $ds->nama }}
@@ -112,9 +131,6 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    {{-- Ketua dari Luar UNIPA --}}
-                                    @foreach ($lapPublikasi->timExtern as $externKetua)
-                                    @if($externKetua->isLeader == true)
                                     <label id="labelCheckboxKetua">
                                         <input type="checkbox" name="checkKetua" id="checkKetua" checked>
                                         <span class="text-checkbox">Ketua Penulis dari Luar Universitas Papua</span>
@@ -133,18 +149,6 @@
                                     </div>
                                     @endif
                                     @endforeach
-                                    <div class="row" id="ketua_luar" style="display: none">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control " value="{{ old('nama_ketua')}}" name="nama_ketua" id="nama_ketua" placeholder="Nama Ketua Penulis" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" value="{{ old('asal_ketua')}}" name="asal_ketua" id="asal_ketua" placeholder="Asal Instansi" />
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="row py-2">
@@ -153,15 +157,16 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div id="nidn_anggota">
-                                        <select multiple class="form-control" data-size="10" data-color="rose" id="choices-tag-anggota" name="nidn_anggota[]" required>
-                                            @foreach ($lapPublikasi->timIntern as $internAnggota)
-                                            @if($internAnggota->pivot->isLeader == false)
-                                            @foreach ($dosens as $ds)
-                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" {{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) == $internAnggota->nidn ? 'Selected' : '' }}>
-                                                {{ $ds->nama }}
+                                        <select multiple class="form-control" data-size="10" data-color="rose" id="choices-tag-anggota" name="nidn_anggota[]">
+                                            @foreach ($dosens as $dsn)
+
+                                            <option value="{{ str_pad($dsn->nidn, 10, '0', STR_PAD_LEFT) }}" @foreach ($lapPublikasi->timIntern as $internAnggota)
+                                                @if($internAnggota->pivot->isLeader == false)
+                                                {{ str_pad($dsn->nidn, 10, '0', STR_PAD_LEFT) == $internAnggota->nidn ? 'Selected' : '' }}
+                                                @endif
+                                                @endforeach>
+                                                {{ $dsn->nama }}
                                             </option>
-                                            @endforeach
-                                            @endif
                                             @endforeach
                                         </select>
                                     </div>

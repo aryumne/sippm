@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div id="nidn_anggota">
-                                        <select multiple class="form-control" data-size="10" data-color="rose" id="choices-tag-anggota" name="nidn_anggota[]" required>
+                                        <select multiple class="form-control" data-size="10" data-color="rose" id="choices-tag-anggota" name="nidn_anggota[]">
                                             @foreach ($dosens as $ds)
                                             <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
                                                 {{ $ds->nama }}

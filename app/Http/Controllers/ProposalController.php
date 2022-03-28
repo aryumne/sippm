@@ -283,8 +283,6 @@ class ProposalController extends Controller
         $path_proposal = $request->file('path_proposal');
         if ($path_proposal != null) {
             $filename = $path_proposal->getClientOriginalName();
-            //query file proposal sudah ada atau tidak
-            $cekfilename = Proposal::where('path_proposal', 'proposal/' . str_replace(" ", "-", $filename))->get();
             $path_proposal = $path_proposal->storeAs('proposal', str_replace(" ", "-", $filename));
         } else {
             $path_proposal = $proposal->path_proposal;
