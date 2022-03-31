@@ -63,12 +63,19 @@ class BukuController extends Controller
             'path_buku' => ['required', 'file', 'mimes:pdf', 'max:2048'],
             'tanggal_upload' => ['required', 'string'],
         ];
+        $messages = [
+            'proposal_id.required' => 'Anda belum memilih proposal',
+            'judul.required' => 'Judul tidak boleh kosong',
+            'penerbit' => 'Penerbit tidak boleh kosong',
+            'path_buku.file' => 'Type file harus .pdf',
+            'path_buku.max' => 'Ukuran file maksimal 2 Mb',
+        ];
 
         if ($request->isbn != null) {
             $rules['isbn'] = ['unique:bukus', 'digits:13'];
         }
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
@@ -110,6 +117,13 @@ class BukuController extends Controller
             'penerbit' => ['required', 'string'],
             'tanggal_upload' => ['required', 'string'],
         ];
+        $messages = [
+            'proposal_id.required' => 'Anda belum memilih proposal',
+            'judul.required' => 'Judul tidak boleh kosong',
+            'penerbit' => 'Penerbit tidak boleh kosong',
+            'path_buku.file' => 'Type file harus .pdf',
+            'path_buku.max' => 'Ukuran file maksimal 2 Mb',
+        ];
 
         if ($buku->path_buku != $request->path_buku) {
             $rules['path_buku'] = ['required', 'file', 'mimes:pdf', 'max:2048'];
@@ -119,7 +133,7 @@ class BukuController extends Controller
             $rules['isbn'] = ['unique:bukus', 'digits:13'];
         }
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');

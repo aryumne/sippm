@@ -81,8 +81,12 @@ class KegiatanController extends Controller
             'tanggal_kegiatan' => ['required', 'string'],
             'path_kegiatan' => ['required', 'file', 'mimes:pdf', 'max:8192'],
             'sumberDana' => ['required', 'numeric'],
-            'nidn_anggota' => ['required', 'array'],
-            'nidn_anggota.*' => ['required', 'string', 'digits:10'],
+            'nidn_anggota' => ['array'],
+            'nidn_anggota.*' => ['string', 'digits:10'],
+        ], [
+            'required' => 'Tidak boleh kosong.',
+            'file' => 'Type file harus .pdf.',
+            'max' => 'Ukuran file maksimal 8 Mb.',
         ]);
 
         if ($validator->fails()) {
@@ -106,10 +110,13 @@ class KegiatanController extends Controller
         //ambil data nidn anggota
         $agt = $request->nidn_anggota;
         //cek kesamaan nidn pengusul dan anggota yang dipilih
-        foreach ($agt as $nidn_anggota) {
-            if ($nidn_anggota == Auth::user()->nidn) {
-                Alert::toast('Ketua tidak bisa jadi ', 'error');
-                return back()->withErrors($validator)->withInput();
+        if($agt != null)
+        {
+            foreach ($agt as $nidn_anggota) {
+                if ($nidn_anggota == Auth::user()->nidn) {
+                    Alert::toast('Ketua tidak bisa jadi ', 'error');
+                    return back()->withErrors($validator)->withInput();
+                }
             }
         }
 
@@ -126,12 +133,15 @@ class KegiatanController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        foreach ($agt as $nidn_anggota) {
-            if ($kegiatan) {
-                AnggotaKegiatan::create([
-                    'nidn' => str_pad($nidn_anggota, 10, "0", STR_PAD_LEFT),
-                    'kegiatan_id' => $kegiatan->id,
-                ]);
+        if($agt != null)
+        {
+            foreach ($agt as $nidn_anggota) {
+                if ($kegiatan) {
+                    AnggotaKegiatan::create([
+                        'nidn' => str_pad($nidn_anggota, 10, "0", STR_PAD_LEFT),
+                        'kegiatan_id' => $kegiatan->id,
+                    ]);
+                }
             }
         }
 
@@ -185,15 +195,20 @@ class KegiatanController extends Controller
             'dana' => ['required'],
             'tanggal_kegiatan' => ['required', 'string'],
             'sumberDana' => ['required', 'numeric'],
-            'nidn_anggota' => ['required', 'array'],
-            'nidn_anggota.*' => ['required', 'string', 'digits:10'],
+            'nidn_anggota' => ['array'],
+            'nidn_anggota.*' => ['string', 'digits:10'],
         ];
 
         if ($request->path_kegiatan != null) {
             $rules['path_kegiatan'] = ['required', 'file', 'mimes:pdf', 'max:8192'];
         }
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules,
+        [
+            'required' => 'Tidak boleh kosong.',
+            'file' => 'Type file harus .pdf.',
+            'max' => 'Ukuran file maksimal 8 Mb.',
+        ]);
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
@@ -212,6 +227,16 @@ class KegiatanController extends Controller
             $path_kegiatan = $kegiatan->path_kegiatan;
         }
 
+        if($request->nidn_anggota != null)
+        {
+            foreach ($request->nidn_anggota as $nidn_anggota) {
+                if ($nidn_anggota == Auth::user()->nidn) {
+                    Alert::toast('Ketua tidak bisa jadi ', 'error');
+                    return back()->withErrors($validator)->withInput();
+                }
+            }
+        }
+
         $kegiatan->update([
             'sumber_id' => $request->sumberDana,
             'judul_kegiatan' => $request->judul,
@@ -227,11 +252,14 @@ class KegiatanController extends Controller
             AnggotaKegiatan::where('nidn', $dsn->pivot->nidn)->where('kegiatan_id', $kegiatan->id)->delete();
         }
 
-        foreach ($request->nidn_anggota as $agt) {
-            AnggotaKegiatan::create([
-                'kegiatan_id' => $kegiatan->id,
-                'nidn' => str_pad($agt, 10, "0", STR_PAD_LEFT),
-            ]);
+        if($request->nidn_anggota != null)
+        {
+            foreach ($request->nidn_anggota as $agt) {
+                AnggotaKegiatan::create([
+                    'kegiatan_id' => $kegiatan->id,
+                    'nidn' => str_pad($agt, 10, "0", STR_PAD_LEFT),
+                ]);
+            }
         }
 
         if ($request->jenis_kegiatan == 1) {

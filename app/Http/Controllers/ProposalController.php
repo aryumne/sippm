@@ -65,13 +65,15 @@ class ProposalController extends Controller
             'nidn_anggota.*' => ['required', 'string', 'digits:10'],
         ], [
             'judul.unique' => 'Judul proposal ini sudah ada',
+            'nidn_pengusul.required' => 'Pengusul tidak boleh kosong',
             'path_proposal.file' => 'Tipe file yang diupload harus .pdf',
             'path_proposal.max' => 'Ukuran maksimal file 2Mb',
+            'nidn_anggota.required' => 'Anggota tidak boleh kosong',
         ]);
 
         // dd($request->all());
         if ($validator->fails()) {
-            Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
+            Alert::toast('Gagal Menyimpan, cek kembali isi form anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
 
@@ -214,6 +216,9 @@ class ProposalController extends Controller
             'nidn_anggota' => ['required', 'array', 'min:1', 'max:2'],
             'nidn_anggota.*' => ['required', 'string', 'digits:10'],
         ];
+        $messages = [
+            'nidn_anggota.required' => 'Anggota tidak boleh kosong',
+        ];
         if (Auth::user()->role_id == 1) {
             $rules['tanggal_usul'] = ['required'];
             $rules['nidn_pengusul'] = ['required'];
@@ -221,16 +226,19 @@ class ProposalController extends Controller
         }
         if ($request->judul != $proposal->judul) {
             $rules['judul'] = ['required', 'string', 'unique:proposals'];
+            $messages['judul.unique'] = 'Judul proposal ini sudah ada';
         }
         if ($request->path_proposal != null) {
             $rules['path_proposal'] = ['required', 'mimes:pdf', 'file', 'max:2048'];
+            $messages['path_proposal.file'] = 'Tipe file yang diupload harus .pdf';
+            $messages['path_proposal.max'] = 'Ukuran maksimal file 2Mb';
         }
 
         // dd($request->all());
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
+            Alert::toast('Gagal Menyimpan, cek kembali isi form anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
 

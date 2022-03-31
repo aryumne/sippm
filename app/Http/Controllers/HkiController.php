@@ -66,6 +66,10 @@ class HkiController extends Controller
             'jenis' => ['required', 'numeric'],
             'tanggal_upload' => ['required', 'string'],
             'path_hki' => ['required', 'file', 'mimes:pdf', 'max:2048'],
+        ], [
+            'required' => 'Tidak boleh kosong.',
+            'file' => 'Type file harus .pdf.',
+            'max' => 'Ukuran file maksimal 2 Mb.',
         ]);
 
         if ($validator->fails()) {
@@ -107,7 +111,11 @@ class HkiController extends Controller
             $rules['path_hki'] = ['required', 'file', 'mimes:pdf', 'max:2048'];
         }
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, [
+            'required' => 'Tidak boleh kosong.',
+            'file' => 'Type file harus .pdf.',
+            'max' => 'Ukuran file maksimal 2 Mb.',
+        ]);
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');

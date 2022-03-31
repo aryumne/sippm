@@ -62,6 +62,10 @@ class TeknologiTepatGunaController extends Controller
             'bidang' => ['required', 'string'],
             'path_ttg' => ['required', 'file', 'mimes:pdf', 'max:2048'],
             'tanggal_upload' => ['required', 'string'],
+        ], [
+            'required' => 'Tidak boleh kosong.',
+            'file' => 'Type file harus .pdf.',
+            'max' => 'Ukuran file maksimal 2 Mb.',
         ]);
 
         if ($validator->fails()) {
@@ -106,7 +110,11 @@ class TeknologiTepatGunaController extends Controller
             $rules['path_ttg'] = ['required', 'file', 'mimes:pdf', 'max:2048'];
         }
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, [
+            'required' => 'Tidak boleh kosong.',
+            'file' => 'Type file harus .pdf.',
+            'max' => 'Ukuran file maksimal 2 Mb.',
+        ]);
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
