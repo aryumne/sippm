@@ -129,9 +129,33 @@
                     <div class="collapse {{ request()->routeIs('luaran*') ? 'show': '' }}" id="lap-luaran">
                         <ul class="nav">
                             <li class="nav-item {{ request()->routeIs('luaran-publikasi*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('luaran-publikasi.index') }}">
-                                    <span class="sidebar-mini"> P </span>
+                                <a class="nav-link" href="#">
+                                    <span class="sidebar-mini"> LP </span>
                                     <span class="sidebar-normal">Publikasi </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('luaran-hki*') ? 'active' : '' }}">
+                                <a class="nav-link" href="#">
+                                    <span class="sidebar-mini"> LH </span>
+                                    <span class="sidebar-normal">HKI </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('luaran-buku*') ? 'active' : '' }}">
+                                <a class="nav-link" href="#">
+                                    <span class="sidebar-mini"> LB </span>
+                                    <span class="sidebar-normal">Buku </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('luaran-ttg*') ? 'active' : '' }}">
+                                <a class="nav-link" href="#">
+                                    <span class="sidebar-mini"> LT </span>
+                                    <span class="sidebar-normal">Tekhnologi Tepat Guna </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('luaran-naskah*') ? 'active' : '' }}">
+                                <a class="nav-link" href="#">
+                                    <span class="sidebar-mini"> LN </span>
+                                    <span class="sidebar-normal">Naskah Akademik </span>
                                 </a>
                             </li>
                         </ul>

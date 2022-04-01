@@ -114,7 +114,7 @@ Route::group([ 'middleware' => ['auth', 'verified', 'isAdminOrPengusul', 'preven
     Route::resource('/kegiatan', KegiatanController::class)->only(['store', 'edit', 'update']);
     Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
     Route::get('/kegiatan/show/{kegiatan}', [KegiatanController::class, 'show'])->name('kegiatan.show');
-    Route::resource('luaran-publikasi', LapPublikasiController::class);
+    // Route::resource('luaran-publikasi', LapPublikasiController::class);
 });
 
 //ROUTE UNTUK SEMUA YANG LOGIN

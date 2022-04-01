@@ -28,6 +28,8 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'email:dns','regex:/(.*)@unipa\.ac\.id/i', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
+            'nidn.unique' => 'NIDN ini sudah terdaftar',
+            'email.unique' => 'Email ini sudah digunakan',
             'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
             'email' => "Email tidak valid, harus menggunakan email UNIPA",
             'password.min' => "Password minimal 8 digit",
