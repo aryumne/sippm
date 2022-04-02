@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="
-@if (Auth::user()->role_id == 2) col-lg-8 col-xl-7
+@if (Auth::user()->role_id == 2) col-lg-10 col-xl-8
 @else
 col-12 @endif
                 ">
@@ -33,7 +33,7 @@ col-12 @endif
                         @foreach ($pgs->proposal as $proposal)
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="card-title fw-400">{{ $proposal->judul }}</h3>
+                                <h3 class="card-title fw-400" style="line-height: 1.2em">{{ $proposal->judul }}</h3>
                                 <h6 class="card-subtitle mb-3 mt-1 text-muted">
                                     {{ $proposal->tanggal_usul->format("d M Y") }}
                                 </h6>
@@ -183,6 +183,13 @@ col-12 @endif
                                         <td class="text-right">
                                             <a href="{{ route('usulan.show', $lap->id) }}" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">read_more</i></a>
                                             <a href="{{ route('usulan.edit', $lap->id) }}" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">mode_edit</i></a>
+                                            @if(Auth::user()->id == 1)
+                                            <form action="{{ route('usulan.destroy', $lap->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method("DELETE")
+                                                <button type="submit" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-link btn-danger btn-just-icon edit"><i class="material-icons">delete_outline</i></button>
+                                            </form>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach

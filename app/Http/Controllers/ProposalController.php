@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggota;
 use App\Models\Audit;
 use App\Models\Dosen;
+use App\Models\Anggota;
 use App\Models\Faculty;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
 
 class ProposalController extends Controller
 {
@@ -335,5 +336,22 @@ class ProposalController extends Controller
         }
         Alert::success('Data berhasil diubah', 'success');
         return Auth::user()->role_id == 1 ? redirect()->route('usulan.show', $id) :  redirect()->route('usulan.index');
+    }
+
+    public function destroy($id)
+    {
+        if(Auth::user()->id != 1)
+        {
+            return abort(403);
+        }
+        $proposal = Proposal::find($id);
+        Storage::delete($proposal->path_proposal);
+        $anggotas = Anggota::where('proposal_id', $id)->get();
+        foreach($anggotas as $anggota)
+        {
+            $anggota->delete();
+        }
+        $proposal->delete();
+        return redirect()->route('usulan.index');
     }
 }
