@@ -69,6 +69,7 @@ class ProposalController extends Controller
             'path_proposal.file' => 'Tipe file yang diupload harus .pdf',
             'path_proposal.max' => 'Ukuran maksimal file 2Mb',
             'nidn_anggota.required' => 'Anggota tidak boleh kosong',
+            'nidn_anggota.max' => "Anggota tidak boleh lebih dari 2 orang",
         ]);
 
         // dd($request->all());
@@ -111,12 +112,18 @@ class ProposalController extends Controller
                 Alert::toast('Pengusulan hanya dapat dilakukan sekali dalam satu periode', 'error');
                 return back()->withInput();
             }
+            $getDataPengusul = Anggota::where('nidn', $nidn_pengusul)->whereYear('created_at', $getYear)->get();
+            if (count($getDataPengusul) >= 2) {
+                Alert::toast('Anda sudah terdaftar 2 kali di periode ini', 'error');
+                return back()->withInput();
+            }
 
             //query cek anggota sudah terdaftar dua kali diperiode ini atau belum
             foreach ($request->nidn_anggota as $agtS) {
                 $getAgt = Anggota::where('nidn', $agtS)->whereYear('created_at', $getYear)->get();
+                $namaAnggota = Dosen::find($agtS);
                 if (count($getAgt) >= 2) {
-                    Alert::toast($agtS . ' sudah terdaftar 2 kali di periode ini', 'error');
+                    Alert::toast($namaAnggota->nama . ' sudah terdaftar 2 kali di periode ini', 'error');
                     return back()->withInput();
                 }
             }
@@ -196,7 +203,7 @@ class ProposalController extends Controller
         }
         $title = "Edit Data Proposal";
         $proposal = Proposal::find($id);
-        $dosen = Dosen::all();
+        $dosen = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
 
         return view('proposal.editProposal', [
             'title' => $title,
@@ -218,6 +225,7 @@ class ProposalController extends Controller
         ];
         $messages = [
             'nidn_anggota.required' => 'Anggota tidak boleh kosong',
+            'nidn_anggota.max' => "Anggota tidak boleh lebih dari 2 orang",
         ];
         if (Auth::user()->role_id == 1) {
             $rules['tanggal_usul'] = ['required'];
@@ -264,12 +272,14 @@ class ProposalController extends Controller
                 Alert::toast('Pengusulan hanya dapat dilakukan sekali dalam satu periode', 'error');
                 return back()->withInput();
             }
-
             //query cek anggota sudah terdaftar dua kali diperiode ini atau belum
             foreach ($request->nidn_anggota as $agtS) {
-                $getAgt = Anggota::where('nidn', $agtS)->whereYear('created_at', $getYear)->get();
+                $getAgt = Anggota::where('nidn', $agtS)->whereYear('created_at', $getYear)->where('proposal_id', '!=', $id)->get();
+                // echo $agtS. ' => '.count($getAgt) ;
+                // echo '<br>';
+                $namaAnggota = Dosen::find($agtS);
                 if (count($getAgt) >= 2) {
-                    Alert::toast($agtS . ' sudah terdaftar 2 kali di periode ini', 'error');
+                    Alert::toast($namaAnggota->nama . ' sudah terdaftar 2 kali di periode ini', 'error');
                     return back()->withInput();
                 }
             }
@@ -324,6 +334,6 @@ class ProposalController extends Controller
             ]);
         }
         Alert::success('Data berhasil diubah', 'success');
-        return Auth::user()->id == 1 ? redirect()->route('usulan.index') : redirect()->route('usulan.show', $id);
+        return Auth::user()->role_id == 1 ? redirect()->route('usulan.show', $id) :  redirect()->route('usulan.index');
     }
 }

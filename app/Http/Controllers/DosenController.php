@@ -163,7 +163,6 @@ class DosenController extends Controller
         $nidn = Auth::user()->nidn;
         $dosen = Dosen::find($nidn);
         $rules = [
-            'nidn' => ['required', 'string'],
             'nama' => ['required', 'string'],
             'jabatan' => ['required', 'numeric'],
             'prodi' => ['required', 'numeric'],
@@ -178,7 +177,6 @@ class DosenController extends Controller
         }
 
         $validator = Validator::make($request->all(), $rules, [
-            'nidn.unique' => 'NIDN sudah terdaftar',
             'email.unique' => 'Email sudah terdaftar',
             'handphone.unique' => 'Nomor ini sudah terdaftar',
             'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
@@ -189,6 +187,7 @@ class DosenController extends Controller
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
+
 
         $nidn = Auth::user()->nidn;
         $prodi = $request->prodi;

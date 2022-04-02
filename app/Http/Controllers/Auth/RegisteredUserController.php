@@ -29,7 +29,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
             'nidn.unique' => 'NIDN ini sudah terdaftar',
-            'email.unique' => 'Email ini sudah digunakan',
+            'email.unique' => 'Email ini sudah terdaftar',
             'email.regex' => "Email tidak valid, harus menggunakan email UNIPA",
             'email' => "Email tidak valid, harus menggunakan email UNIPA",
             'password.min' => "Password minimal 8 digit",
@@ -43,7 +43,14 @@ class RegisteredUserController extends Controller
 
 
         $nidn = Dosen::where('nidn', $request->nidn)->get();
-        if (count($nidn) > 0) {
+        $email = Dosen::where('email', $request->email)->get();
+        foreach($email as $cek) {
+            if($cek->nidn != $request->nidn){
+                Alert::toast("Email ini sudah terdaftar!", 'error');
+                return back()->withInput();
+            }
+        }
+        if (count($nidn) == 1) {
             $user = User::create([
                 'nidn' => $request->nidn,
                 'email' => $request->email,
@@ -66,8 +73,7 @@ class RegisteredUserController extends Controller
             } else if (Auth::user()->role_id == 3) {
                 return redirect()->intended('/reviewer');
             } else {
-                Alert::toast("You don't have any access.!", 'error');
-                return redirect()->route('login');
+                return abort(403);
             }
         } else {
             Alert::toast('NIDN tidak valid', 'error');

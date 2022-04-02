@@ -35,7 +35,7 @@ class UserController extends Controller
             User::findOrFail($id)->update([
                 'password' => Hash::make($request->password),
             ]);
-            Alert::success('Passowrd berhasil diubah', 'success');
+            Alert::success('Tersimpan', 'Password anda sudah diubah');
             return back();
         }
 
