@@ -352,6 +352,7 @@ class ProposalController extends Controller
             $anggota->delete();
         }
         $proposal->delete();
+        Alert::success('Success', 'Proposal telah dihapus!');
         return redirect()->route('usulan.index');
     }
 }

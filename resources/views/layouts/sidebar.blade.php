@@ -104,13 +104,13 @@
                     </a>
                     <div class="collapse {{ request()->routeIs('kegiatan*') ? 'show' : '' }}" id="laporan">
                         <ul class="nav">
-                            <li class="nav-item {{ $title == 'Daftar Penelitian' ? 'active' : '' }}">
+                            <li class="nav-item {{ $title == 'Daftar Penelitian' || $title == 'Detail Penelitian' || $title == 'Edit Data Penelitian' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('kegiatan.index', 'penelitian') }}">
                                     <span class="sidebar-mini"> PL </span>
                                     <span class="sidebar-normal">Penelitian </span>
                                 </a>
                             </li>
-                            <li class="nav-item {{ $title == 'Daftar Pkm' ? 'active' : '' }}">
+                            <li class="nav-item {{ $title == 'Daftar PkM' || $title == 'Detail PkM' || $title == 'Edit Data PkM' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('kegiatan.index', 'pkm') }}">
                                     <span class="sidebar-mini"> PM </span>
                                     <span class="sidebar-normal">PkM </span>
@@ -129,13 +129,13 @@
                     <div class="collapse {{ request()->routeIs('luaran*') ? 'show': '' }}" id="lap-luaran">
                         <ul class="nav">
                             <li class="nav-item {{ request()->routeIs('luaran-publikasi*') ? 'active' : '' }}">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ route('luaran-publikasi.index') }}">
                                     <span class="sidebar-mini"> LP </span>
                                     <span class="sidebar-normal">Publikasi </span>
                                 </a>
                             </li>
                             <li class="nav-item {{ request()->routeIs('luaran-hki*') ? 'active' : '' }}">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ route('luaran-hki.index') }}">
                                     <span class="sidebar-mini"> LH </span>
                                     <span class="sidebar-normal">HKI </span>
                                 </a>

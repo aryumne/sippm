@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\LapHkiController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\KegiatanController;
@@ -114,7 +115,8 @@ Route::group([ 'middleware' => ['auth', 'verified', 'isAdminOrPengusul', 'preven
     Route::resource('/kegiatan', KegiatanController::class)->only(['store', 'edit', 'update']);
     Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
     Route::get('/kegiatan/show/{kegiatan}', [KegiatanController::class, 'show'])->name('kegiatan.show');
-    // Route::resource('luaran-publikasi', LapPublikasiController::class);
+    Route::resource('luaran-publikasi', LapPublikasiController::class);
+    Route::resource('luaran-hki', LapHkiController::class);
 });
 
 //ROUTE UNTUK SEMUA YANG LOGIN

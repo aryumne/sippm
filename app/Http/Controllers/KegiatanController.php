@@ -156,8 +156,13 @@ class KegiatanController extends Controller
 
     public function show(Kegiatan $kegiatan)
     {
-        // dd($kegiatan);
-        $title = "Detail Kegiatan";
+        $jenis = "kegiatan";
+        if($kegiatan->jenis_kegiatan == 1) {
+            $jenis = "Penelitian";
+        } else {
+            $jenis = "PkM";
+        }
+        $title = "Detail ". $jenis;
         return view('proposal.showKegiatan',
             [
                 'title' => $title,
@@ -167,11 +172,16 @@ class KegiatanController extends Controller
     }
     public function edit(Kegiatan $kegiatan)
     {
-        // dd($kegiatan);
         if (Auth::user()->id != $kegiatan->user_id) {
             return abort(403);
         }
-        $title = "Edit Data Kegiatan";
+        $jenis = "kegiatan";
+        if($kegiatan->jenis_kegiatan == 1) {
+            $jenis = "Penelitian";
+        } else {
+            $jenis = "PkM";
+        }
+        $title = "Edit Data ". $jenis;
         $dosen = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         $sumberDana = SumberDana::all();
 

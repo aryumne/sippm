@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLapPublikasisTable extends Migration
+class CreateTimExternHkisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateLapPublikasisTable extends Migration
      */
     public function up()
     {
-        Schema::create('lap_publikasis', function (Blueprint $table) {
+        Schema::create('tim_extern_hkis', function (Blueprint $table) {
             $table->id();
-            $table->string('judul');
+            $table->foreignId('lap_hki_id');
             $table->string('nama');
-            $table->string('laman');
-            $table->year('tahun');
-            $table->text('path_publikasi');
-            $table->foreignId('jenis_jurnal_id');
-            $table->foreignId('user_id');
+            $table->string('asal_institusi');
+            $table->boolean('isLeader');
             $table->timestamps();
         });
     }
@@ -33,6 +30,6 @@ class CreateLapPublikasisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lap_publikasis');
+        Schema::dropIfExists('tim_extern_hkis');
     }
 }

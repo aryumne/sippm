@@ -77,8 +77,16 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <div class=""></div>
+                    @if (Auth::user()->id == $lapPublikasi->user_id || Auth::user()->role_id == 1)
+                    <div>
+                        <form action="{{ route('luaran-publikasi.destroy', $lapPublikasi->id) }}" method="POST">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-sm btn-danger text-right">Hapus</button>
+                        </form>
+                    </div>
                     <a href="{{ route('luaran-publikasi.edit', $lapPublikasi->id) }}" class="btn btn-sm btn-warning text-right">Edit</a>
+                    @endif
                 </div>
             </div>
         </div>

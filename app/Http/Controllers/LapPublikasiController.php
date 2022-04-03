@@ -19,8 +19,14 @@ class LapPublikasiController extends Controller
     public function index()
     {
         $title = "Luaran Publikasi";
-        $lapPublikasis = LapPublikasi::where('user_id', Auth::user()->id)->get();
-        return view('pengusul.luaranPublikasi', [
+        $lapPublikasis = LapPublikasi::all();
+        if(Auth::user()->role_id == 2) {
+            // ambil data publikasi yang user punya baik itu sebagai pengupload maupun hanya berkontribusi
+            $lapPublikasis = LapPublikasi::wherehas('timIntern', function($query) {
+                $query->where('tim_intern_publikasis.nidn', Auth::user()->nidn);
+            })->orWhere('user_id', Auth::user()->id)->get();
+        }
+        return view('pengusul.publikasi.luaranPublikasi', [
             'title' => $title,
             'lapPublikasis' => $lapPublikasis,
         ]);
@@ -31,7 +37,7 @@ class LapPublikasiController extends Controller
         $title = "Tambah Luaran Publikasi";
         $jenisJurnals = Jenis_jurnal::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
-        return view('pengusul.createLuaranPublikasi', [
+        return view('pengusul.publikasi.createLuaranPublikasi', [
             'title' => $title,
             'jenisJurnals' => $jenisJurnals,
             'dosens' => $dosens,
@@ -219,7 +225,7 @@ class LapPublikasiController extends Controller
                 return abort(403);
             }
         }
-        return view('pengusul.showLuaranPublikasi', [
+        return view('pengusul.publikasi.showLuaranPublikasi', [
             'title' => $title,
             'lapPublikasi' => $lapPublikasi,
         ]);
@@ -232,19 +238,16 @@ class LapPublikasiController extends Controller
         $lapPublikasi = LapPublikasi::find($id);
         $jenisJurnals = Jenis_jurnal::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
+        //cek user yang bukan admin
         if(Auth::user()->role_id == 2)
         {
+            // abort user yang bukan pemilik atau pengupload data ini
             if($lapPublikasi->user_id != Auth::user()->id)
             {
                 return abort(403);
             }
-            $isUserAnggota = TimInternPublikasi::where('lap_publikasi_id', $lapPublikasi->id)->where('nidn', Auth::user()->nidn)->get();
-            if(count($isUserAnggota) < 1)
-            {
-                return abort(403);
-            }
         }
-        return view('pengusul.editLuaranPublikasi', [
+        return view('pengusul.publikasi.editLuaranPublikasi', [
             'title' => $title,
             'jenisJurnals' => $jenisJurnals,
             'dosens' => $dosens,
@@ -256,6 +259,15 @@ class LapPublikasiController extends Controller
     {
         // dd($request->all());
         $lapPublikasi = LapPublikasi::find($id);
+        //cek user yang bukan admin
+        if(Auth::user()->role_id == 2)
+        {
+            // abort user yang bukan pemilik atau pengupload data ini
+            if($lapPublikasi->user_id != Auth::user()->id)
+            {
+                return abort(403);
+            }
+        }
         // cek ada perubahan judul atau perubahan nama ketua
         // kalau ada perubahan di salah satunya baru dilakukakan pengecekan ada data yang sama atau tidak
         // cek ada isi file unggahan atau tidak
@@ -300,10 +312,10 @@ class LapPublikasiController extends Controller
             //Cek Apakah ketua dari dalam UNIPA atau dari luar
             if($request->checkKetua == null)
             {
-                //ketua dari dalam UNIPA
-                //cek data ada yang sama atau tidak
+                // Jika ketua dari dalam UNIPA
+                // cek data ada yang sama atau tidak
                 $lapPublikasis = LapPublikasi::where('judul', 'like', '%'.$judul.'%')->get();
-                //(opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
+                // (opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
                 if(count($lapPublikasis) > 0)
                 {
                     //kalau ada, cek data ini apakah diketuai oleh inputan yang dipilih
@@ -318,7 +330,7 @@ class LapPublikasiController extends Controller
                     }
                 }
 
-                //cek apakah ketua juga ditambahkan sebagai anggota atau tidak
+                // cek apakah ketua juga ditambahkan sebagai anggota atau tidak
                 if($nidn_anggota != null)
                 {
                     foreach($nidn_anggota as $intern)
@@ -331,11 +343,11 @@ class LapPublikasiController extends Controller
                     }
                 }
             } else {
-                //Ketua dari luar UNIPA
-                //cek data ada yang sama atau tidak
+                // Jika Ketua dari luar UNIPA
+                // cek data ada yang sama atau tidak
                 $lapPublikasis = LapPublikasi::where('judul', 'like', '%'.$judul.'%')->get();
-                //(opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
-                //kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
+                // (opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
+                // kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
                 if(count($lapPublikasis) > 0)
                 {
                     foreach($lapPublikasis as $publikasi)
@@ -349,7 +361,7 @@ class LapPublikasiController extends Controller
                     }
                 }
 
-                //cek apakah ketua juga ditambahkan sebagai anggota atau tidak
+                // cek apakah ketua juga ditambahkan sebagai anggota atau tidak
                 if($nama_anggota != null)
                 {
                         foreach($nama_anggota as $extern)
@@ -368,15 +380,16 @@ class LapPublikasiController extends Controller
                 }
             }
 
-            //Ambil original filename dari file yang diupload
-            //upload file ke folder laporan-publikasi
-            $pathPublikasi = $request->file('path_publikasi');
-            if($pathPublikasi != null)
+        // Ambil original filename dari file yang diupload
+        // upload file ke folder laporan-publikasi
+        $pathPublikasi = $request->file('path_publikasi');
+        if($pathPublikasi != null)
         {
             Storage::delete($lapPublikasi->path_publikasi);
             $fileName = str_replace(" ", "-", $pathPublikasi->getClientOriginalName());
             $pathPublikasi = $pathPublikasi->storeAs('laporan-publikasi', $fileName);
-        } else {
+        } else
+        {
             $pathPublikasi = $lapPublikasi->path_publikasi;
         }
 
@@ -405,7 +418,8 @@ class LapPublikasiController extends Controller
                 'nidn' => str_pad($request->nidn_ketua, 10, "0", STR_PAD_LEFT),
                 'isLeader' => true,
             ]);
-        } else {
+        } else
+        {
             TimExternPublikasi::create([
                 'lap_publikasi_id' => $id,
                 'nama' => $request->nama_ketua,
@@ -447,6 +461,30 @@ class LapPublikasiController extends Controller
 
     public function destroy($id)
     {
-        //
+        // dd($data->timExtern);
+        $data = LapPublikasi::find($id);
+        if(Auth::user()->role_id == 2)
+        {
+            if($data->user_id != Auth::user()->id)
+            {
+                return abort(403);
+            }
+        }
+        // hapus data tim dari dalam UNIPA
+        $anggotaIntern = TimInternPublikasi::where('lap_publikasi_id', $id)->get();
+        foreach($anggotaIntern as $intern) {
+            $intern->delete();
+        }
+        // hapus data tim darl luar UNIPA
+        $anggotaExtern = TimExternPublikasi::where('lap_publikasi_id', $id)->get();
+        foreach($anggotaIntern as $extern) {
+            $extern->delete();
+        }
+        // hapus file yang sudah diupload
+        Storage::delete($data->path_publikasi);
+        // hapus data publikasi
+        $data->delete();
+        Alert::success('Success', 'Data Publikasi telah dihapus!');
+        return redirect()->route('luaran-publikasi.index');
     }
 }
