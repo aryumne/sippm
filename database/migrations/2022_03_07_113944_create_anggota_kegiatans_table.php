@@ -17,6 +17,7 @@ class CreateAnggotaKegiatansTable extends Migration
             $table->id();
             $table->foreignId('kegiatan_id');
             $table->char('nidn', 10);
+            $table->boolean('isLeader');
             $table->timestamps();
         });
     }
