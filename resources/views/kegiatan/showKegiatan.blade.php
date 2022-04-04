@@ -75,7 +75,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Tanggal Kegiatan</p>
+                                        <p>Tahun Kegiatan</p>
                                     </td>
                                     <td class="text-left">
                                         <h5>

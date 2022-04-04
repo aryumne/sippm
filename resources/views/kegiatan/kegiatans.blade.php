@@ -10,7 +10,7 @@
                     </div>
                     <div class="row card-title">
                         <div class="col-md-6">
-                            <h4 class="fw-400">Daftar Kegiatan Penelitian</h4>
+                            <h4 class="fw-400">Daftar Kegiatan {{ $jenis == 'penelitian' ? 'Penelitian' : 'PkM' }}</h4>
                         </div>
                         <div class="col-md-6 text-right">
                             <a href="{{ route('kegiatan.create', $jenis) }}" class="btn btn-rose btn-round mt-0">

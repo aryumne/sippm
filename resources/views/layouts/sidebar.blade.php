@@ -107,14 +107,14 @@
                     <div class="collapse {{ request()->routeIs('kegiatan*') ? 'show' : '' }}" id="laporan">
                         <ul class="nav">
                             <li class="nav-item {{ $title == 'Daftar Penelitian' || $title == 'Tambah penelitian' || $title == 'Detail Penelitian' || $title == 'Edit Data Penelitian' ? 'active' : '' }}">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ route('kegiatan.index', 'penelitian') }}">
                                     <span class="sidebar-mini"> PL </span>
                                     <span class="sidebar-normal">Penelitian </span>
                                 </a>
                             </li>
                             <li class="nav-item {{ $title == 'Daftar PkM' || $title == 'Tambah pkm' || $title == 'Detail PkM' || $title == 'Edit Data PkM' ? 'active' : '' }}">
 
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ route('kegiatan.index', 'pkm') }}">
                                     <span class="sidebar-mini"> PM </span>
                                     <span class="sidebar-normal">PkM </span>
                                 </a>
