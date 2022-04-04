@@ -112,11 +112,11 @@ Route::group(['prefix' => 'proposal', 'middleware' => ['auth', 'verified', 'isAd
 });
 //NO Prefix
 Route::group([ 'middleware' => ['auth', 'verified', 'isAdminOrPengusul', 'prevent-back-history']], function () {
-    // Route::resource('/kegiatan', KegiatanController::class)->only(['store', 'edit', 'update']);
-    // Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
-    // Route::get('/kegiatan/show/{kegiatan}', [KegiatanController::class, 'show'])->name('kegiatan.show');
-    // Route::resource('luaran-publikasi', LapPublikasiController::class);
-    // Route::resource('luaran-hki', LapHkiController::class);
+    Route::resource('/kegiatan', KegiatanController::class)->except(['index', 'create']);
+    Route::get('/kegiatan/{kegiatan}', [KegiatanController::class, 'index'])->name('kegiatan.index');
+    Route::get('/kegiatan/create/{kegiatan}', [KegiatanController::class, 'create'])->name('kegiatan.create');
+    Route::resource('luaran-publikasi', LapPublikasiController::class);
+    Route::resource('luaran-hki', LapHkiController::class);
 });
 
 //ROUTE UNTUK SEMUA YANG LOGIN

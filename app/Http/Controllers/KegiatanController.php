@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AnggotaKegiatan;
+use App\Models\TimInternKegiatan;
 use App\Models\Dosen;
 use App\Models\Faculty;
 use App\Models\Kegiatan;
@@ -16,59 +16,76 @@ use RealRashid\SweetAlert\Facades\Alert;
 class KegiatanController extends Controller
 {
 
-    public function index($kegiatan)
+    public function index($jenis)
     {
         $sumberDana = SumberDana::all();
         $faculties = Faculty::all();
         $dosen = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
 
-        if ($kegiatan == "penelitian") {
+        if ($jenis == "penelitian") {
             $title = "Daftar Penelitian";
             $kegiatan = Kegiatan::where('jenis_kegiatan', 1);
-            $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
+            $dataKegiatans = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                //ambil data kegiatan yang mana user ini sebagai ketua di kegiatan tersebut
-                $kegiatan = Kegiatan::where('user_id', Auth::user()->id)->get();
-                //gabungkan dengan data kegiatan yang mana user ini sebagai anggota di kegiatan tersebut
-                $merged = $kegiatan->merge(Auth::user()->dosen->kegiatan);
-                //ubah hasil gabung dari eloquent collection ke eloquent builder
-                $kegiatan = $merged->toQuery()->where('jenis_kegiatan', 1);
-                //jika ada request maka data akan difilter dahulu
-                $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
+                $kegiatan = Kegiatan::whereHas('timIntern', function ($query) {
+                    $query->where('tim_intern_kegiatans.nidn', Auth::user()->nidn)->where('jenis_kegiatan', 1);
+                })->orwhere('user_id', Auth::user()->id);
+                // FIlter jika ada request
+                $dataKegiatans = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
 
             }
-            return view('proposal.penelitian', [
+            return view('kegiatan.kegiatans', [
                 'title' => $title,
-                'dosen' => $dosen,
-                'penelitian' => $dataKegiatan,
+                'jenis' => $jenis,
+                'dataKegiatans' => $dataKegiatans,
                 'sumberDana' => $sumberDana,
                 'faculties' => $faculties,
             ]);
-        } else if ($kegiatan == "pkm") {
-            $title = "Daftar Pkm";
+        } else if ($jenis == "pkm") {
+            $title = "Daftar PkM";
             $kegiatan = Kegiatan::where('jenis_kegiatan', 2);
-            $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
+            $dataKegiatans = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
             if (Auth::user()->role_id == 2) {
-                //ambil data kegiatan yang mana user ini sebagai ketua di kegiatan tersebut
-                $kegiatan = Kegiatan::where('user_id', Auth::user()->id)->get();
-                //gabungkan dengan data kegiatan yang mana user ini sebagai anggota di kegiatan tersebut
-                $merged = $kegiatan->merge(Auth::user()->dosen->kegiatan);
-                //ubah hasil gabung dari eloquent collection ke eloquent builder
-                $kegiatan = $merged->toQuery()->where('jenis_kegiatan', 2);
-                //jika ada request maka data akan difilter dahulu
-                $dataKegiatan = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
+                $kegiatan = Kegiatan::whereHas('timIntern', function ($query) {
+                    $query->where('tim_intern_kegiatans.nidn', Auth::user()->nidn)->where('jenis_kegiatan', 2);
+                })->orwhere('user_id', Auth::user()->id);
+                // FIlter jika ada request
+                $dataKegiatans = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun_kegiatan', 'sumber_dana']))->get();
 
             }
-            return view('proposal.pkm', [
+            return view('kegiatan.kegiatans', [
                 'title' => $title,
-                'dosen' => $dosen,
-                'pkm' => $dataKegiatan,
+                'jenis' => $jenis,
+                'dataKegiatans' => $dataKegiatans,
                 'sumberDana' => $sumberDana,
                 'faculties' => $faculties,
             ]);
         } else {
             return abort(404);
         }
+    }
+
+    public function create($jenis)
+    {
+        dd($jenis);
+        $jenis = "";
+        if($kegiatan->jenis_kegiatan == 1) {
+            $jenis = "Penelitian";
+        } else {
+            $jenis = "PkM";
+        }
+        $title = "Tambah ". $jenis;
+        $sumberDana = SumberDana::all();
+        $faculties = Faculty::all();
+        $dosen = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
+        return view('proposal.pkm', [
+            'title' => $title,
+            'jenis' => $jenis,
+            'dosen' => $dosen,
+            'pkm' => $dataKegiatan,
+            'sumberDana' => $sumberDana,
+            'faculties' => $faculties,
+        ]);
     }
 
     public function store(Request $request)
@@ -156,9 +173,9 @@ class KegiatanController extends Controller
 
     public function show(Kegiatan $kegiatan)
     {
-        $jenis = "kegiatan";
+        $jenis = "";
         if($kegiatan->jenis_kegiatan == 1) {
-            $jenis = "Penelitian";
+             $jenis = "Penelitian";
         } else {
             $jenis = "PkM";
         }
@@ -166,6 +183,7 @@ class KegiatanController extends Controller
         return view('proposal.showKegiatan',
             [
                 'title' => $title,
+                'jenis' => $jenis,
                 'kegiatan' => $kegiatan,
             ]);
 
@@ -175,7 +193,7 @@ class KegiatanController extends Controller
         if (Auth::user()->id != $kegiatan->user_id) {
             return abort(403);
         }
-        $jenis = "kegiatan";
+        $jenis = "";
         if($kegiatan->jenis_kegiatan == 1) {
             $jenis = "Penelitian";
         } else {
@@ -188,6 +206,7 @@ class KegiatanController extends Controller
         return view('proposal.editKegiatan',
             [
                 'title' => $title,
+                'jenis' => $jenis,
                 'kegiatan' => $kegiatan,
                 'dosen' => $dosen,
                 'sumberDana' => $sumberDana,

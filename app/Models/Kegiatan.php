@@ -31,9 +31,9 @@ class Kegiatan extends Model
         return $this->belongsTo(SumberDana::class, 'sumber_id');
     }
 
-    public function anggotaKegiatan()
+    public function timIntern()
     {
-        return $this->belongsToMany(Dosen::class, 'anggota_kegiatans', 'kegiatan_id', 'nidn');
+        return $this->belongsToMany(Dosen::class, 'tim_intern_kegiatans', 'kegiatan_id', 'nidn')->withPivot('isLeader');
     }
 
     public function scopeFilterPenelitian($query, array $filters)

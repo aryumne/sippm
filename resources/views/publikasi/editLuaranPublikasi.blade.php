@@ -88,10 +88,10 @@
                                     {{-- Ketua dari dalam UNIPA --}}
                                     {{-- cek intern ketua ada atau tidak
                                         kalau ada tampilkan ketua dan checkboxnya off
-                                        kalau tidak ada checkboxnya
                                         --}}
                                     @foreach ($lapPublikasi->timIntern as $internKetua)
                                     @if ($internKetua->pivot->isLeader == true)
+                                    @if (Auth::user()->role_id == 1)
                                     <div id="nidn_ketua">
                                         <select class="form-control" data-size="10" data-color="rose" id="choices-tag-ketua" name="nidn_ketua" required>
                                             @foreach ($dosens as $ds)
@@ -101,6 +101,19 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    @elseif (Auth::user()->role_id >= 2)
+                                    <div id="nidn_ketua">
+                                        <select class="form-control" data-size="10" data-color="rose" id="choices-tag-ketua" name="nidn_ketua" required>
+                                            @foreach ($dosens as $ds)
+                                            @if($internKetua->nidn == $ds->nidn)
+                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" selected>
+                                                {{ $ds->nama }}
+                                            </option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endif
                                     <label id="labelCheckboxKetua">
                                         <input type="checkbox" name="checkKetua" id="checkKetua">
                                         <span class="text-checkbox">Ketua Penulis dari Luar Universitas Papua</span>
@@ -122,6 +135,7 @@
                                     {{-- Ketua dari Luar UNIPA --}}
                                     @foreach ($lapPublikasi->timExtern as $externKetua)
                                     @if($externKetua->isLeader == true)
+                                    @if (Auth::user()->role_id == 1)
                                     <div id="nidn_ketua" style="display: none">
                                         <select class="form-control" data-size="10" name="nidn_ketua" data-color="rose" id="choices-tag-ketua" required>
                                             @foreach ($dosens as $ds)
@@ -131,6 +145,19 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    @elseif (Auth::user()->role_id >= 2)
+                                    <div id="nidn_ketua" style="display: none">
+                                        <select class="form-control" data-size="10" name="nidn_ketua" data-color="rose" id="choices-tag-ketua" required>
+                                            @foreach ($dosens as $ds)
+                                            @if (Auth::user()->nidn == $ds->nidn)
+                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" selected>
+                                                {{ $ds->nama }}
+                                            </option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endif
                                     <label id="labelCheckboxKetua">
                                         <input type="checkbox" name="checkKetua" id="checkKetua" checked>
                                         <span class="text-checkbox">Ketua Penulis dari Luar Universitas Papua</span>

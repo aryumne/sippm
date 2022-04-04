@@ -84,6 +84,7 @@
                                     <label class="label-control">Ketua Penulis</label>
                                 </div>
                                 <div class="col-md-9">
+                                    @if (Auth::user()->role_id == 1)
                                     <div id="nidn_ketua">
                                         <select class="form-control" data-size="10" data-color="rose" id="choices-tag-ketua" name="nidn_ketua" required>
                                             @foreach ($dosens as $ds)
@@ -93,6 +94,20 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    @elseif (Auth::user()->role_id >= 2)
+                                    <div id="nidn_ketua">
+                                        <select class="form-control" data-size="10" data-color="rose" id="choices-tag-ketua" name="nidn_ketua" required>
+                                            @foreach ($dosens as $ds)
+                                            @if($ds->nidn == Auth::user()->nidn)
+                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" selected>
+                                                {{ $ds->nama }}
+                                            </option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endif
+
                                     <label id="labelCheckboxKetua">
                                         <input type="checkbox" name="checkKetua" id="checkKetua">
                                         <span class="text-checkbox">Ketua Penulis dari Luar Universitas Papua</span>

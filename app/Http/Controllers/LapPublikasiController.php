@@ -26,7 +26,7 @@ class LapPublikasiController extends Controller
                 $query->where('tim_intern_publikasis.nidn', Auth::user()->nidn);
             })->orWhere('user_id', Auth::user()->id)->get();
         }
-        return view('pengusul.publikasi.luaranPublikasi', [
+        return view('publikasi.luaranPublikasi', [
             'title' => $title,
             'lapPublikasis' => $lapPublikasis,
         ]);
@@ -37,7 +37,7 @@ class LapPublikasiController extends Controller
         $title = "Tambah Luaran Publikasi";
         $jenisJurnals = Jenis_jurnal::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
-        return view('pengusul.publikasi.createLuaranPublikasi', [
+        return view('publikasi.createLuaranPublikasi', [
             'title' => $title,
             'jenisJurnals' => $jenisJurnals,
             'dosens' => $dosens,
@@ -225,7 +225,7 @@ class LapPublikasiController extends Controller
                 return abort(403);
             }
         }
-        return view('pengusul.publikasi.showLuaranPublikasi', [
+        return view('publikasi.showLuaranPublikasi', [
             'title' => $title,
             'lapPublikasi' => $lapPublikasi,
         ]);
@@ -234,7 +234,7 @@ class LapPublikasiController extends Controller
 
     public function edit($id)
     {
-        $title = "Tambah Luaran Publikasi";
+        $title = "Edit Luaran Publikasi";
         $lapPublikasi = LapPublikasi::find($id);
         $jenisJurnals = Jenis_jurnal::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
@@ -247,7 +247,7 @@ class LapPublikasiController extends Controller
                 return abort(403);
             }
         }
-        return view('pengusul.publikasi.editLuaranPublikasi', [
+        return view('publikasi.editLuaranPublikasi', [
             'title' => $title,
             'jenisJurnals' => $jenisJurnals,
             'dosens' => $dosens,
@@ -307,13 +307,14 @@ class LapPublikasiController extends Controller
         $nidn_anggota = $request->nidn_anggota;
         $nama_anggota = $request->nama_anggota;
         $asal_anggota = $request->asal_anggota;
-        if($request->judul != $lapPublikasi->judul)
+
+        //Cek Apakah ketua dari dalam UNIPA atau dari luar
+        if($request->checkKetua == null)
         {
-            //Cek Apakah ketua dari dalam UNIPA atau dari luar
-            if($request->checkKetua == null)
+            // ketua dari dalam UNIPA
+            // Jika ada perubahan judu; cek apakah judul ini sudah dinputkan sebelumnya atau tidak
+            if($request->judul != $lapPublikasi->judul)
             {
-                // Jika ketua dari dalam UNIPA
-                // cek data ada yang sama atau tidak
                 $lapPublikasis = LapPublikasi::where('judul', 'like', '%'.$judul.'%')->get();
                 // (opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
                 if(count($lapPublikasis) > 0)
@@ -329,22 +330,26 @@ class LapPublikasiController extends Controller
                         }
                     }
                 }
+            }
 
-                // cek apakah ketua juga ditambahkan sebagai anggota atau tidak
-                if($nidn_anggota != null)
+            // cek apakah ketua juga ditambahkan sebagai anggota atau tidak
+            if($nidn_anggota != null)
+            {
+                foreach($nidn_anggota as $intern)
                 {
-                    foreach($nidn_anggota as $intern)
+                    if($request->nidn_ketua == $intern)
                     {
-                        if($request->nidn_ketua == $intern)
-                        {
-                            Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
-                            return back()->withInput();
-                        }
+                        Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
+                        return back()->withInput();
                     }
                 }
-            } else {
-                // Jika Ketua dari luar UNIPA
-                // cek data ada yang sama atau tidak
+            }
+        } else
+        {
+            // Ketua dari luar UNIPA
+            // Jika ada perubahan judu; cek apakah judul ini sudah dinputkan sebelumnya atau tidak
+            if($request->judul != $lapPublikasi->judul)
+            {
                 $lapPublikasis = LapPublikasi::where('judul', 'like', '%'.$judul.'%')->get();
                 // (opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
                 // kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
@@ -360,25 +365,25 @@ class LapPublikasiController extends Controller
                         }
                     }
                 }
+            }
 
-                // cek apakah ketua juga ditambahkan sebagai anggota atau tidak
-                if($nama_anggota != null)
-                {
-                        foreach($nama_anggota as $extern)
+            // cek apakah ketua juga ditambahkan sebagai anggota atau tidak
+            if($nama_anggota != null)
+            {
+                    foreach($nama_anggota as $extern)
+                    {
+                        //cek kesamaan inputan ketua dan anggota luar
+                        $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
+                        $hasil = $similiar/strlen($request->nama_ketua) * 100;
+                        //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
+                        if((int)$hasil >= 80)
                         {
-                            //cek kesamaan inputan ketua dan anggota luar
-                            $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
-                            $hasil = $similiar/strlen($request->nama_ketua) * 100;
-                            //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
-                            if((int)$hasil >= 80)
-                            {
-                                Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
-                                return back()->withInput();
-                            }
+                            Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
+                            return back()->withInput();
                         }
                     }
                 }
-            }
+        }
 
         // Ambil original filename dari file yang diupload
         // upload file ke folder laporan-publikasi
@@ -461,7 +466,6 @@ class LapPublikasiController extends Controller
 
     public function destroy($id)
     {
-        // dd($data->timExtern);
         $data = LapPublikasi::find($id);
         if(Auth::user()->role_id == 2)
         {
