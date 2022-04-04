@@ -77,7 +77,9 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    @if (Auth::user()->id == $lapPublikasi->user_id || Auth::user()->role_id == 1)
+                    @foreach ($lapPublikasi->timIntern as $ketua)
+                    @if($ketua->pivot->isLeader == true)
+                    @if($ketua->nidn == Auth::user()->nidn || Auth::user()->role_id == 1)
                     <div>
                         <form action="{{ route('luaran-publikasi.destroy', $lapPublikasi->id) }}" method="POST">
                             @csrf
@@ -87,6 +89,8 @@
                     </div>
                     <a href="{{ route('luaran-publikasi.edit', $lapPublikasi->id) }}" class="btn btn-sm btn-warning text-right">Edit</a>
                     @endif
+                    @endif
+                    @endforeach
                 </div>
             </div>
         </div>

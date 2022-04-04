@@ -72,7 +72,7 @@
                                             </div>
                                             <div class="col-md-9 px-0">
                                                 <div class="form-group m-0">
-                                                    <input type="year" class="form-control pl-3" id="onlyYear" value="{{ request('tahun_kegiatan') }}" name="tahun_kegiatan" />
+                                                    <input type="year" class="form-control pl-3" id="onlyYear" value="{{ request('tahun') }}" name="tahun" />
                                                 </div>
                                             </div>
                                         </div>
@@ -81,6 +81,7 @@
                                             </div>
                                             <div class="col-md-9 text-left pl-0">
                                                 <button type="submit" class="btn btn-sm btn-rose">Filter</button>
+                                                <a href="{{ route('kegiatan.index', $jenis) }}" class="btn btn-sm btn-secondary text-rose">Reset</a>
                                             </div>
                                         </div>
                                     </form>
@@ -128,18 +129,31 @@
                                 @foreach ($dataKegiatans as $p)
                                 <tr>
                                     <td>{{ $p->judul_kegiatan }}</td>
-                                    <td>{{ $p->user->dosen->nama }} </td>
+                                    <td>
+                                        @foreach ($p->timIntern as $ketua)
+                                        @if($ketua->pivot->isLeader == true)
+                                        {{ $ketua->nama }}
+                                        @endif
+                                        @endforeach
+                                    </td>
                                     <td>{{ $p->prodi->faculty->nama_faculty }}</td>
                                     <td>{{ $p->sumberDana->sumber }}</td>
                                     <td>{{ 'Rp ' . number_format($p->jumlah_dana, 2, ',', '.') }}</td>
-                                    <td>{{ $p->tanggal_kegiatan->format('Y') }}</td>
+                                    <td>{{ $p->tahun }}</td>
                                     <td class="text-center" width="140px">
-                                        <a href="{{ asset('storage/' . $p->path_kegiatan) }}" target="_blank" class="btn btn-link btn-success btn-just-icon edit">
-                                            <i class="material-icons">file_download</i></a>
                                         <a href="{{ route('kegiatan.show', $p) }}" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">read_more</i></a>
-                                        @if (Auth::user()->id == $p->user_id)
+                                        @foreach ($p->timIntern as $ketua)
+                                        @if($ketua->pivot->isLeader == true)
+                                        @if($ketua->nidn == Auth::user()->nidn || Auth::user()->role_id == 1)
                                         <a href="{{ route('kegiatan.edit', $p) }}" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">mode_edit</i></a>
+                                        <form action="{{ route('kegiatan.destroy', $p) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button type="submit" onclick="return confirm('Yakin akan menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-link btn-danger btn-just-icon edit"><i class="material-icons">delete_outline</i></button>
+                                        </form>
                                         @endif
+                                        @endif
+                                        @endforeach
                                     </td>
                                 </tr>
                                 @endforeach

@@ -124,7 +124,7 @@ class AdminController extends Controller
     {
         $title = "Daftar Akun Reviewer";
         $dosen = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
-        $reviewers = User::where('role_id', 3)->get();
+        $reviewers = User::whereIn('role_id', [2,3])->get();
         return view('admin.reviewers', [
             'title' => $title,
             'dosen' => $dosen,
@@ -139,7 +139,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'nidn' => ['required', 'numeric', 'unique:users'],
-                'email' => ['required', 'email:dns', 'max:255', 'unique:users',  'regex:/(.*)@unipa\.ac\.id/i'],
+                'email' => ['required', 'email:dns', 'max:255', 'unique:users', 'regex:/(.*)@unipa\.ac\.id/i'],
                 'password' => ['required', Rules\Password::defaults()],
             ], [
                 'nidn.unique' => "Dosen ini sudah memiliki akun",
@@ -171,6 +171,26 @@ class AdminController extends Controller
         }
     }
 
+    // change role user
+    public function changeRoleUser(User $user)
+    {
+        if($user->role_id == 2)
+        {
+            $user->role_id = 3;
+            $user->save();
+            Alert::toast('Status reveiwer diaktifkan', 'success');
+        } else if($user->role_id == 3)
+        {
+            $user->role_id = 2;
+            $user->save();
+            Alert::toast('Status reveiwer dinonaktifkan', 'success');
+        } else {
+            return abort(404);
+        }
+
+        return back();
+    }
+
     public function audits()
     {
         $title = "Penilaian Proposal";
@@ -188,19 +208,18 @@ class AdminController extends Controller
             }
         }
         //ambil reviewer yang belum ditugaskan sebanyak 8 proposal
-        $newReviewers = collect([]);
-        foreach ($reviewers as $rvw) {
-            $newReviewers->push($rvw);
-            // $proposalReviewed = Audit::where('user_id', $rvw->id)->whereYear('created_at', $getYear)->get();
-            // if (count($proposalReviewed) < 8) {
-            //     $newReviewers->push($rvw);
-            // }
-        }
+        // $newReviewers = collect([]);
+        // foreach ($reviewers as $rvw) {
+        //     $newReviewers->push($rvw);
+        //     $proposalReviewed = Audit::where('user_id', $rvw->id)->whereYear('created_at', $getYear)->get();
+        //     if (count($proposalReviewed) < 8) {
+        //         $newReviewers->push($rvw);
+        //     }
+        // }
 
         return view('admin.audit', [
             'title' => $title,
             'reviewers' => $reviewers,
-            'newReviewers' => $newReviewers,
             'newProposals' => $newProposals,
         ]);
     }

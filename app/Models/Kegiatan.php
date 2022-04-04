@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Dosen;
 use App\Models\Prodi;
+use App\Models\SumberDana;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -11,10 +13,6 @@ class Kegiatan extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-
-    protected $casts = [
-        'tanggal_kegiatan' => 'datetime',
-    ];
 
     public function user()
     {
@@ -49,8 +47,8 @@ class Kegiatan extends Model
         });
 
         // cari data proposal berdasarkan filter tahun
-        $query->when($filters['tahun_kegiatan'] ?? false, function ($query, $tahun_kegiatan) {
-            return $query->whereYear('tanggal_kegiatan', $tahun_kegiatan);
+        $query->when($filters['tahun'] ?? false, function ($query, $tahun) {
+            return $query->whereYear('tahun', $tahun);
         });
 
         // cari data proposal berdasarkan filter sumber dana

@@ -16,15 +16,15 @@
                 </div>
                 <div class="card-body">
                     <div class="pt-2 px-md-3">
-                        <form class="form" id="AddKegiatanValidation" action="{{ route('kegiatan.store') }}" method="POST" enctype="multipart/form-data">
+                        <form class="form" id="EditKegiatanValidation" action="{{ route('kegiatan.update',$kegiatan) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="jenisKegiatan" id="jenisKegiatan" value="{{ $jenis }}">
+                            @method('PUT')
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
                                     <label class="label-control">Judul {{ $jenis == "penelitian" ? 'Penelitian' : 'PkM' }} </label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('judul')}}" name="judul" id="judul" required />
+                                    <input type="text" class="form-control pl-2" value="{{ old('judul', $kegiatan->judul_kegiatan)}}" name="judul" id="judul" required />
                                     @error('judul')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
@@ -38,7 +38,7 @@
                                     <select class="form-control selectpicker" data-style="btn btn-link" id="sumberDana" name="sumberDana" required>
                                         <option disabled selected>Pilih Sumber Dana</option>
                                         @foreach ($sumberDana as $SD)
-                                        <option value="{{ $SD->id }}">
+                                        <option value="{{ $SD->id }}" {{ $kegiatan->sumber_id == $SD->id ? 'Selected' : ''}}>
                                             {{ $SD->sumber }}
                                         </option>
                                         @endforeach
@@ -53,7 +53,7 @@
                                     <label class="label-control">Jumlah Dana</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control dana pl-2" id="dana" name="dana" value="{{ old('dana') }}" required>
+                                    <input type="text" class="form-control dana pl-2" id="dana" name="dana" value="{{ old('dana', $kegiatan->jumlah_dana) }}" required>
                                     @error('dana')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
@@ -64,7 +64,8 @@
                                     <label class="label-control">Tahun Kegiatan</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="year" class="form-control pl-2" value="{{ old('tahun')}}" name="tahun" id="tahun" required />
+                                    <input type="year" class="form-control pl-2" value="{{ old('tahun', $kegiatan->tahun)}}" name="tahun" id="tahun" required />
+
                                     @error('tahun')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
@@ -75,11 +76,13 @@
                                     <label class="label-control">Ketua Pelaksana</label>
                                 </div>
                                 <div class="col-md-9">
+                                    @foreach ($kegiatan->timIntern as $internKetua)
+                                    @if ($internKetua->pivot->isLeader == true)
                                     @if (Auth::user()->role_id == 1)
                                     <div id="nidn_ketua">
                                         <select class="form-control" data-size="10" data-color="rose" id="choices-tag-ketua" name="nidn_ketua" required>
                                             @foreach ($dosens as $ds)
-                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
+                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" {{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) == $internKetua->nidn ? 'Selected' : '' }}>
                                                 {{ $ds->nama }}
                                             </option>
                                             @endforeach
@@ -89,7 +92,7 @@
                                     <div id="nidn_ketua">
                                         <select class="form-control" data-size="10" data-color="rose" id="choices-tag-ketua" name="nidn_ketua" required>
                                             @foreach ($dosens as $ds)
-                                            @if($ds->nidn == Auth::user()->nidn)
+                                            @if($internKetua->nidn == $ds->nidn)
                                             <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" selected>
                                                 {{ $ds->nama }}
                                             </option>
@@ -98,6 +101,8 @@
                                         </select>
                                     </div>
                                     @endif
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="row py-2">
@@ -109,13 +114,21 @@
                                         <select multiple class="form-control" data-size="10" data-color="rose" id="choices-tag-anggota" name="nidn_anggota[]">
                                             @foreach ($dosens as $ds)
                                             @if (Auth::user()->role_id == 1)
-                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
+                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" @foreach ($kegiatan->timIntern as $anggota)
+                                                @if($anggota->pivot->isLeader == false)
+                                                {{ $anggota->nidn == $ds->nidn ? 'Selected' : '' }}
+                                                @endif
+                                                @endforeach>
                                                 {{ $ds->nama }}
                                             </option>
 
                                             @elseif(Auth::user()->role_id >= 2)
                                             @if(Auth::user()->nidn != $ds->nidn)
-                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}">
+                                            <option value="{{ str_pad($ds->nidn, 10, '0', STR_PAD_LEFT) }}" @foreach ($kegiatan->timIntern as $anggota)
+                                                @if($anggota->pivot->isLeader == false)
+                                                {{ $anggota->nidn == $ds->nidn ? 'Selected' : '' }}
+                                                @endif
+                                                @endforeach>
                                                 {{ $ds->nama }}
                                             </option>
                                             @endif
@@ -131,7 +144,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="form-group form-file-upload form-file-multiple" id="unggah_artikel">
-                                        <input type="file" name="path_kegiatan" class="inputFileHidden" required>
+                                        <input type="file" name="path_kegiatan" class="inputFileHidden">
                                         <div class="input-group">
                                             <input type="text" id="path_kegiatan" class="form-control inputFileVisible" placeholder="single file">
                                             <span class="input-group-btn">
@@ -140,7 +153,7 @@
                                                 </button>
                                             </span>
                                         </div>
-                                        <small class="form-text text-muted text-left"><cite>Maksimal 8 Mb dengan format file .pdf</cite></small>
+                                        <small class="form-text text-muted text-left"><cite>Jika tidak ada perubahan pada file sebelumnya tidak perlu mengunggah ulang, ( maksimal 8 Mb dengan format file .pdf)</cite></small>
                                         @error('path_kegiatan')
                                         <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                         @enderror

@@ -95,6 +95,8 @@
                     </ul>
                 </div>
                 </li>
+                @endif
+
                 <li class="nav-item {{ request()->routeIs('kegiatan*') ? 'active' : '' }}">
                     <a class="nav-link" data-toggle="collapse" href="#laporan">
                         <i class="material-icons">picture_as_pdf</i>
@@ -104,16 +106,15 @@
                     </a>
                     <div class="collapse {{ request()->routeIs('kegiatan*') ? 'show' : '' }}" id="laporan">
                         <ul class="nav">
-                            <li class="nav-item {{ $title == 'Daftar Penelitian' || $title == 'Tambah Penelitian' || $title == 'Detail Penelitian' || $title == 'Edit Data Penelitian' ? 'active' : '' }}">
-
-                                <a class="nav-link" href="{{ route('kegiatan.index', 'penelitian') }}">
+                            <li class="nav-item {{ $title == 'Daftar Penelitian' || $title == 'Tambah penelitian' || $title == 'Detail Penelitian' || $title == 'Edit Data Penelitian' ? 'active' : '' }}">
+                                <a class="nav-link" href="#">
                                     <span class="sidebar-mini"> PL </span>
                                     <span class="sidebar-normal">Penelitian </span>
                                 </a>
                             </li>
-                            <li class="nav-item {{ $title == 'Daftar PkM' || $title == 'Tambah PkM' || $title == 'Detail PkM' || $title == 'Edit Data PkM' ? 'active' : '' }}">
+                            <li class="nav-item {{ $title == 'Daftar PkM' || $title == 'Tambah pkm' || $title == 'Detail PkM' || $title == 'Edit Data PkM' ? 'active' : '' }}">
 
-                                <a class="nav-link" href="{{ route('kegiatan.index', 'pkm') }}">
+                                <a class="nav-link" href="#">
                                     <span class="sidebar-mini"> PM </span>
                                     <span class="sidebar-normal">PkM </span>
                                 </a>
@@ -131,13 +132,13 @@
                     <div class="collapse {{ request()->routeIs('luaran*') ? 'show': '' }}" id="lap-luaran">
                         <ul class="nav">
                             <li class="nav-item {{ request()->routeIs('luaran-publikasi*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('luaran-publikasi.index') }}">
+                                <a class="nav-link" href="#">
                                     <span class="sidebar-mini"> LP </span>
                                     <span class="sidebar-normal">Publikasi </span>
                                 </a>
                             </li>
                             <li class="nav-item {{ request()->routeIs('luaran-hki*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('luaran-hki.index') }}">
+                                <a class="nav-link" href="#">
                                     <span class="sidebar-mini"> LH </span>
                                     <span class="sidebar-normal">HKI </span>
                                 </a>
@@ -163,7 +164,6 @@
                         </ul>
                     </div>
                 </li>
-                @endif
 
                 @if (Auth::user()->role_id == 1)
                 <li class="nav-item {{ request()->routeIs('admin.reviewers.*') ? 'active' : '' }}">

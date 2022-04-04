@@ -186,7 +186,6 @@
                                     <div id="nidn_anggota">
                                         <select multiple class="form-control" data-size="10" data-color="rose" id="choices-tag-anggota" name="nidn_anggota[]">
                                             @foreach ($dosens as $dsn)
-
                                             <option value="{{ str_pad($dsn->nidn, 10, '0', STR_PAD_LEFT) }}" @foreach ($lapPublikasi->timIntern as $internAnggota)
                                                 @if($internAnggota->pivot->isLeader == false)
                                                 {{ str_pad($dsn->nidn, 10, '0', STR_PAD_LEFT) == $internAnggota->nidn ? 'Selected' : '' }}

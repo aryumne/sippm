@@ -45,14 +45,27 @@
                             <tbody>
                                 @foreach ($lapPublikasis as $lap)
                                 <tr>
-                                    <td>{{ $lap->user->dosen->nama }}</td>
+                                    <td>
+                                        @foreach ($lap->timIntern as $intern)
+                                        @if($intern->pivot->isLeader == true)
+                                        {{ $intern->nama }}
+                                        @endif
+                                        @endforeach
+                                        @foreach ($lap->timExtern as $extern)
+                                        @if($extern->isLeader == true)
+                                        {{ $extern->nama }}
+                                        @endif
+                                        @endforeach
+                                    </td>
                                     <td>{{$lap->judul}}</td>
                                     <td>{{$lap->nama}}</td>
                                     <td>{{$lap->tahun}}</td>
                                     <td>{{$lap->jenis_jurnal->jurnal}}</td>
                                     <td class="text-center">
                                         <a href="{{ route('luaran-publikasi.show', $lap) }}" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">read_more</i></a>
-                                        @if (Auth::user()->id == $lap->user_id || Auth::user()->role_id == 1)
+                                        @foreach ($lap->timIntern as $ketua)
+                                        @if($ketua->pivot->isLeader == true)
+                                        @if($ketua->nidn == Auth::user()->nidn || Auth::user()->role_id == 1)
                                         <a href="{{ route('luaran-publikasi.edit', $lap) }}" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">mode_edit</i></a>
                                         <form action="{{ route('luaran-publikasi.destroy', $lap->id) }}" method="POST" class="d-inline">
                                             @csrf
@@ -60,6 +73,8 @@
                                             <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-link btn-danger btn-just-icon edit"><i class="material-icons">delete_outline</i></button>
                                         </form>
                                         @endif
+                                        @endif
+                                        @endforeach
                                     </td>
                                 </tr>
                                 @endforeach

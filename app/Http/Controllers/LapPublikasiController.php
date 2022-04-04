@@ -217,7 +217,10 @@ class LapPublikasiController extends Controller
     {
         $title = "Detail Luaran Publikasi";
         $lapPublikasi = LapPublikasi::find($id);
-        if(Auth::user()->role_id == 2)
+        if($lapPublikasi == null) {
+            return abort(404);
+        }
+        if(Auth::user()->role_id >= 2)
         {
             $isUserAnggota = TimInternPublikasi::where('lap_publikasi_id', $lapPublikasi->id)->where('nidn', Auth::user()->nidn)->get();
             if($lapPublikasi->user_id != Auth::user()->id && count($isUserAnggota) < 1)
@@ -236,15 +239,25 @@ class LapPublikasiController extends Controller
     {
         $title = "Edit Luaran Publikasi";
         $lapPublikasi = LapPublikasi::find($id);
+        if($lapPublikasi == null) {
+            return abort(404);
+        }
         $jenisJurnals = Jenis_jurnal::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         //cek user yang bukan admin
-        if(Auth::user()->role_id == 2)
+        if(Auth::user()->role_id >= 2)
         {
             // abort user yang bukan pemilik atau pengupload data ini
-            if($lapPublikasi->user_id != Auth::user()->id)
+            foreach($lapPublikasi->timIntern as $ketua)
             {
-                return abort(403);
+                if($ketua->pivot->isLeader == false)
+                {
+                    // kalau user bukan ketua maka jangan berikan akses
+                    if(Auth::user()->nidn == $ketua->nidn)
+                    {
+                        return abort(403);
+                    }
+                }
             }
         }
         return view('publikasi.editLuaranPublikasi', [
@@ -259,13 +272,23 @@ class LapPublikasiController extends Controller
     {
         // dd($request->all());
         $lapPublikasi = LapPublikasi::find($id);
+        if($lapPublikasi == null) {
+            return abort(404);
+        }
         //cek user yang bukan admin
-        if(Auth::user()->role_id == 2)
+        if(Auth::user()->role_id >= 2)
         {
             // abort user yang bukan pemilik atau pengupload data ini
-            if($lapPublikasi->user_id != Auth::user()->id)
+            foreach($lapPublikasi->timIntern as $ketua)
             {
-                return abort(403);
+                if($ketua->pivot->isLeader == false)
+                {
+                    // kalau user bukan ketua maka jangan berikan akses
+                    if(Auth::user()->nidn == $ketua->nidn)
+                    {
+                        return abort(403);
+                    }
+                }
             }
         }
         // cek ada perubahan judul atau perubahan nama ketua
@@ -406,7 +429,6 @@ class LapPublikasiController extends Controller
             'tahun' => $request->tahun,
             'jenis_jurnal_id' => $request->jenis_jurnal_id,
             'path_publikasi' => $pathPublikasi,
-            'user_id' => Auth::user()->id,
         ]);
 
         // dd($request->all());
@@ -467,11 +489,22 @@ class LapPublikasiController extends Controller
     public function destroy($id)
     {
         $data = LapPublikasi::find($id);
-        if(Auth::user()->role_id == 2)
+        if($data == null) {
+            return abort(404);
+        }
+        if(Auth::user()->role_id >= 2)
         {
-            if($data->user_id != Auth::user()->id)
+            // abort user yang bukan pemilik atau pengupload data ini
+            foreach($lapPublikasi->timIntern as $ketua)
             {
-                return abort(403);
+                if($ketua->pivot->isLeader == false)
+                {
+                    // kalau user bukan ketua maka jangan berikan akses
+                    if(Auth::user()->nidn == $ketua->nidn)
+                    {
+                        return abort(403);
+                    }
+                }
             }
         }
         // hapus data tim dari dalam UNIPA

@@ -17,7 +17,7 @@ class ReviewerController extends Controller
 {
     public function index()
     {
-        $title = " Dashboard Reviewer";
+        $title = "Dashboard Reviewer";
         $notifications = Schedule::whereIn('jadwal_id', [4, 5])->get();
         return view('reviewer.dashboard-reviewer', [
             'title' => $title,
@@ -28,13 +28,13 @@ class ReviewerController extends Controller
     public function auditProposals()
     {
         $title = "Daftar Penilaian Proposal";
-        $userId = Auth::user()->id;
+        $jadwal = Schedule::where('jadwal_id', 4)->first();
         $currentYear = date("Y");
-        $userAudit = Audit::where('user_id', $userId)->whereYear('created_at', $currentYear)->where('status', 1)->get();
-        // dd($userAudit);
+        $userAudit = Audit::where('user_id', Auth::user()->id)->whereYear('created_at', $currentYear)->where('status', 1)->get();
         return view('reviewer.auditProposals', [
             'title' => $title,
             'userAudit' => $userAudit,
+            'jadwal' => $jadwal,
         ]);
     }
 
@@ -159,12 +159,13 @@ class ReviewerController extends Controller
     public function monevKemajuan()
     {
         $title = "Daftar MONEV Laporan Kemajuan ";
-        $userId = Auth::user()->id;
+        $jadwal = Schedule::where('jadwal_id', 5)->first();
         $currentYear = date("Y");
-        $userAudit = Monev::where('user_id', $userId)->whereYear('created_at', $currentYear)->where('status', 1)->get();
+        $userAudit = Monev::where('user_id', Auth::user()->id)->whereYear('created_at', $currentYear)->where('status', 1)->get();
         return view('reviewer.monevKemajuan', [
             'title' => $title,
             'userAudit' => $userAudit,
+            'jadwal' => $jadwal,
         ]);
     }
 
