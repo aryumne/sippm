@@ -16,7 +16,7 @@
                 </div>
                 <div class="card-body">
                     <div class="pt-2 px-md-3">
-                        <form action="{{route('luaran-publikasi.store')}}" method="POST" enctype="multipart/form-data">
+                        <form class="form" id="AddLuaranPublikasi" action="{{route('luaran-publikasi.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
@@ -68,6 +68,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <select class="form-control selectpicker" data-style="btn btn-link" id="jenis_jurnal_id" name="jenis_jurnal_id" data-style="btn btn-primary btn-round" required>
+                                        <option disabled selected>Pilih Media Publikasi</option>
                                         @foreach ($jenisJurnals as $jenis)
                                         <option value="{{ $jenis->id }}" {{ old('jenis_jurnal_id') == $jenis->id ? 'Selected' : ''}}>
                                             {{ $jenis->jurnal }}

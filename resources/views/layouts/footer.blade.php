@@ -3,9 +3,7 @@
     <script src="{{ asset('/material/js/core/popper.min.js') }}"></script>
 
     <!-- Jquery for Currency mask -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
-        integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('/material/js/core/bootstrap-material-design.min.js') }}"></script>
     <script src="{{ asset('/material/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
     <!-- Plugin for the momentJs  -->
@@ -61,6 +59,7 @@
                 $('.card').removeClass('card-hidden');
             }, 700);
         });
+
     </script>
 
     <script>
@@ -111,6 +110,7 @@
                 $(this).parent().siblings().trigger('focusout');
             });
         });
+
     </script>
     <script>
         function setFormValidation(id) {
@@ -118,15 +118,15 @@
                 highlight: function(element) {
                     $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
                     $(element).closest('.form-check').removeClass('has-success').addClass('has-danger');
-                },
-                success: function(element) {
+                }
+                , success: function(element) {
                     $(element).closest('.form-group').removeClass('has-danger').addClass('has-success');
                     $(element).closest('.form-check').removeClass('has-danger').addClass('has-success');
-                },
-                errorPlacement: function(error, element) {
+                }
+                , errorPlacement: function(error, element) {
                     $(element).closest('.form-group').append(error);
-                },
-            });
+                }
+            , });
         }
 
         $(document).ready(function() {
@@ -153,5 +153,11 @@
             setFormValidation('#AddDosenValidation');
             setFormValidation('#AddKegiatanValidation');
             setFormValidation('#EditKegiatanValidation');
+            setFormValidation('#AddLuaranPublikasi');
+            setFormValidation('#EditLuaranPublikasi');
+            setFormValidation('#AddLuaranHKI');
+            setFormValidation('#EditLuaranHKI');
+
         });
+
     </script>
