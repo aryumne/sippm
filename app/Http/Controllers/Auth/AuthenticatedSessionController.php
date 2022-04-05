@@ -31,7 +31,13 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        $checked = $request->session()->regenerate();
+
+        if($checked)
+        {
+            // update column updated_at untuk lihat terakhir login
+            Auth::user()->touch();
+        }
         Alert::toast('Login berhasil', 'success');
         //return redirect()->intended(RouteServiceProvider::HOME);
         if (Auth::user()->role_id == 1) {
