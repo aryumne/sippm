@@ -79,7 +79,18 @@
                 <div class="card-footer">
                     @foreach ($lapPublikasi->timIntern as $ketua)
                     @if($ketua->pivot->isLeader == true)
-                    @if($ketua->nidn == Auth::user()->nidn || Auth::user()->role_id == 1)
+                    @if($ketua->nidn == Auth::user()->nidn)
+                    <div>
+                        <form action="{{ route('luaran-publikasi.destroy', $lapPublikasi->id) }}" method="POST">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-sm btn-danger text-right">Hapus</button>
+                        </form>
+                    </div>
+                    <a href="{{ route('luaran-publikasi.edit', $lapPublikasi->id) }}" class="btn btn-sm btn-warning text-right">Edit</a>
+                    @endif
+                    @else
+                    @if(Auth::user()->nidn == $ketua->nidn && Auth::user()->id == $lapPublikasi->user_id)
                     <div>
                         <form action="{{ route('luaran-publikasi.destroy', $lapPublikasi->id) }}" method="POST">
                             @csrf
@@ -91,6 +102,17 @@
                     @endif
                     @endif
                     @endforeach
+                    @if(Auth::user()->role_id == 1)
+                    <div>
+                        <form action="{{ route('luaran-publikasi.destroy', $lapPublikasi->id) }}" method="POST">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-sm btn-danger text-right">Hapus</button>
+                        </form>
+                    </div>
+                    <a href="{{ route('luaran-publikasi.edit', $lapPublikasi->id) }}" class="btn btn-sm btn-warning text-right">Edit</a>
+                    @endif
+
                 </div>
             </div>
         </div>

@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header card-header-text card-header-info">
                     <div class="card-text">
-                        <h4 class="fw-400">Detail Luaran Publikasi</h4>
+                        <h4 class="fw-400">Detail Luaran HKI</h4>
                     </div>
                 </div>
                 <div class="card-body">
@@ -16,51 +16,31 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <p>Judul Artikel</p>
+                                        <p>Judul HKI</p>
                                     </td>
                                     <td class="text-left">
                                         <h5>
-                                            {{ $lapPublikasi->judul }}
+                                            {{ $lapHki->judul }}
                                         </h5>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Nama Jurnal</p>
+                                        <p>Jenis HKI</p>
                                     </td>
                                     <td class="text-left">
                                         <h5>
-                                            {{ $lapPublikasi->nama }}
+                                            {{ $lapHki->jenis_hki->hki }}
                                         </h5>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Laman Jurnal</p>
+                                        <p>Tahun Perolehan</p>
                                     </td>
                                     <td class="text-left">
                                         <h5>
-                                            {{ $lapPublikasi->laman }}
-                                        </h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p>Media Publikasi</p>
-                                    </td>
-                                    <td class="text-left">
-                                        <h5>
-                                            {{ $lapPublikasi->jenis_jurnal->jurnal }}
-                                        </h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p>Tahun Publikasi</p>
-                                    </td>
-                                    <td class="text-left">
-                                        <h5>
-                                            {{ $lapPublikasi->tahun }}
+                                            {{ $lapHki->tahun }}
                                         </h5>
                                     </td>
                                 </tr>
@@ -69,7 +49,7 @@
                                         <p>File Unggahan</p>
                                     </td>
                                     <td class="text-left">
-                                        <a href="{{ asset('storage/' . $lapPublikasi->path_publikasi) }}" target="_blank" class="badge badge-success">{{ substr($lapPublikasi->path_publikasi, 18) }}</a>
+                                        <a href="{{ asset('storage/' . $lapHki->path_hki) }}" target="_blank" class="badge badge-success">{{ substr($lapHki->path_hki, 12) }}</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -77,20 +57,42 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    @foreach ($lapPublikasi->timIntern as $ketua)
+                    @foreach ($lapHki->timIntern as $ketua)
                     @if($ketua->pivot->isLeader == true)
-                    @if($ketua->nidn == Auth::user()->nidn || Auth::user()->role_id == 1)
+                    @if($ketua->nidn == Auth::user()->nidn)
                     <div>
-                        <form action="{{ route('luaran-publikasi.destroy', $lapPublikasi->id) }}" method="POST">
+                        <form action="{{ route('luaran-hki.destroy', $lapHki->id) }}" method="POST">
                             @csrf
                             @method("DELETE")
                             <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-sm btn-danger text-right">Hapus</button>
                         </form>
                     </div>
-                    <a href="{{ route('luaran-publikasi.edit', $lapPublikasi->id) }}" class="btn btn-sm btn-warning text-right">Edit</a>
+                    <a href="{{ route('luaran-hki.edit', $lapHki->id) }}" class="btn btn-sm btn-warning text-right">Edit</a>
+                    @endif
+                    @else
+                    @if(Auth::user()->nidn == $ketua->nidn && Auth::user()->id == $lapHki->user_id)
+                    <div>
+                        <form action="{{ route('luaran-hki.destroy', $lapHki->id) }}" method="POST">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-sm btn-danger text-right">Hapus</button>
+                        </form>
+                    </div>
+                    <a href="{{ route('luaran-hki.edit', $lapHki->id) }}" class="btn btn-sm btn-warning text-right">Edit</a>
                     @endif
                     @endif
                     @endforeach
+                    @if(Auth::user()->role_id == 1)
+                    <div>
+                        <form action="{{ route('luaran-hki.destroy', $lapHki->id) }}" method="POST">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-sm btn-danger text-right">Hapus</button>
+                        </form>
+                    </div>
+                    <a href="{{ route('luaran-hki.edit', $lapHki->id) }}" class="btn btn-sm btn-warning text-right">Edit</a>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -105,7 +107,7 @@
                             <h6>Penulis 1 :</h6>
                         </div>
                         <div class="col-sm-8 col-lg-9">
-                            @foreach ($lapPublikasi->timIntern as $ketuaIntern)
+                            @foreach ($lapHki->timIntern as $ketuaIntern)
                             @if($ketuaIntern->pivot->isLeader == true)
                             <p class="mb-1">{{ $ketuaIntern->nama }}</p>
                             <p class="mb-1">{{ str_pad($ketuaIntern->nidn, 10, '0', STR_PAD_LEFT) }}</p>
@@ -113,7 +115,7 @@
                             <p>{{ $ketuaIntern->prodi->nama_prodi }}</p>
                             @endif
                             @endforeach
-                            @foreach ($lapPublikasi->timExtern as $ketuaExtern)
+                            @foreach ($lapHki->timExtern as $ketuaExtern)
                             @if($ketuaExtern->isLeader == true)
                             <p class="mb-1">{{ $ketuaExtern->nama }}</p>
                             <p class="mb-1">{{ $ketuaExtern->asal_institusi }}</p>
@@ -124,7 +126,7 @@
                     <div class="row">
                         @php($i = 0)
                         {{-- Anggota dari UNIPA --}}
-                        @foreach ($lapPublikasi->timIntern as $anggotaIntern)
+                        @foreach ($lapHki->timIntern as $anggotaIntern)
                         @if ($anggotaIntern->pivot->isLeader == false)
                         <div class="col-sm-4 col-lg-3 text-right">
                             <h6>Penulis {{ $loop->iteration+1 }} :</h6>
@@ -140,7 +142,7 @@
                         @endforeach
 
                         {{-- Anggota Luar UNIPA --}}
-                        @foreach ($lapPublikasi->timExtern as $anggotaExtern)
+                        @foreach ($lapHki->timExtern as $anggotaExtern)
                         @if ($anggotaExtern->isLeader == false)
                         <div class="col-sm-4 col-lg-3 text-right">
                             <h6>Penulis {{ $i+1 }} :</h6>

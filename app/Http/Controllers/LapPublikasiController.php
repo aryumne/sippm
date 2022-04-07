@@ -20,7 +20,7 @@ class LapPublikasiController extends Controller
     {
         $title = "Luaran Publikasi";
         $lapPublikasis = LapPublikasi::all();
-        if(Auth::user()->role_id == 2) {
+        if(Auth::user()->role_id >= 2) {
             // ambil data publikasi yang user punya baik itu sebagai pengupload maupun hanya berkontribusi
             $lapPublikasis = LapPublikasi::wherehas('timIntern', function($query) {
                 $query->where('tim_intern_publikasis.nidn', Auth::user()->nidn);
@@ -116,6 +116,7 @@ class LapPublikasiController extends Controller
             }
         } else {
             //Ketua dari luar UNIPA
+
             //cek data ada yang sama atau tidak
             $lapPublikasis = LapPublikasi::where('judul', 'like', '%'.$judul.'%')->get();
             //(opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
@@ -133,21 +134,50 @@ class LapPublikasiController extends Controller
                 }
             }
 
+            // cek apakah ada kontribusi dari dosen UNIPA atau tidak
+            if($nidn_anggota != null)
+            {
+                if(Auth::user()->role_id >= 2)
+                {
+                    // termasuk didalam tim atau tidak
+                    if(!in_array(Auth::user()->nidn, $nidn_anggota))
+                    {
+                        // kalau tidak kembalikan user ke form tambah
+                        Alert::toast('Sebagai pengunggah anda harus menjadi bagian dari tim', 'warning');
+                        return back()->withInput();
+                    }
+                }
+            } else {
+                //kalau anggota kosong
+                // cek jika user selain admin
+                if(Auth::user()->role_id >= 2)
+                {
+                    // kalau tidak ada kontribusi user dalam TIM kembalikan user ke form tambah
+                    Alert::toast('Sebagai pengunggah anda harus menjadi bagian dari tim', 'warning');
+                    return back()->withInput();
+                }
+
+                // Untuk admin
+                // kalau tidak ada kontribusi dosen UNIPA kembalikan ke form tambah
+                Alert::toast('Minimal 1 penulis dalam tim harus dari dalam UNIPA', 'warning');
+                return back()->withInput();
+            }
+
             //cek apakah ketua juga ditambahkan sebagai anggota atau tidak
             if($nama_anggota != null)
             {
-                    foreach($nama_anggota as $extern)
+                foreach($nama_anggota as $extern)
+                {
+                    //cek kesamaan inputan ketua dan anggota luar
+                    $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
+                    $hasil = $similiar/strlen($request->nama_ketua) * 100;
+                    //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
+                    if((int)$hasil >= 80)
                     {
-                        //cek kesamaan inputan ketua dan anggota luar
-                        $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
-                        $hasil = $similiar/strlen($request->nama_ketua) * 100;
-                        //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
-                        if((int)$hasil >= 80)
-                        {
-                            Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
-                            return back()->withInput();
-                        }
+                        Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
+                        return back()->withInput();
                     }
+                }
             }
         }
 
@@ -252,8 +282,8 @@ class LapPublikasiController extends Controller
             {
                 if($ketua->pivot->isLeader == false)
                 {
-                    // kalau user bukan ketua maka jangan berikan akses
-                    if(Auth::user()->nidn == $ketua->nidn)
+                    // kalau user bukan ketua dan bukan pengunggah maka jangan berikan akses
+                    if(Auth::user()->nidn == $ketua->nidn && $lapPublikasi->user_id != Auth::user()->id)
                     {
                         return abort(403);
                     }
@@ -283,8 +313,8 @@ class LapPublikasiController extends Controller
             {
                 if($ketua->pivot->isLeader == false)
                 {
-                    // kalau user bukan ketua maka jangan berikan akses
-                    if(Auth::user()->nidn == $ketua->nidn)
+                    // kalau user bukan ketua dan bukan pengunggah maka jangan berikan akses
+                    if(Auth::user()->nidn == $ketua->nidn && $lapPublikasi->user_id != Auth::user()->id)
                     {
                         return abort(403);
                     }
@@ -390,6 +420,35 @@ class LapPublikasiController extends Controller
                 }
             }
 
+            // cek apakah ada kontribusi dari dosen UNIPA atau tidak
+            if($nidn_anggota != null)
+            {
+                if(Auth::user()->role_id >= 2)
+                {
+                    // termasuk didalam tim atau tidak
+                    if(!in_array(Auth::user()->nidn, $nidn_anggota))
+                    {
+                        // kalau tidak kembalikan user ke form tambah
+                        Alert::toast('Sebagai pengunggah anda harus menjadi bagian dari tim', 'warning');
+                        return back()->withInput();
+                    }
+                }
+            } else {
+                //kalau anggota kosong
+                // cek jika user selain admin
+                if(Auth::user()->role_id >= 2)
+                {
+                    // kalau tidak ada kontribusi user dalam TIM kembalikan user ke form tambah
+                    Alert::toast('Sebagai pengunggah anda harus menjadi bagian dari tim', 'warning');
+                    return back()->withInput();
+                }
+
+                // Untuk admin
+                // kalau tidak ada kontribusi dosen UNIPA kembalikan ke form tambah
+                Alert::toast('Kami tidak melihat kontribusi dosen UNIPA dalam tim ini', 'warning');
+                return back()->withInput();
+            }
+
             // cek apakah ketua juga ditambahkan sebagai anggota atau tidak
             if($nama_anggota != null)
             {
@@ -488,8 +547,8 @@ class LapPublikasiController extends Controller
 
     public function destroy($id)
     {
-        $data = LapPublikasi::find($id);
-        if($data == null) {
+        $lapPublikasi = LapPublikasi::find($id);
+        if($lapPublikasi == null) {
             return abort(404);
         }
         if(Auth::user()->role_id >= 2)
@@ -499,8 +558,8 @@ class LapPublikasiController extends Controller
             {
                 if($ketua->pivot->isLeader == false)
                 {
-                    // kalau user bukan ketua maka jangan berikan akses
-                    if(Auth::user()->nidn == $ketua->nidn)
+                    // kalau user bukan ketua atau bukan pengunggah maka jangan berikan akses
+                    if(Auth::user()->nidn == $ketua->nidn && $lapPublikasi->user_id != Auth::user()->id)
                     {
                         return abort(403);
                     }
@@ -518,9 +577,9 @@ class LapPublikasiController extends Controller
             $extern->delete();
         }
         // hapus file yang sudah diupload
-        Storage::delete($data->path_publikasi);
+        Storage::delete($lapPublikasi->path_publikasi);
         // hapus data publikasi
-        $data->delete();
+        $lapPublikasi->delete();
         Alert::success('Success', 'Data Publikasi telah dihapus!');
         return redirect()->route('luaran-publikasi.index');
     }

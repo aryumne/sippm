@@ -46,7 +46,7 @@
                                     <label class="label-control">Laman jurnal</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('laman', $lapPublikasi->nama)}}" name="laman" id="laman" required />
+                                    <input type="text" class="form-control pl-2" value="{{ old('laman', $lapPublikasi->laman)}}" name="laman" id="laman" required />
                                     @error('laman')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror

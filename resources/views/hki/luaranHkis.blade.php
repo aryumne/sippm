@@ -62,7 +62,7 @@
                                         <a href="{{ route('luaran-hki.show', $hki) }}" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">read_more</i></a>
                                         @foreach ($hki->timIntern as $ketua)
                                         @if($ketua->pivot->isLeader == true)
-                                        @if($ketua->nidn == Auth::user()->nidn || Auth::user()->role_id == 1)
+                                        @if($ketua->nidn == Auth::user()->nidn)
                                         <a href="{{ route('luaran-hki.edit', $hki) }}" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">mode_edit</i></a>
                                         <form action="{{ route('luaran-hki.destroy', $hki->id) }}" method="POST" class="d-inline">
                                             @csrf
@@ -70,8 +70,26 @@
                                             <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-link btn-danger btn-just-icon edit"><i class="material-icons">delete_outline</i></button>
                                         </form>
                                         @endif
+                                        @else
+                                        @if(Auth::user()->nidn == $ketua->nidn && Auth::user()->id == $hki->user_id)
+                                        <a href="{{ route('luaran-hki.edit', $hki) }}" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">mode_edit</i></a>
+                                        <form action="{{ route('luaran-hki.destroy', $hki->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-link btn-danger btn-just-icon edit"><i class="material-icons">delete_outline</i></button>
+                                        </form>
+
+                                        @endif
                                         @endif
                                         @endforeach
+                                        @if(Auth::user()->role_id == 1)
+                                        <a href="{{ route('luaran-hki.edit', $hki) }}" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">mode_edit</i></a>
+                                        <form action="{{ route('luaran-hki.destroy', $hki->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button type="submit" onclick="return confirm('Yakin menghapus data ini ?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-link btn-danger btn-just-icon edit"><i class="material-icons">delete_outline</i></button>
+                                        </form>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
