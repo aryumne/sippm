@@ -23,7 +23,6 @@ class LapKemajuanController extends Controller
         //ambil tahun sekarang
         $getYear = date("Y");
         if (Auth::user()->role_id == 2) {
-            $proposal = Proposal::where('user_id', Auth::user()->id)->whereYear('tanggal_usul', $getYear)->get();
             $listProposal = Proposal::all();
             //buat collection
             $collectionProposalId = collect([]);
@@ -39,7 +38,7 @@ class LapKemajuanController extends Controller
             //dapatkan semua isi collection
             $proposal_id = $collectionProposalId->all();
             //ambil proposal yang pengusul upload di tahun ini
-            $proposal = Proposal::whereIn('id', $proposal_id)->whereYear('tanggal_usul', $getYear)->get();
+            $proposal = Proposal::whereIn('id', $proposal_id)->where('status', 2)->whereYear('tanggal_usul', $getYear)->get();
             //ambil laporan kemajuan yang pengusul upload
             $kemajuans = LapKemajuan::whereIn('proposal_id', $proposal_id)->get();
         }
@@ -71,6 +70,17 @@ class LapKemajuanController extends Controller
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
+        }
+
+        $proposalStatusCheck = Proposal::find($request->proposal_id);
+        if($proposalStatusCheck->status == 1)
+        {
+            Alert::toast('Proposal anda belum dapat dilanjutkan ke laporan kemajuan', 'warning');
+            return back();
+        } else if($proposalStatusCheck->status == 3)
+        {
+            Alert::toast('Mohon maaf, proposal ini dinyatakan tidak lanjut', 'error');
+            return back();
         }
 
         //ubah format inputan tanggal upload string ke datetime

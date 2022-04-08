@@ -40,7 +40,7 @@
                                     <td>{{ $pps->pivot->status == true ? 'Aktif' : 'Nonaktif' }}</td>
                                     <td>
                                         @if ($pps->pivot->status == true)
-                                        <form action="{{ route('adminpenilaian.audits.update', $pps->pivot->id) }}" method="POST">
+                                        <form action="{{ route('adminpenilaian.audits.update', $pps->pivot->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="0">
@@ -49,7 +49,7 @@
                                                 </span></button>
                                         </form>
                                         @else
-                                        <form action="{{ route('adminpenilaian.audits.update', $pps->pivot->id) }}" method="POST">
+                                        <form action="{{ route('adminpenilaian.audits.update', $pps->pivot->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="1">
@@ -58,6 +58,13 @@
                                                 </span></button>
                                         </form>
                                         @endif
+
+                                        <form action="{{ route('adminpenilaian.audits.destroy', $pps->pivot->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button type="submit" onclick="return confirm('Yakin akan membatalkan audit ini?')" data-bs-toggle="tooltip" data-bs-original-title="Delete" class="btn btn-link btn-danger btn-just-icon edit"><i class="material-icons">close</i></button>
+                                        </form>
+
                                     </td>
                                 </tr>
                                 @endforeach

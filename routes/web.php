@@ -50,11 +50,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     Route::get('/hasilAudits', [AdminController::class, 'hasilAudits'])->name('adminpenilaian.audits.hasil');
     Route::post('/auditStore', [AdminController::class, 'auditStore'])->name('adminpenilaian.audits.store');
     Route::put('/auditUpdate/{id}', [AdminController::class, 'auditUpdateStatus'])->name('adminpenilaian.audits.update');
+    Route::delete('/auditDestroy/{id}', [AdminController::class, 'auditDestroy'])->name('adminpenilaian.audits.destroy');
     //monitoring dan evaluasi (MONEV)
     Route::get('/monevs', [AdminController::class, 'monevs'])->name('adminpenilaian.monevs.index');
     Route::get('/hasilMonevs', [AdminController::class, 'hasilMonevs'])->name('adminpenilaian.monevs.hasil');
     Route::post('/monevStore', [AdminController::class, 'monevStore'])->name('adminpenilaian.monevs.store');
     Route::put('/monevUpdate/{id}', [AdminController::class, 'monevUpdateStatus'])->name('adminpenilaian.monevs.update');
+    Route::delete('/monevDestroy/{id}', [AdminController::class, 'monevDestroy'])->name('adminpenilaian.monevs.destroy');
     //penjadwalan
     Route::resource('/schedule', ScheduleController::class)->only(['index', 'update']);
     //Dosen

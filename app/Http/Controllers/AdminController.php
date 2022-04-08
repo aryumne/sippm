@@ -9,6 +9,8 @@ use App\Models\Monev;
 use App\Models\Faculty;
 use App\Models\Proposal;
 use App\Models\Schedule;
+use App\Models\HasilAudit;
+use App\Models\HasilMonev;
 use App\Models\LapKemajuan;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
@@ -308,6 +310,20 @@ class AdminController extends Controller
         return back();
     }
 
+    public function auditDestroy($id)
+    {
+        $hasil = HasilAudit::where('audit_id',$id)->first();
+        if($hasil ==  null)
+        {
+            Audit::find($id)->delete();
+            Alert::success('Success', 'Penilaian ini telah dibatalkan');
+            return back();
+        } else {
+            Alert::toast('Proposal ini telah dinilai oleh reviewer, penilaian tidak bisa dibatalkan', 'error');
+            return back();
+        }
+    }
+
     public function monevs()
     {
         $title = "Penilaian Proposal";
@@ -395,6 +411,20 @@ class AdminController extends Controller
         }
         return back();
 
+    }
+
+    public function monevDestroy($id)
+    {
+        $hasil = HasilMonev::where('monev_id',$id)->first();
+        if($hasil ==  null)
+        {
+            Monev::find($id)->delete();
+            Alert::success('Success', 'Penilaian ini telah dibatalkan');
+            return back();
+        } else {
+            Alert::toast('Laporan ini telah dimonev oleh reviewer, monev tidak bisa dibatalkan', 'error');
+            return back();
+        }
     }
 
 }
