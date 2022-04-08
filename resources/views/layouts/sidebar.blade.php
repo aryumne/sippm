@@ -132,13 +132,13 @@
                     <div class="collapse {{ request()->routeIs('luaran*') ? 'show': '' }}" id="lap-luaran">
                         <ul class="nav">
                             <li class="nav-item {{ request()->routeIs('luaran-publikasi*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('luaran-publikasi.index') }}">
+                                <a class="nav-link" href="#">
                                     <span class="sidebar-mini"> LP </span>
                                     <span class="sidebar-normal">Publikasi </span>
                                 </a>
                             </li>
                             <li class="nav-item {{ request()->routeIs('luaran-hki*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('luaran-hki.index') }}">
+                                <a class="nav-link" href="#">
                                     <span class="sidebar-mini"> LH </span>
                                     <span class="sidebar-normal">HKI </span>
                                 </a>
