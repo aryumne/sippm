@@ -103,7 +103,7 @@
                                             <div class="col-4 text-center">
                                                 <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control text-center" name="perumusan" value="" id="perumusan" readonly>
+                                                    <input type="number" class="form-control text-center" name="perumusan" value="0" id="perumusan" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -143,7 +143,7 @@
                                             <div class="col-4 text-center">
                                                 <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control text-center" name="peluang" value="" id="peluang" readonly>
+                                                    <input type="number" class="form-control text-center" name="peluang" value="0" id="peluang" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -181,7 +181,7 @@
                                             <div class="col-4 text-center">
                                                 <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control text-center" name="metode" value="" id="metode" readonly>
+                                                    <input type="number" class="form-control text-center" name="metode" value="0" id="metode" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -221,7 +221,7 @@
                                             <div class="col-4 text-center">
                                                 <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control text-center" name="tinjauan" value="" id="tinjauan" readonly>
+                                                    <input type="number" class="form-control text-center" name="tinjauan" value="0" id="tinjauan" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -261,7 +261,7 @@
                                             <div class="col-4 text-center">
                                                 <h6 class="d-sm-block d-md-block d-lg-none">NILAI</h6>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control text-center" name="kelayakan" value="" id="kelayakan" readonly>
+                                                    <input type="number" class="form-control text-center" name="kelayakan" value="0" id="kelayakan" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -274,7 +274,7 @@
                                     </div>
                                     <div class="col-sm 4 col-md-4 col-lg-2">
                                         <div class="form-group">
-                                            <input type="number" class="form-control text-center" name="total" value="" id="total" readonly>
+                                            <input type="number" class="form-control text-center" name="total" value="0" id="total" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -305,7 +305,7 @@
 <script>
     //perumusan
 
-    $('#point1').on('click', function() {
+    $('#point1').on('change', function() {
         $("#perumusan").val(this.value * 25);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);
@@ -321,7 +321,7 @@
         $("#total").val(total);
     });
     //peluang
-    $('#point2').on('click', function() {
+    $('#point2').on('change', function() {
         $("#peluang").val(this.value * 25);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);
@@ -337,7 +337,7 @@
         $("#total").val(total);
     });
     //metode
-    $('#point3').on('click', function() {
+    $('#point3').on('change', function() {
         $("#metode").val(this.value * 25);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);
@@ -353,7 +353,7 @@
         $("#total").val(total);
     });
     //tinjauan
-    $('#point4').on('click', function() {
+    $('#point4').on('change', function() {
         $("#tinjauan").val(this.value * 15);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);
@@ -369,7 +369,7 @@
         $("#total").val(total);
     });
     //kelayakan
-    $('#point5').on('click', function() {
+    $('#point5').on('change', function() {
         $("#kelayakan").val(this.value * 10);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);

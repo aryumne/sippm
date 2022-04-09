@@ -335,7 +335,7 @@
 <script>
     //perumusan
 
-    $('#point1').on('click', function() {
+    $('#point1').on('change', function() {
         $("#perumusan").val(this.value * 25);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);
@@ -351,7 +351,7 @@
         $("#total").val(total);
     });
     //peluang
-    $('#point2').on('click', function() {
+    $('#point2').on('change', function() {
         $("#peluang").val(this.value * 25);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);
@@ -367,7 +367,7 @@
         $("#total").val(total);
     });
     //metode
-    $('#point3').on('click', function() {
+    $('#point3').on('change', function() {
         $("#metode").val(this.value * 25);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);
@@ -383,7 +383,7 @@
         $("#total").val(total);
     });
     //tinjauan
-    $('#point4').on('click', function() {
+    $('#point4').on('change', function() {
         $("#tinjauan").val(this.value * 15);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);
@@ -399,7 +399,7 @@
         $("#total").val(total);
     });
     //kelayakan
-    $('#point5').on('click', function() {
+    $('#point5').on('change', function() {
         $("#kelayakan").val(this.value * 10);
         let point1 = document.getElementById('perumusan').value;
         let p1 = Number(point1);
