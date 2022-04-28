@@ -20,9 +20,9 @@ class LapHkiController extends Controller
     {
         $title = "Luaran HKI";
         $lapHkis = LapHki::all();
-        if(Auth::user()->role_id >= 2) {
+        if (Auth::user()->role_id >= 2) {
             // ambil data hki yang user punya baik itu sebagai pengupload maupun hanya berkontribusi
-            $lapHkis = LapHki::wherehas('timIntern', function($query) {
+            $lapHkis = LapHki::wherehas('timIntern', function ($query) {
                 $query->where('tim_intern_hkis.nidn', Auth::user()->nidn);
             })->orWhere('user_id', Auth::user()->id)->get();
         }
@@ -58,8 +58,7 @@ class LapHkiController extends Controller
             'path_hki.max' => "File maksimal 8 MB",
         ]);
 
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
@@ -68,9 +67,8 @@ class LapHkiController extends Controller
         $pathHki = $request->file('path_hki');
         $fileName = str_replace(" ", "-", $pathHki->getClientOriginalName());
         //cek apakah file dengan nama yang sama sudah ada didalam database
-        $cekFileName = LapHki::where('path_hki', 'laporan-hki/'.$fileName)->get();
-        if(count($cekFileName) != 0)
-        {
+        $cekFileName = LapHki::where('path_hki', 'laporan-hki/' . $fileName)->get();
+        if (count($cekFileName) != 0) {
             Alert::toast('File proposal sudah ada', 'error');
             return back()->withInput();
         }
@@ -80,20 +78,17 @@ class LapHkiController extends Controller
         $nama_anggota = $request->nama_anggota;
         $asal_anggota = $request->asal_anggota;
         //Cek Apakah ketua dari dalam UNIPA atau dari luar
-        if($request->checkKetua == null)
-        {
+        if ($request->checkKetua == null) {
             //ketua dari dalam UNIPA
             //cek data ada yang sama atau tidak
-            $lapHkis = LapHki::where('judul', 'like', '%'.$judul.'%')->get();
+            $lapHkis = LapHki::where('judul', 'like', '%' . $judul . '%')->get();
             //(opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
-            if(count($lapHkis) > 0)
-            {
+            if (count($lapHkis) > 0) {
                 //kalau ada, cek data ini apakah diketuai oleh inputan yang dipilih
-                foreach($lapHkis as $hki)
-                {
+                foreach ($lapHkis as $hki) {
                     $ketuaHki = TimInternHki::where('lap_hki_id', $hki->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->get();
                     //kalau ada, redirect ke detail data yang sama.
-                    if($ketuaHki) {
+                    if ($ketuaHki) {
                         Alert::toast('Gagal menyimpan, Data yang diinputkan sama dengan data ini', 'warning');
                         return redirect()->route('luaran-hki.show', $hki);
                     }
@@ -101,12 +96,9 @@ class LapHkiController extends Controller
             }
 
             //cek apakah ketua juga ditambahkan sebagai anggota atau tidak
-            if($nidn_anggota != null)
-            {
-                foreach($nidn_anggota as $intern)
-                {
-                    if($request->nidn_ketua == $intern)
-                    {
+            if ($nidn_anggota != null) {
+                foreach ($nidn_anggota as $intern) {
+                    if ($request->nidn_ketua == $intern) {
                         Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
                         return back()->withInput();
                     }
@@ -115,16 +107,14 @@ class LapHkiController extends Controller
         } else {
             //Ketua dari luar UNIPA
             //cek data ada yang sama atau tidak
-            $lapHkis = LapHki::where('judul', 'like', '%'.$judul.'%')->get();
+            $lapHkis = LapHki::where('judul', 'like', '%' . $judul . '%')->get();
             //(opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
             //kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
-            if(count($lapHkis) > 0)
-            {
-                foreach($lapHkis as $hki)
-                {
+            if (count($lapHkis) > 0) {
+                foreach ($lapHkis as $hki) {
                     $ketuaHki = TimExternHki::where('lap_hki_id', $hki->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->get();
                     //kalau ada, redirect ke detail data yang sama.
-                    if($ketuaHki) {
+                    if ($ketuaHki) {
                         Alert::toast('Kami melihat data yang sama, mungkin data ini yang ada maksud.', 'warning');
                         return redirect()->route('luaran-hki.show', $hki);
                     }
@@ -132,13 +122,10 @@ class LapHkiController extends Controller
             }
 
             // cek apakah ada kontribusi dari dosen UNIPA atau tidak
-            if($nidn_anggota != null)
-            {
-                if(Auth::user()->role_id >= 2)
-                {
+            if ($nidn_anggota != null) {
+                if (Auth::user()->role_id >= 2) {
                     // termasuk didalam tim atau tidak
-                    if(!in_array(Auth::user()->nidn, $nidn_anggota))
-                    {
+                    if (!in_array(Auth::user()->nidn, $nidn_anggota)) {
                         // kalau tidak kembalikan user ke form tambah
                         Alert::toast('Sebagai pengunggah anda harus menjadi bagian dari tim', 'warning');
                         return back()->withInput();
@@ -147,8 +134,7 @@ class LapHkiController extends Controller
             } else {
                 //kalau anggota kosong
                 // cek jika user selain admin
-                if(Auth::user()->role_id >= 2)
-                {
+                if (Auth::user()->role_id >= 2) {
                     // kalau tidak ada kontribusi user dalam TIM kembalikan user ke form tambah
                     Alert::toast('Sebagai pengunggah anda harus menjadi bagian dari tim', 'warning');
                     return back()->withInput();
@@ -161,20 +147,17 @@ class LapHkiController extends Controller
             }
 
             //cek apakah ketua juga ditambahkan sebagai anggota atau tidak
-            if($nama_anggota != null)
-            {
-                    foreach($nama_anggota as $extern)
-                    {
-                        //cek kesamaan inputan ketua dan anggota luar
-                        $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
-                        $hasil = $similiar/strlen($request->nama_ketua) * 100;
-                        //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
-                        if((int)$hasil >= 80)
-                        {
-                            Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
-                            return back()->withInput();
-                        }
+            if ($nama_anggota != null) {
+                foreach ($nama_anggota as $extern) {
+                    //cek kesamaan inputan ketua dan anggota luar
+                    $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
+                    $hasil = $similiar / strlen($request->nama_ketua) * 100;
+                    //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
+                    if ((int)$hasil >= 80) {
+                        Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
+                        return back()->withInput();
                     }
+                }
             }
         }
 
@@ -190,8 +173,7 @@ class LapHkiController extends Controller
         ]);
 
         //simpah data ketua
-        if($request->checkKetua == null)
-        {
+        if ($request->checkKetua == null) {
             TimInternHki::create([
                 'lap_hki_id' => $newHki->id,
                 'nidn' => str_pad($request->nidn_ketua, 10, "0", STR_PAD_LEFT),
@@ -207,10 +189,8 @@ class LapHkiController extends Controller
         }
 
         //simpan data anggota
-        if($nidn_anggota != null)
-        {
-            foreach($nidn_anggota as $intern)
-            {
+        if ($nidn_anggota != null) {
+            foreach ($nidn_anggota as $intern) {
                 TimInternHki::create([
                     'lap_hki_id' => $newHki->id,
                     'nidn' => str_pad($intern, 10, "0", STR_PAD_LEFT),
@@ -220,17 +200,15 @@ class LapHkiController extends Controller
         }
 
 
-        if($nama_anggota != null)
-        {
-                for($i = 0; $i < count($nama_anggota); $i++ )
-                {
-                    TimExternHki::create([
-                        'lap_hki_id' => $newHki->id,
-                        'nama' => $nama_anggota[$i],
-                        'asal_institusi' => $asal_anggota[$i],
-                        'isLeader' => false,
-                    ]);
-                }
+        if ($nama_anggota != null) {
+            for ($i = 0; $i < count($nama_anggota); $i++) {
+                TimExternHki::create([
+                    'lap_hki_id' => $newHki->id,
+                    'nama' => $nama_anggota[$i],
+                    'asal_institusi' => $asal_anggota[$i],
+                    'isLeader' => false,
+                ]);
+            }
         }
 
         Alert::success('Tersimpan', 'Luaran HKI telah ditambahkan');
@@ -242,14 +220,12 @@ class LapHkiController extends Controller
         // dd(LapHki::find($id));
         $title = "Detail Luaran HKI";
         $lapHki = LapHki::find($id);
-        if($lapHki == null) {
+        if ($lapHki == null) {
             return abort(404);
         }
-        if(Auth::user()->role_id >= 2)
-        {
+        if (Auth::user()->role_id >= 2) {
             $isUserAnggota = TimInternHki::where('lap_hki_id', $lapHki->id)->where('nidn', Auth::user()->nidn)->get();
-            if($lapHki->user_id != Auth::user()->id && count($isUserAnggota) < 1)
-            {
+            if ($lapHki->user_id != Auth::user()->id && count($isUserAnggota) < 1) {
                 return abort(403);
             }
         }
@@ -263,22 +239,18 @@ class LapHkiController extends Controller
     {
         $title = "Edit Luaran HKI";
         $lapHki = LapHki::find($id);
-        if($lapHki == null) {
+        if ($lapHki == null) {
             return abort(404);
         }
         $jenisHkis = Jenis_hki::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         //cek user yang bukan admin
-        if(Auth::user()->role_id >= 2)
-        {
+        if (Auth::user()->role_id >= 2) {
             // abort user yang bukan pemilik atau pengupload data ini
-            foreach($lapHki->timIntern as $ketua)
-            {
-                if($ketua->pivot->isLeader == false)
-                {
+            foreach ($lapHki->timIntern as $ketua) {
+                if ($ketua->pivot->isLeader == false) {
                     // kalau user bukan ketua dan bukan pengunggah maka jangan berikan akses
-                    if(Auth::user()->nidn == $ketua->nidn && $lapHki->user_id != Auth::user()->id)
-                    {
+                    if (Auth::user()->nidn == $ketua->nidn && $lapHki->user_id != Auth::user()->id) {
                         return abort(403);
                     }
                 }
@@ -296,20 +268,16 @@ class LapHkiController extends Controller
     {
         // dd($request->all());
         $lapHki = LapHki::find($id);
-        if($lapHki == null) {
+        if ($lapHki == null) {
             return abort(404);
         }
         //cek user yang bukan admin
-        if(Auth::user()->role_id >= 2)
-        {
+        if (Auth::user()->role_id >= 2) {
             // abort user yang bukan pemilik atau pengupload data ini
-            foreach($lapHki->timIntern as $ketua)
-            {
-                if($ketua->pivot->isLeader == false)
-                {
+            foreach ($lapHki->timIntern as $ketua) {
+                if ($ketua->pivot->isLeader == false) {
                     // kalau user bukan ketua dan bukan pengunggah maka jangan berikan akses
-                    if(Auth::user()->nidn == $ketua->nidn && $lapHki->user_id != Auth::user()->id)
-                    {
+                    if (Auth::user()->nidn == $ketua->nidn && $lapHki->user_id != Auth::user()->id) {
                         return abort(403);
                     }
                 }
@@ -327,12 +295,11 @@ class LapHkiController extends Controller
         ];
 
         //cek apakah ada perubahan pada judul artikel, kalau ada maka tambahkan validator
-        if($request->judul != $lapHki->judul)
-        {
+        if ($request->judul != $lapHki->judul) {
             $rules['judul'] = ['required', 'string', 'unique:lap_hkis'];
         }
         // cek apakah ada file unggahan
-        if($request->path_hki != null) {
+        if ($request->path_hki != null) {
             $rules['path_hki'] = ['required', 'file', 'mimes:pdf', 'max:8192'];
         }
 
@@ -342,8 +309,7 @@ class LapHkiController extends Controller
             'path_hki.max' => "File maksimal 8 MB",
         ]);
 
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
@@ -354,22 +320,18 @@ class LapHkiController extends Controller
         $asal_anggota = $request->asal_anggota;
 
         //Cek Apakah ketua dari dalam UNIPA atau dari luar
-        if($request->checkKetua == null)
-        {
+        if ($request->checkKetua == null) {
             // ketua dari dalam UNIPA
             // Jika ada perubahan judu; cek apakah judul ini sudah dinputkan sebelumnya atau tidak
-            if($request->judul != $lapHki->judul)
-            {
-                $lapHkis = LapHki::where('judul', 'like', '%'.$judul.'%')->get();
+            if ($request->judul != $lapHki->judul) {
+                $lapHkis = LapHki::where('judul', 'like', '%' . $judul . '%')->get();
                 // (opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
-                if(count($lapHkis) > 0)
-                {
+                if (count($lapHkis) > 0) {
                     //kalau ada, cek data ini apakah diketuai oleh inputan yang dipilih
-                    foreach($lapHkis as $hki)
-                    {
+                    foreach ($lapHkis as $hki) {
                         $ketuaHki = TimInternHki::where('lap_hki_id', $hki->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->get();
                         //kalau ada, redirect ke detail data yang sama.
-                        if($ketuaHki) {
+                        if ($ketuaHki) {
                             Alert::toast('Gagal menyimpan, Data yang diinputkan sama dengan data ini', 'warning');
                             return redirect()->route('luaran-hki.show', $hki);
                         }
@@ -378,33 +340,26 @@ class LapHkiController extends Controller
             }
 
             // cek apakah ketua juga ditambahkan sebagai anggota atau tidak
-            if($nidn_anggota != null)
-            {
-                foreach($nidn_anggota as $intern)
-                {
-                    if($request->nidn_ketua == $intern)
-                    {
+            if ($nidn_anggota != null) {
+                foreach ($nidn_anggota as $intern) {
+                    if ($request->nidn_ketua == $intern) {
                         Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
                         return back()->withInput();
                     }
                 }
             }
-        } else
-        {
+        } else {
             // Ketua dari luar UNIPA
             // Jika ada perubahan judu; cek apakah judul ini sudah dinputkan sebelumnya atau tidak
-            if($request->judul != $lapHki->judul)
-            {
-                $lapHkis = LapHki::where('judul', 'like', '%'.$judul.'%')->get();
+            if ($request->judul != $lapHki->judul) {
+                $lapHkis = LapHki::where('judul', 'like', '%' . $judul . '%')->get();
                 // (opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
                 // kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
-                if(count($lapHkis) > 0)
-                {
-                    foreach($lapHkis as $hki)
-                    {
+                if (count($lapHkis) > 0) {
+                    foreach ($lapHkis as $hki) {
                         $ketuaHki = TimExternHki::where('lap_hki_id', $hki->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->get();
                         //kalau ada, redirect ke detail data yang sama.
-                        if($ketuaHki) {
+                        if ($ketuaHki) {
                             Alert::toast('Kami melihat data yang sama, mungkin data ini yang ada maksud.', 'warning');
                             return redirect()->route('luaran-hki.show', $hki);
                         }
@@ -413,13 +368,10 @@ class LapHkiController extends Controller
             }
 
             // cek apakah ada kontribusi dari dosen UNIPA atau tidak
-            if($nidn_anggota != null)
-            {
-                if(Auth::user()->role_id >= 2)
-                {
+            if ($nidn_anggota != null) {
+                if (Auth::user()->role_id >= 2) {
                     // termasuk didalam tim atau tidak
-                    if(!in_array(Auth::user()->nidn, $nidn_anggota))
-                    {
+                    if (!in_array(Auth::user()->nidn, $nidn_anggota)) {
                         // kalau tidak kembalikan user ke form tambah
                         Alert::toast('Sebagai pengunggah anda harus menjadi bagian dari tim', 'warning');
                         return back()->withInput();
@@ -428,8 +380,7 @@ class LapHkiController extends Controller
             } else {
                 //kalau anggota kosong
                 // cek jika user selain admin
-                if(Auth::user()->role_id >= 2)
-                {
+                if (Auth::user()->role_id >= 2) {
                     // kalau tidak ada kontribusi user dalam TIM kembalikan user ke form tambah
                     Alert::toast('Sebagai pengunggah anda harus menjadi bagian dari tim', 'warning');
                     return back()->withInput();
@@ -442,33 +393,28 @@ class LapHkiController extends Controller
             }
 
             // cek apakah ketua juga ditambahkan sebagai anggota atau tidak
-            if($nama_anggota != null)
-            {
-                    foreach($nama_anggota as $extern)
-                    {
-                        //cek kesamaan inputan ketua dan anggota luar
-                        $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
-                        $hasil = $similiar/strlen($request->nama_ketua) * 100;
-                        //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
-                        if((int)$hasil >= 80)
-                        {
-                            Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
-                            return back()->withInput();
-                        }
+            if ($nama_anggota != null) {
+                foreach ($nama_anggota as $extern) {
+                    //cek kesamaan inputan ketua dan anggota luar
+                    $similiar = similar_text(strtolower($request->nama_ketua), strtolower($extern));
+                    $hasil = $similiar / strlen($request->nama_ketua) * 100;
+                    //jika tingkat kesamaan inputan 85% ke atas maka kembalikan inputan
+                    if ((int)$hasil >= 80) {
+                        Alert::toast('Ketua tidak bisa menjabat sebagai anggota dalam satu tim', 'error');
+                        return back()->withInput();
                     }
                 }
+            }
         }
 
         // Ambil original filename dari file yang diupload
         // upload file ke folder laporan-publikasi
         $pathHki = $request->file('path_hki');
-        if($pathHki != null)
-        {
+        if ($pathHki != null) {
             Storage::delete($lapHki->path_hki);
             $fileName = str_replace(" ", "-", $pathHki->getClientOriginalName());
             $pathHki = $pathHki->storeAs('laporan-hki', $fileName);
-        } else
-        {
+        } else {
             $pathHki = $lapHki->path_hki;
         }
 
@@ -487,15 +433,13 @@ class LapHkiController extends Controller
         TimExternHki::where('lap_hki_id', $id)->delete();
 
         //simpah data ketua baru update
-        if($request->checkKetua == null)
-        {
+        if ($request->checkKetua == null) {
             TimInternHki::create([
                 'lap_hki_id' => $id,
                 'nidn' => str_pad($request->nidn_ketua, 10, "0", STR_PAD_LEFT),
                 'isLeader' => true,
             ]);
-        } else
-        {
+        } else {
             TimExternHki::create([
                 'lap_hki_id' => $id,
                 'nama' => $request->nama_ketua,
@@ -505,10 +449,8 @@ class LapHkiController extends Controller
         }
 
         //simpan data anggota baru update
-        if($nidn_anggota != null)
-        {
-            foreach($nidn_anggota as $intern)
-            {
+        if ($nidn_anggota != null) {
+            foreach ($nidn_anggota as $intern) {
                 TimInternHki::create([
                     'lap_hki_id' => $id,
                     'nidn' => str_pad($intern, 10, "0", STR_PAD_LEFT),
@@ -517,17 +459,15 @@ class LapHkiController extends Controller
             }
         }
 
-        if($nama_anggota != null)
-        {
-                for($i = 0; $i < count($nama_anggota); $i++ )
-                {
-                    TimExternHki::create([
-                        'lap_hki_id' => $id,
-                        'nama' => $nama_anggota[$i],
-                        'asal_institusi' => $asal_anggota[$i],
-                        'isLeader' => false,
-                    ]);
-                }
+        if ($nama_anggota != null) {
+            for ($i = 0; $i < count($nama_anggota); $i++) {
+                TimExternHki::create([
+                    'lap_hki_id' => $id,
+                    'nama' => $nama_anggota[$i],
+                    'asal_institusi' => $asal_anggota[$i],
+                    'isLeader' => false,
+                ]);
+            }
         }
 
 
@@ -538,19 +478,15 @@ class LapHkiController extends Controller
     public function destroy($id)
     {
         $lapHki = LapHki::find($id);
-        if($lapHki == null) {
+        if ($lapHki == null) {
             return abort(404);
         }
-        if(Auth::user()->role_id >= 2)
-        {
+        if (Auth::user()->role_id >= 2) {
             // abort user yang bukan pemilik atau pengupload data ini
-            foreach($lapHki->timIntern as $ketua)
-            {
-                if($ketua->pivot->isLeader == false)
-                {
+            foreach ($lapHki->timIntern as $ketua) {
+                if ($ketua->pivot->isLeader == false) {
                     // kalau user bukan ketua atau bukan pengunggah maka jangan berikan akses
-                    if(Auth::user()->nidn == $ketua->nidn && $lapHki->user_id != Auth::user()->id)
-                    {
+                    if (Auth::user()->nidn == $ketua->nidn && $lapHki->user_id != Auth::user()->id) {
                         return abort(403);
                     }
                 }
@@ -558,12 +494,12 @@ class LapHkiController extends Controller
         }
         // hapus data tim dari dalam UNIPA
         $anggotaIntern = TimInternHki::where('lap_hki_id', $id)->get();
-        foreach($anggotaIntern as $intern) {
+        foreach ($anggotaIntern as $intern) {
             $intern->delete();
         }
         // hapus data tim darl luar UNIPA
         $anggotaExtern = TimExternHki::where('lap_hki_id', $id)->get();
-        foreach($anggotaIntern as $extern) {
+        foreach ($anggotaExtern as $extern) {
             $extern->delete();
         }
         // hapus file yang sudah diupload
