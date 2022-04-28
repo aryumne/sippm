@@ -47,9 +47,9 @@ class LapTtgController extends Controller
         $validator = Validator::make($request->all(), [
             'judul' => ['required', 'string', 'unique:lap_ttgs'],
             'tahun_perolehan' => ['required', 'numeric', 'digits:4'],
-            'tahun_penerapan' => ['numeric', 'digits:4'],
+            'tahun_penerapan' => ['numeric', 'digits:4', 'nullable'],
             'path_ttg' => ['required', 'file', 'mimes:pdf', 'max:8192'],
-            'path_bukti_sertifikat' => ['file', 'mimes:pdf', 'max:8192'],
+            'path_bukti_sertifikat' => ['file', 'mimes:pdf', 'max:8192', 'nullable'],
         ], [
             'judul.unique' => "Judul artikel ini sudah ada",
             'mimes' => "Type file harus pdf",
@@ -294,8 +294,8 @@ class LapTtgController extends Controller
         // hapus semua anggota yang ada lalu tambahkan kembali data anggota yang baru diinputkan
         $rules = [
             'tahun_perolehan' => ['required', 'numeric', 'digits:4'],
-            'tahun_penerapan' => ['numeric', 'digits:4'],
-            'path_bukti_sertifikat' => ['file', 'mimes:pdf', 'max:8192'],
+            'tahun_penerapan' => ['numeric', 'digits:4', 'nullable'],
+            'path_bukti_sertifikat' => ['file', 'mimes:pdf', 'max:8192', 'nullable'],
         ];
 
         //cek apakah ada perubahan pada judul artikel, kalau ada maka tambahkan validator

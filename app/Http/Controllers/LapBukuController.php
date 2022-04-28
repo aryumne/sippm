@@ -46,7 +46,7 @@ class LapBukuController extends Controller
         // dd($request->all());
         $validator = Validator::make($request->all(), [
             'judul' => ['required', 'string', 'unique:lap_bukus'],
-            'isbn' => ['string'],
+            'isbn' => ['string', 'nullable'],
             'penerbit' => ['required', 'string'],
             'tahun' => ['required', 'numeric', 'digits:4'],
             'path_buku' => ['required', 'file', 'mimes:pdf', 'max:8192'],
@@ -287,7 +287,7 @@ class LapBukuController extends Controller
         // simpah perubahan data lap Buku
         // hapus semua anggota yang ada lalu tambahkan kembali data anggota yang baru diinputkan
         $rules = [
-            'isbn' => ['string'],
+            'isbn' => ['string', 'nullable'],
             'penerbit' => ['required', 'string'],
             'tahun' => ['required', 'numeric', 'digits:4'],
         ];
