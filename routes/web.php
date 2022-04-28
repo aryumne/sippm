@@ -8,8 +8,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\LapHkiController;
+use App\Http\Controllers\LapTtgController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\LapBukuController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LapAkhirController;
 use App\Http\Controllers\PengusulController;
@@ -119,6 +121,8 @@ Route::group(['middleware' => ['auth', 'verified', 'prevent-back-history']], fun
     Route::get('/kegiatan/create/{kegiatan}', [KegiatanController::class, 'create'])->name('kegiatan.create');
     Route::resource('luaran-publikasi', LapPublikasiController::class);
     Route::resource('luaran-hki', LapHkiController::class);
+    Route::resource('luaran-buku', LapBukuController::class);
+    Route::resource('luaran-ttg', LapTtgController::class);
 });
 
 require __DIR__ . '/auth.php';
