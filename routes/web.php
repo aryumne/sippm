@@ -18,6 +18,7 @@ use App\Http\Controllers\PengusulController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\ReviewerController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\LapNaskahController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\SumberDanaController;
 use App\Http\Controllers\LapKemajuanController;
@@ -123,6 +124,7 @@ Route::group(['middleware' => ['auth', 'verified', 'prevent-back-history']], fun
     Route::resource('luaran-hki', LapHkiController::class);
     Route::resource('luaran-buku', LapBukuController::class);
     Route::resource('luaran-ttg', LapTtgController::class);
+    Route::resource('luaran-naskah', LapNaskahController::class);
 });
 
 require __DIR__ . '/auth.php';

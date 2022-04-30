@@ -71,7 +71,7 @@ class LapPublikasiController extends Controller
         //cek apakah file dengan nama yang sama sudah ada didalam database
         $cekFileName = LapPublikasi::where('path_publikasi', 'laporan-publikasi/' . $fileName)->get();
         if (count($cekFileName) != 0) {
-            Alert::toast('File proposal sudah ada', 'error');
+            Alert::toast('File luaran sudah ada', 'error');
             return back()->withInput();
         }
 

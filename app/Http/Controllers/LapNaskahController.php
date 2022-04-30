@@ -3,43 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
-use App\Models\LapHki;
-use App\Models\Jenis_hki;
-use App\Models\TimExternHki;
-use App\Models\TimInternHki;
+use App\Models\LapNaskah;
 use Illuminate\Http\Request;
+use App\Models\TimExternNaskah;
+use App\Models\TimInternNaskah;
+use App\Http\Controllers\Controller;
+use App\Models\Peruntukan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 
-class LapHkiController extends Controller
+class LapNaskahController extends Controller
 {
-
     public function index()
     {
-        $title = "Luaran HKI";
-        $lapHkis = LapHki::all();
+        $title = "Luaran Naskah Akademik";
+        $lapNaskahs = LapNaskah::all();
         if (Auth::user()->role_id >= 2) {
-            // ambil data hki yang user punya baik itu sebagai pengupload maupun hanya berkontribusi
-            $lapHkis = LapHki::wherehas('timIntern', function ($query) {
-                $query->where('tim_intern_hkis.nidn', Auth::user()->nidn);
+            // ambil data Naskah Akademik yang user punya baik itu sebagai pengupload maupun hanya berkontribusi
+            $lapNaskahs = LapNaskah::wherehas('timIntern', function ($query) {
+                $query->where('tim_intern_naskahs.nidn', Auth::user()->nidn);
             })->orWhere('user_id', Auth::user()->id)->get();
         }
-        return view('hki.luaranHkis', [
+        return view('naskah.luaranNaskah', [
             'title' => $title,
-            'lapHkis' => $lapHkis,
+            'lapNaskahs' => $lapNaskahs,
         ]);
     }
 
     public function create()
     {
-        $title = "Tambah Luaran HKI";
-        $jenisHkis = Jenis_hki::all();
+        $title = "Tambah Luaran Naskah Akademik";
+        $peruntukans = Peruntukan::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
-        return view('hki.createLuaranHki', [
+        return view('naskah.createLuaranNaskah', [
             'title' => $title,
-            'jenisHkis' => $jenisHkis,
+            'peruntukans' => $peruntukans,
             'dosens' => $dosens,
         ]);
     }
@@ -48,14 +48,14 @@ class LapHkiController extends Controller
     {
         // dd($request->all());
         $validator = Validator::make($request->all(), [
-            'judul' => ['required', 'string', 'unique:lap_hkis'],
+            'judul' => ['required', 'string', 'unique:lap_naskahs'],
             'tahun' => ['required', 'numeric', 'digits:4'],
-            'jenis_hki_id' => ['required'],
-            'path_hki' => ['required', 'file', 'mimes:pdf', 'max:8192'],
+            'peruntukan_id' => ['required'],
+            'path_naskah' => ['required', 'file', 'mimes:pdf', 'max:8192'],
         ], [
             'judul.unique' => "Judul artikel ini sudah ada",
-            'path_hki.mimes' => "Type file harus pdf",
-            'path_hki.max' => "File maksimal 8 MB",
+            'path_naskah.mimes' => "Type file harus pdf",
+            'path_naskah.max' => "File maksimal 8 MB",
         ]);
 
         if ($validator->fails()) {
@@ -64,10 +64,10 @@ class LapHkiController extends Controller
         }
 
         //Ambil original filename dari file yang diupload
-        $pathHki = $request->file('path_hki');
-        $fileName = str_replace(" ", "-", $pathHki->getClientOriginalName());
+        $pathNaskah = $request->file('path_naskah');
+        $fileName = str_replace(" ", "-", $pathNaskah->getClientOriginalName());
         //cek apakah file dengan nama yang sama sudah ada didalam database
-        $cekFileName = LapHki::where('path_hki', 'laporan-hki/' . $fileName)->get();
+        $cekFileName = LapNaskah::where('path_naskah', 'naskah-akademik/' . $fileName)->get();
         if (count($cekFileName) != 0) {
             Alert::toast('File luaran sudah ada', 'error');
             return back()->withInput();
@@ -81,16 +81,16 @@ class LapHkiController extends Controller
         if ($request->checkKetua == null) {
             //ketua dari dalam UNIPA
             //cek data ada yang sama atau tidak
-            $lapHkis = LapHki::where('judul', 'like', '%' . $judul . '%')->get();
+            $lapNaskahs = LapNaskah::where('judul', 'like', '%' . $judul . '%')->get();
             //(opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
-            if (count($lapHkis) > 0) {
+            if (count($lapNaskahs) > 0) {
                 //kalau ada, cek data ini apakah diketuai oleh inputan yang dipilih
-                foreach ($lapHkis as $hki) {
-                    $ketuaHki = TimInternHki::where('lap_hki_id', $hki->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->get();
+                foreach ($lapNaskahs as $naskah) {
+                    $ketuaNaskah = TimInternNaskah::where('lap_naskah_id', $naskah->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->get();
                     //kalau ada, redirect ke detail data yang sama.
-                    if ($ketuaHki) {
+                    if ($ketuaNaskah) {
                         Alert::toast('Gagal menyimpan, Data yang diinputkan sama dengan data ini', 'warning');
-                        return redirect()->route('luaran-hki.show', $hki);
+                        return redirect()->route('luaran-naskah.show', $naskah);
                     }
                 }
             }
@@ -106,17 +106,18 @@ class LapHkiController extends Controller
             }
         } else {
             //Ketua dari luar UNIPA
+
             //cek data ada yang sama atau tidak
-            $lapHkis = LapHki::where('judul', 'like', '%' . $judul . '%')->get();
+            $lapNaskahs = LapNaskah::where('judul', 'like', '%' . $judul . '%')->get();
             //(opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
             //kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
-            if (count($lapHkis) > 0) {
-                foreach ($lapHkis as $hki) {
-                    $ketuaHki = TimExternHki::where('lap_hki_id', $hki->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->get();
+            if (count($lapNaskahs) > 0) {
+                foreach ($lapNaskahs as $naskah) {
+                    $ketuaNaskah = TimExternNaskah::where('lap_naskah_id', $naskah->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->get();
                     //kalau ada, redirect ke detail data yang sama.
-                    if ($ketuaHki) {
+                    if ($ketuaNaskah) {
                         Alert::toast('Kami melihat data yang sama, mungkin data ini yang ada maksud.', 'warning');
-                        return redirect()->route('luaran-hki.show', $hki);
+                        return redirect()->route('luaran-naskah.show', $naskah);
                     }
                 }
             }
@@ -142,7 +143,7 @@ class LapHkiController extends Controller
 
                 // Untuk admin
                 // kalau tidak ada kontribusi dosen UNIPA kembalikan ke form tambah
-                Alert::toast('Minimal 1 penulis dalam tim harus dari dalam UNIPA.', 'warning');
+                Alert::toast('Minimal 1 penulis dalam tim harus dari dalam UNIPA', 'warning');
                 return back()->withInput();
             }
 
@@ -161,27 +162,27 @@ class LapHkiController extends Controller
             }
         }
 
-        //upload file ke folder laporan-hki
-        $pathHki = $pathHki->storeAs('laporan-hki', $fileName);
-        //simpan data ke tabel lap_publikasis
-        $newHki = LapHki::create([
+        //upload file ke folder naskah-akademik
+        $pathNaskah = $pathNaskah->storeAs('naskah-akademik', $fileName);
+        //simpan data ke tabel lap_naskahs
+        $newNaskah = LapNaskah::create([
             'judul' => $judul,
             'tahun' => $request->tahun,
-            'jenis_hki_id' => $request->jenis_hki_id,
-            'path_hki' => $pathHki,
+            'peruntukan_id' => $request->peruntukan_id,
+            'path_naskah' => $pathNaskah,
             'user_id' => Auth::user()->id,
         ]);
 
         //simpah data ketua
         if ($request->checkKetua == null) {
-            TimInternHki::create([
-                'lap_hki_id' => $newHki->id,
+            TimInternNaskah::create([
+                'lap_naskah_id' => $newNaskah->id,
                 'nidn' => str_pad($request->nidn_ketua, 10, "0", STR_PAD_LEFT),
                 'isLeader' => true,
             ]);
         } else {
-            TimExternHki::create([
-                'lap_hki_id' => $newHki->id,
+            TimExternNaskah::create([
+                'lap_naskah_id' => $newNaskah->id,
                 'nama' => $request->nama_ketua,
                 'asal_institusi' => $request->asal_ketua,
                 'isLeader' => true,
@@ -191,8 +192,8 @@ class LapHkiController extends Controller
         //simpan data anggota
         if ($nidn_anggota != null) {
             foreach ($nidn_anggota as $intern) {
-                TimInternHki::create([
-                    'lap_hki_id' => $newHki->id,
+                TimInternNaskah::create([
+                    'lap_naskah_id' => $newNaskah->id,
                     'nidn' => str_pad($intern, 10, "0", STR_PAD_LEFT),
                     'isLeader' => false,
                 ]);
@@ -202,8 +203,8 @@ class LapHkiController extends Controller
 
         if ($nama_anggota != null) {
             for ($i = 0; $i < count($nama_anggota); $i++) {
-                TimExternHki::create([
-                    'lap_hki_id' => $newHki->id,
+                TimExternNaskah::create([
+                    'lap_naskah_id' => $newNaskah->id,
                     'nama' => $nama_anggota[$i],
                     'asal_institusi' => $asal_anggota[$i],
                     'isLeader' => false,
@@ -211,73 +212,72 @@ class LapHkiController extends Controller
             }
         }
 
-        Alert::success('Tersimpan', 'Luaran HKI telah ditambahkan');
-        return redirect()->route('luaran-hki.show', $newHki->id);
+        Alert::success('Tersimpan', 'Luaran Naskah Akademik telah ditambahkan');
+        return redirect()->route('luaran-naskah.show', $newNaskah->id);
     }
 
     public function show($id)
     {
-        // dd(LapHki::find($id));
-        $title = "Detail Luaran HKI";
-        $lapHki = LapHki::find($id);
-        if ($lapHki == null) {
+        $title = "Detail Luaran Naskah Akademik";
+        $lapNaskah = LapNaskah::find($id);
+        if ($lapNaskah == null) {
             return abort(404);
         }
         if (Auth::user()->role_id >= 2) {
-            $isUserAnggota = TimInternHki::where('lap_hki_id', $lapHki->id)->where('nidn', Auth::user()->nidn)->get();
-            if ($lapHki->user_id != Auth::user()->id && count($isUserAnggota) < 1) {
+            $isUserAnggota = TimInternNaskah::where('lap_naskah_id', $lapNaskah->id)->where('nidn', Auth::user()->nidn)->get();
+            if ($lapNaskah->user_id != Auth::user()->id && count($isUserAnggota) < 1) {
                 return abort(403);
             }
         }
-        return view('hki.showLuaranHki', [
+        return view('naskah.showLuaranNaskah', [
             'title' => $title,
-            'lapHki' => $lapHki,
+            'lapNaskah' => $lapNaskah,
         ]);
     }
 
     public function edit($id)
     {
-        $title = "Edit Luaran HKI";
-        $lapHki = LapHki::find($id);
-        if ($lapHki == null) {
+        $title = "Edit Luaran Naskah Akademik";
+        $lapNaskah = LapNaskah::find($id);
+        if ($lapNaskah == null) {
             return abort(404);
         }
-        $jenisHkis = Jenis_hki::all();
+        $peruntukans = Peruntukan::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         //cek user yang bukan admin
         if (Auth::user()->role_id >= 2) {
             // abort user yang bukan pemilik atau pengupload data ini
-            foreach ($lapHki->timIntern as $ketua) {
+            foreach ($lapNaskah->timIntern as $ketua) {
                 if ($ketua->pivot->isLeader == false) {
                     // kalau user bukan ketua dan bukan pengunggah maka jangan berikan akses
-                    if (Auth::user()->nidn == $ketua->nidn && $lapHki->user_id != Auth::user()->id) {
+                    if (Auth::user()->nidn == $ketua->nidn && $lapNaskah->user_id != Auth::user()->id) {
                         return abort(403);
                     }
                 }
             }
         }
-        return view('hki.editLuaranHki', [
+        return view('naskah.editLuaranNaskah', [
             'title' => $title,
-            'jenisHkis' => $jenisHkis,
+            'peruntukans' => $peruntukans,
             'dosens' => $dosens,
-            'lapHki' => $lapHki,
+            'lapNaskah' => $lapNaskah,
         ]);
     }
 
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $lapHki = LapHki::find($id);
-        if ($lapHki == null) {
+        $lapNaskah = LapNaskah::find($id);
+        if ($lapNaskah == null) {
             return abort(404);
         }
         //cek user yang bukan admin
         if (Auth::user()->role_id >= 2) {
             // abort user yang bukan pemilik atau pengupload data ini
-            foreach ($lapHki->timIntern as $ketua) {
+            foreach ($lapNaskah->timIntern as $ketua) {
                 if ($ketua->pivot->isLeader == false) {
                     // kalau user bukan ketua dan bukan pengunggah maka jangan berikan akses
-                    if (Auth::user()->nidn == $ketua->nidn && $lapHki->user_id != Auth::user()->id) {
+                    if (Auth::user()->nidn == $ketua->nidn && $lapNaskah->user_id != Auth::user()->id) {
                         return abort(403);
                     }
                 }
@@ -291,22 +291,22 @@ class LapHkiController extends Controller
         // hapus semua anggota yang ada lalu tambahkan kembali data anggota yang baru diinputkan
         $rules = [
             'tahun' => ['required', 'numeric', 'digits:4'],
-            'jenis_hki_id' => ['required'],
+            'peruntukan_id' => ['required'],
         ];
 
         //cek apakah ada perubahan pada judul artikel, kalau ada maka tambahkan validator
-        if ($request->judul != $lapHki->judul) {
-            $rules['judul'] = ['required', 'string', 'unique:lap_hkis'];
+        if ($request->judul != $lapNaskah->judul) {
+            $rules['judul'] = ['required', 'string', 'unique:lap_naskahs'];
         }
         // cek apakah ada file unggahan
-        if ($request->path_hki != null) {
-            $rules['path_hki'] = ['required', 'file', 'mimes:pdf', 'max:8192'];
+        if ($request->path_naskah != null) {
+            $rules['path_naskah'] = ['required', 'file', 'mimes:pdf', 'max:8192'];
         }
 
         $validator = Validator::make($request->all(), $rules, [
             'judul.unique' => "Judul artikel ini sudah ada",
-            'path_hki.mimes' => "Type file harus pdf",
-            'path_hki.max' => "File maksimal 8 MB",
+            'path_naskah.mimes' => "Type file harus pdf",
+            'path_naskah.max' => "File maksimal 8 MB",
         ]);
 
         if ($validator->fails()) {
@@ -323,17 +323,17 @@ class LapHkiController extends Controller
         if ($request->checkKetua == null) {
             // ketua dari dalam UNIPA
             // Jika ada perubahan judu; cek apakah judul ini sudah dinputkan sebelumnya atau tidak
-            if ($request->judul != $lapHki->judul) {
-                $lapHkis = LapHki::where('judul', 'like', '%' . $judul . '%')->get();
+            if ($request->judul != $lapNaskah->judul) {
+                $lapNaskahs = LapNaskah::where('judul', 'like', '%' . $judul . '%')->get();
                 // (opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
-                if (count($lapHkis) > 0) {
+                if (count($lapNaskahs) > 0) {
                     //kalau ada, cek data ini apakah diketuai oleh inputan yang dipilih
-                    foreach ($lapHkis as $hki) {
-                        $ketuaHki = TimInternHki::where('lap_hki_id', $hki->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->first();
+                    foreach ($lapNaskahs as $naskah) {
+                        $ketuaNaskah = TimInternNaskah::where('lap_naskah_id', $naskah->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($hki->id != $id && $ketuaHki) {
+                        if ($naskah->id != $id && $ketuaNaskah) {
                             Alert::toast('Gagal menyimpan, Data yang diinputkan sama dengan data ini', 'warning');
-                            return redirect()->route('luaran-hki.show', $hki);
+                            return redirect()->route('luaran-naskah.show', $naskah);
                         }
                     }
                 }
@@ -351,17 +351,17 @@ class LapHkiController extends Controller
         } else {
             // Ketua dari luar UNIPA
             // Jika ada perubahan judu; cek apakah judul ini sudah dinputkan sebelumnya atau tidak
-            if ($request->judul != $lapHki->judul) {
-                $lapHkis = LapHki::where('judul', 'like', '%' . $judul . '%')->get();
+            if ($request->judul != $lapNaskah->judul) {
+                $lapNaskahs = LapNaskah::where('judul', 'like', '%' . $judul . '%')->get();
                 // (opsional)cek data yang sama menggunakan method similar_text dari php jika query diatas kurang meyakinkan
                 // kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
-                if (count($lapHkis) > 0) {
-                    foreach ($lapHkis as $hki) {
-                        $ketuaHki = TimExternHki::where('lap_hki_id', $hki->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->first();
+                if (count($lapNaskahs) > 0) {
+                    foreach ($lapNaskahs as $naskah) {
+                        $ketuaNaskah = TimExternNaskah::where('lap_naskah_id', $naskah->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($hki->id != $id && $ketuaHki) {
+                        if ($naskah->id != $id && $ketuaNaskah) {
                             Alert::toast('Kami melihat data yang sama, mungkin data ini yang anda maksud.', 'warning');
-                            return redirect()->route('luaran-hki.show', $hki);
+                            return redirect()->route('luaran-naskah.show', $naskah);
                         }
                     }
                 }
@@ -408,40 +408,40 @@ class LapHkiController extends Controller
         }
 
         // Ambil original filename dari file yang diupload
-        // upload file ke folder laporan-publikasi
-        $pathHki = $request->file('path_hki');
-        if ($pathHki != null) {
-            Storage::delete($lapHki->path_hki);
-            $fileName = str_replace(" ", "-", $pathHki->getClientOriginalName());
-            $pathHki = $pathHki->storeAs('laporan-hki', $fileName);
+        // upload file ke folder naskah-akademik
+        $pathNaskah = $request->file('path_naskah');
+        if ($pathNaskah != null) {
+            Storage::delete($lapNaskah->path_naskah);
+            $fileName = str_replace(" ", "-", $pathNaskah->getClientOriginalName());
+            $pathNaskah = $pathNaskah->storeAs('naskah-akademik', $fileName);
         } else {
-            $pathHki = $lapHki->path_hki;
+            $pathNaskah = $lapNaskah->path_naskah;
         }
 
-        //simpan data ke tabel lap_publikasis
-        LapHki::findOrFail($id)->update([
+        //simpan data ke tabel lap_naskahs
+        LapNaskah::findOrFail($id)->update([
             'judul' => $judul,
             'tahun' => $request->tahun,
-            'jenis_hki_id' => $request->jenis_hki_id,
-            'path_hki' => $pathHki,
+            'peruntukan_id' => $request->peruntukan_id,
+            'path_naskah' => $pathNaskah,
         ]);
 
         // dd($request->all());
         // hapus tim intern UNIPA lama
-        TimInternHki::where('lap_hki_id', $id)->delete();
+        TimInternNaskah::where('lap_naskah_id', $id)->delete();
         // hapus tim Extern UNIPA lama
-        TimExternHki::where('lap_hki_id', $id)->delete();
+        TimExternNaskah::where('lap_naskah_id', $id)->delete();
 
         //simpah data ketua baru update
         if ($request->checkKetua == null) {
-            TimInternHki::create([
-                'lap_hki_id' => $id,
+            TimInternNaskah::create([
+                'lap_naskah_id' => $id,
                 'nidn' => str_pad($request->nidn_ketua, 10, "0", STR_PAD_LEFT),
                 'isLeader' => true,
             ]);
         } else {
-            TimExternHki::create([
-                'lap_hki_id' => $id,
+            TimExternNaskah::create([
+                'lap_naskah_id' => $id,
                 'nama' => $request->nama_ketua,
                 'asal_institusi' => $request->asal_ketua,
                 'isLeader' => true,
@@ -451,8 +451,8 @@ class LapHkiController extends Controller
         //simpan data anggota baru update
         if ($nidn_anggota != null) {
             foreach ($nidn_anggota as $intern) {
-                TimInternHki::create([
-                    'lap_hki_id' => $id,
+                TimInternNaskah::create([
+                    'lap_naskah_id' => $id,
                     'nidn' => str_pad($intern, 10, "0", STR_PAD_LEFT),
                     'isLeader' => false,
                 ]);
@@ -461,8 +461,8 @@ class LapHkiController extends Controller
 
         if ($nama_anggota != null) {
             for ($i = 0; $i < count($nama_anggota); $i++) {
-                TimExternHki::create([
-                    'lap_hki_id' => $id,
+                TimExternNaskah::create([
+                    'lap_naskah_id' => $id,
                     'nama' => $nama_anggota[$i],
                     'asal_institusi' => $asal_anggota[$i],
                     'isLeader' => false,
@@ -471,42 +471,42 @@ class LapHkiController extends Controller
         }
 
 
-        Alert::success('Tersimpan', 'Perubahan data luaran HKI telah disimpan');
-        return redirect()->route('luaran-hki.show', $id);
+        Alert::success('Tersimpan', 'Perubahan data luaran naskah akademik telah disimpan');
+        return redirect()->route('luaran-naskah.show', $id);
     }
 
     public function destroy($id)
     {
-        $lapHki = LapHki::find($id);
-        if ($lapHki == null) {
+        $lapNaskah = LapNaskah::find($id);
+        if ($lapNaskah == null) {
             return abort(404);
         }
         if (Auth::user()->role_id >= 2) {
             // abort user yang bukan pemilik atau pengupload data ini
-            foreach ($lapHki->timIntern as $ketua) {
+            foreach ($lapNaskah->timIntern as $ketua) {
                 if ($ketua->pivot->isLeader == false) {
                     // kalau user bukan ketua atau bukan pengunggah maka jangan berikan akses
-                    if (Auth::user()->nidn == $ketua->nidn && $lapHki->user_id != Auth::user()->id) {
+                    if (Auth::user()->nidn == $ketua->nidn && $lapNaskah->user_id != Auth::user()->id) {
                         return abort(403);
                     }
                 }
             }
         }
         // hapus data tim dari dalam UNIPA
-        $anggotaIntern = TimInternHki::where('lap_hki_id', $id)->get();
+        $anggotaIntern = TimInternNaskah::where('lap_naskah_id', $id)->get();
         foreach ($anggotaIntern as $intern) {
             $intern->delete();
         }
         // hapus data tim darl luar UNIPA
-        $anggotaExtern = TimExternHki::where('lap_hki_id', $id)->get();
+        $anggotaExtern = TimExternNaskah::where('lap_naskah_id', $id)->get();
         foreach ($anggotaExtern as $extern) {
             $extern->delete();
         }
         // hapus file yang sudah diupload
-        Storage::delete($lapHki->path_hki);
+        Storage::delete($lapNaskah->path_naskah);
         // hapus data publikasi
-        $lapHki->delete();
-        Alert::success('Success', 'Data HKI telah dihapus!');
-        return redirect()->route('luaran-hki.index');
+        $lapNaskah->delete();
+        Alert::success('Success', 'Data Naskah Akademik telah dihapus!');
+        return redirect()->route('luaran-naskah.index');
     }
 }

@@ -67,7 +67,7 @@ class LapBukuController extends Controller
         //cek apakah file dengan nama yang sama sudah ada didalam database
         $cekFileName = LapBuku::where('path_buku', 'laporan-buku/' . $fileName)->get();
         if (count($cekFileName) != 0) {
-            Alert::toast('File proposal sudah ada', 'error');
+            Alert::toast('File luaran sudah ada', 'error');
             return back()->withInput();
         }
 

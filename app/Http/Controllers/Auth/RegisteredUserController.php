@@ -25,7 +25,7 @@ class RegisteredUserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nidn' => ['required', 'numeric', 'digits:10', 'unique:users'],
-            'email' => ['required', 'email:dns','regex:/(.*)@unipa\.ac\.id/i', 'max:255', 'unique:users'],
+            'email' => ['required', 'email:dns', 'regex:/(.*)@unipa\.ac\.id/i', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
             'nidn.unique' => 'NIDN ini sudah terdaftar',
@@ -44,8 +44,8 @@ class RegisteredUserController extends Controller
 
         $nidn = Dosen::where('nidn', $request->nidn)->get();
         $email = Dosen::where('email', $request->email)->get();
-        foreach($email as $cek) {
-            if($cek->nidn != $request->nidn){
+        foreach ($email as $cek) {
+            if ($cek->nidn != $request->nidn) {
                 Alert::toast("Email ini sudah terdaftar!", 'error');
                 return back()->withInput();
             }

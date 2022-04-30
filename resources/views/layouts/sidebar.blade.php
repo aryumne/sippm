@@ -157,7 +157,7 @@
                                 </a>
                             </li>
                             <li class="nav-item {{ request()->routeIs('luaran-naskah*') ? 'active' : '' }}">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ route('luaran-naskah.index') }}">
                                     <span class="sidebar-mini"> LN </span>
                                     <span class="sidebar-normal">Naskah Akademik </span>
                                 </a>

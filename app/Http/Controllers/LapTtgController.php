@@ -68,7 +68,7 @@ class LapTtgController extends Controller
         //cek apakah file dengan nama yang sama sudah ada didalam database
         $cekFileName = LapTtg::where('path_ttg', 'laporan-ttg/' . $fileNameTtg)->get();
         if (count($cekFileName) != 0) {
-            Alert::toast('File proposal sudah ada', 'error');
+            Alert::toast('File luaran sudah ada', 'error');
             return back()->withInput();
         }
 
