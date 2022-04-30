@@ -329,9 +329,9 @@ class LapHkiController extends Controller
                 if (count($lapHkis) > 0) {
                     //kalau ada, cek data ini apakah diketuai oleh inputan yang dipilih
                     foreach ($lapHkis as $hki) {
-                        $ketuaHki = TimInternHki::where('lap_hki_id', $hki->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->get();
+                        $ketuaHki = TimInternHki::where('lap_hki_id', $hki->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($ketuaHki) {
+                        if ($hki->id != $id && $ketuaHki) {
                             Alert::toast('Gagal menyimpan, Data yang diinputkan sama dengan data ini', 'warning');
                             return redirect()->route('luaran-hki.show', $hki);
                         }
@@ -357,10 +357,10 @@ class LapHkiController extends Controller
                 // kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
                 if (count($lapHkis) > 0) {
                     foreach ($lapHkis as $hki) {
-                        $ketuaHki = TimExternHki::where('lap_hki_id', $hki->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->get();
+                        $ketuaHki = TimExternHki::where('lap_hki_id', $hki->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($ketuaHki) {
-                            Alert::toast('Kami melihat data yang sama, mungkin data ini yang ada maksud.', 'warning');
+                        if ($hki->id != $id && $ketuaHki) {
+                            Alert::toast('Kami melihat data yang sama, mungkin data ini yang anda maksud.', 'warning');
                             return redirect()->route('luaran-hki.show', $hki);
                         }
                     }

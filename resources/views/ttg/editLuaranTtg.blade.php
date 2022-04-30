@@ -10,21 +10,21 @@
                     </div>
                     <div class="row card-title">
                         <div class="col-12">
-                            <h4 class="fw-400">Edit Publikasi</h4>
+                            <h4 class="fw-400">Edit Teknologi Tepat Guna</h4>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="pt-2 px-md-3">
-                        <form class="form" id="EditLuaranPublikasi" action="{{route('luaran-publikasi.update', $lapPublikasi->id)}}" method="POST" enctype="multipart/form-data">
+                        <form class="form" id="EditLuaranTtg" action="{{route('luaran-ttg.update', $lapTtg->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
-                                    <label class="label-control">Judul Artikel</label>
+                                    <label class="label-control">Judul</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('judul', $lapPublikasi->judul)}}" name="judul" id="judul" required />
+                                    <input type="text" class="form-control pl-2" value="{{ old('judul', $lapTtg->judul)}}" name="judul" id="judul" required />
                                     @error('judul')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
@@ -32,51 +32,22 @@
                             </div>
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
-                                    <label class="label-control">Nama jurnal</label>
+                                    <label class="label-control">Tahun Perolehan</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('nama', $lapPublikasi->nama)}}" name="nama" id="nama" required />
-                                    @error('nama')
+                                    <input type="year" class="form-control pl-2" value="{{ old('tahun_perolehan', $lapTtg->tahun_perolehan)}}" name="tahun_perolehan" id="tahun_perolehan" required />
+                                    @error('tahun_perolehan')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
-                                    <label class="label-control">Laman jurnal</label>
+                                    <label class="label-control">Tahun Penerapan</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('laman', $lapPublikasi->laman)}}" name="laman" id="laman" required />
-                                    @error('laman')
-                                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row py-2">
-                                <div class="col-md-3 pt-2">
-                                    <label class="label-control">Tahun Publikasi</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="year" class="form-control pl-2" value="{{ old('tahun', $lapPublikasi->tahun)}}" name="tahun" id="tahun" required />
-                                    @error('tahun')
-                                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row py-2">
-                                <div class="col-md-3 pt-2">
-                                    <label class="label-control">Media Publikasi</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <select class="form-control selectpicker" data-style="btn btn-link" id="jenis_jurnal_id" name="jenis_jurnal_id" data-style="btn btn-primary btn-round" required>
-                                        <option disabled selected>Pilih Media Publikasi</option>
-                                        @foreach ($jenisJurnals as $jenis)
-                                        <option value="{{ $jenis->id }}" {{ old('jenis_jurnal_id', $lapPublikasi->jenis_jurnal_id) == $jenis->id ? 'Selected' : ''}}>
-                                            {{ $jenis->jurnal }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                    @error('jenis_jurnal_id')
+                                    <input type="year" class="form-control pl-2" value="{{ old('tahun_penerapan', $lapTtg->tahun_penerapan)}}" name="tahun_penerapan" id="tahun_penerapan" required />
+                                    @error('tahun_penerapan')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -90,7 +61,7 @@
                                     {{-- cek intern ketua ada atau tidak
                                         kalau ada tampilkan ketua dan checkboxnya off
                                         --}}
-                                    @foreach ($lapPublikasi->timIntern as $internKetua)
+                                    @foreach ($lapTtg->timIntern as $internKetua)
                                     @if ($internKetua->pivot->isLeader == true)
                                     @if (Auth::user()->role_id == 1)
                                     <div id="nidn_ketua">
@@ -134,7 +105,7 @@
                                     @endif
                                     @endforeach
                                     {{-- Ketua dari Luar UNIPA --}}
-                                    @foreach ($lapPublikasi->timExtern as $externKetua)
+                                    @foreach ($lapTtg->timExtern as $externKetua)
                                     @if($externKetua->isLeader == true)
                                     @if (Auth::user()->role_id == 1)
                                     <div id="nidn_ketua" style="display: none">
@@ -187,7 +158,7 @@
                                     <div id="nidn_anggota">
                                         <select multiple class="form-control" data-size="10" data-color="rose" id="choices-tag-anggota" name="nidn_anggota[]">
                                             @foreach ($dosens as $dsn)
-                                            <option value="{{ str_pad($dsn->nidn, 10, '0', STR_PAD_LEFT) }}" @foreach ($lapPublikasi->timIntern as $internAnggota)
+                                            <option value="{{ str_pad($dsn->nidn, 10, '0', STR_PAD_LEFT) }}" @foreach ($lapTtg->timIntern as $internAnggota)
                                                 @if($internAnggota->pivot->isLeader == false)
                                                 {{ str_pad($dsn->nidn, 10, '0', STR_PAD_LEFT) == $internAnggota->nidn ? 'Selected' : '' }}
                                                 @endif
@@ -204,7 +175,7 @@
                                                     <i class="material-icons">add</i> Anggota dari luar
                                                 </button>
                                             </div>
-                                            @foreach ($lapPublikasi->timExtern as $externAnggota)
+                                            @foreach ($lapTtg->timExtern as $externAnggota)
                                             @if($externAnggota->isLeader == false)
                                             <div class="row" id="anggotaKe-{{ $loop->iteration }}">
                                                 <div class="col-md-6">
@@ -223,13 +194,13 @@
                             </div>
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
-                                    <label class="label-control">Unggah file</label>
+                                    <label class="label-control">Unggah File Luaran</label>
                                 </div>
                                 <div class="col-md-9">
                                     <div class="form-group form-file-upload form-file-multiple" id="unggah_artikel">
-                                        <input type="file" name="path_publikasi" class="inputFileHidden">
+                                        <input type="file" name="path_ttg" class="inputFileHidden">
                                         <div class="input-group">
-                                            <input type="text" id="path_publikasi" class="form-control inputFileVisible" placeholder="single file">
+                                            <input type="text" id="path_ttg" class="form-control inputFileVisible" placeholder="single file">
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-fab btn-warning btn-round">
                                                     <i class="material-icons">attach_file</i>
@@ -237,14 +208,36 @@
                                             </span>
                                         </div>
                                         <small class="form-text text-muted text-left"><cite>Jika tidak ada perubahan pada file sebelumnya tidak perlu mengunggah ulang, ( maksimal 8 Mb dengan format file .pdf)</cite></small>
-                                        @error('path_publikasi')
+                                        @error('path_ttg')
+                                        <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-md-3 pt-2">
+                                    <label class="label-control">Unggah Bukti Laporan</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-group form-file-upload form-file-multiple" id="unggah_artikel">
+                                        <input type="file" name="path_bukti_sertifikat" class="inputFileHidden">
+                                        <div class="input-group">
+                                            <input type="text" id="path_bukti_sertifikat" class="form-control inputFileVisible" placeholder="single file">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-fab btn-warning btn-round">
+                                                    <i class="material-icons">attach_file</i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <small class="form-text text-muted text-left"><cite>Jika tidak ada perubahan pada file sebelumnya tidak perlu mengunggah ulang, ( maksimal 8 Mb dengan format file .pdf)</cite></small>
+                                        @error('path_bukti_sertifikat')
                                         <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
                             <div class="row px-2 justify-content-between">
-                                <a href="{{ route('luaran-publikasi.index') }}" class="btn btn-secondary text-rose">Batal</a>
+                                <a href="{{ route('luaran-ttg.index') }}" class="btn btn-secondary text-rose">Batal</a>
                                 <button type="submit" class="btn btn-rose">Simpan</button>
                             </div>
                         </form>
@@ -297,7 +290,11 @@
         });
 
         //YearPicker
-        $('#tahun').datetimepicker({
+        $('#tahun_perolehan').datetimepicker({
+            viewMode: 'years'
+            , format: 'Y'
+        });
+        $('#tahun_penerapan').datetimepicker({
             viewMode: 'years'
             , format: 'Y'
         });

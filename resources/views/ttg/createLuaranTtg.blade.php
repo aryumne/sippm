@@ -10,17 +10,17 @@
                     </div>
                     <div class="row card-title">
                         <div class="col-12">
-                            <h4 class="fw-400">Tambah Luaran Buku</h4>
+                            <h4 class="fw-400">Tambah Luaran Teknologi Tepat Guna</h4>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="pt-2 px-md-3">
-                        <form class="form" id="AddLuaranBuku" action="{{route('luaran-buku.store')}}" method="POST" enctype="multipart/form-data">
+                        <form class="form" id="AddLuaranTtg" action="{{route('luaran-ttg.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
-                                    <label class="label-control">Judul Buku</label>
+                                    <label class="label-control">Judul</label>
                                 </div>
                                 <div class="col-md-9">
                                     <input type="text" class="form-control pl-2" value="{{ old('judul')}}" name="judul" id="judul" required />
@@ -31,33 +31,22 @@
                             </div>
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
-                                    <label class="label-control">Penerbit</label>
+                                    <label class="label-control">Tahun Perolehan</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('penerbit')}}" name="penerbit" id="penerbit" required />
-                                    @error('penerbit')
+                                    <input type="year" class="form-control pl-2" value="{{ old('tahun_perolehan')}}" name="tahun_perolehan" id="tahun_perolehan" required />
+                                    @error('tahun_perolehan')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
-                                    <label class="label-control">ISBN</label>
+                                    <label class="label-control">Tahun Penerapan</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control pl-2" value="{{ old('isbn')}}" name="isbn" id="isbn" />
-                                    @error('isbn')
-                                    <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row py-2">
-                                <div class="col-md-3 pt-2">
-                                    <label class="label-control">Tahun Terbit</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="year" class="form-control pl-2" value="{{ old('tahun')}}" name="tahun" id="tahun" required />
-                                    @error('tahun')
+                                    <input type="year" class="form-control pl-2" value="{{ old('tahun_penerapan')}}" name="tahun_penerapan" id="tahun_penerapan" required />
+                                    @error('tahun_penerapan')
                                     <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -137,13 +126,13 @@
                             </div>
                             <div class="row py-2">
                                 <div class="col-md-3 pt-2">
-                                    <label class="label-control">Unggah file</label>
+                                    <label class="label-control">Unggah File Luaran</label>
                                 </div>
                                 <div class="col-md-9">
                                     <div class="form-group form-file-upload form-file-multiple" id="unggah_artikel">
-                                        <input type="file" name="path_buku" class="inputFileHidden" required>
+                                        <input type="file" name="path_ttg" class="inputFileHidden" required>
                                         <div class="input-group">
-                                            <input type="text" id="path_buku" class="form-control inputFileVisible" placeholder="single file">
+                                            <input type="text" id="path_ttg" class="form-control inputFileVisible" placeholder="single file">
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-fab btn-warning btn-round">
                                                     <i class="material-icons">attach_file</i>
@@ -151,14 +140,36 @@
                                             </span>
                                         </div>
                                         <small class="form-text text-muted text-left"><cite>Maksimal 8 Mb dengan format file .pdf</cite></small>
-                                        @error('path_buku')
+                                        @error('path_ttg')
+                                        <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-md-3 pt-2">
+                                    <label class="label-control">Unggah Bukti Sertifikat</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-group form-file-upload form-file-multiple" id="unggah_artikel">
+                                        <input type="file" name="path_bukti_sertifikat" class="inputFileHidden">
+                                        <div class="input-group">
+                                            <input type="text" id="path_bukti_sertifikat" class="form-control inputFileVisible" placeholder="single file">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-fab btn-warning btn-round">
+                                                    <i class="material-icons">attach_file</i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <small class="form-text text-muted text-left"><cite>Maksimal 8 Mb dengan format file .pdf</cite></small>
+                                        @error('path_bukti_sertifikat')
                                         <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
                             <div class="row px-2 justify-content-between">
-                                <a href="{{ route('luaran-buku.index') }}" class="btn btn-secondary text-rose">Batal</a>
+                                <a href="{{ route('luaran-ttg.index') }}" class="btn btn-secondary text-rose">Batal</a>
                                 <button type="submit" class="btn btn-rose">Simpan</button>
                             </div>
                         </form>
@@ -207,7 +218,12 @@
         });
 
         //YearPicker
-        $('#tahun').datetimepicker({
+        $('#tahun_perolehan').datetimepicker({
+            viewMode: 'years'
+            , format: 'Y'
+        });
+        //YearPicker
+        $('#tahun_penerapan').datetimepicker({
             viewMode: 'years'
             , format: 'Y'
         });

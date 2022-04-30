@@ -63,14 +63,10 @@ class LapTtgController extends Controller
 
         //Ambil original filename dari file ttg yang diupload
         $pathTtg = $request->file('path_ttg');
-        $fileName = str_replace(" ", "-", $pathTtg->getClientOriginalName());
-
-        //Ambil original filename dari file bukti sertifikat yang diupload
-        $pathBukti = $request->file('path_bukti_sertifikat');
-        $fileName = str_replace(" ", "-", $pathBukti->getClientOriginalName());
+        $fileNameTtg = str_replace(" ", "-", $pathTtg->getClientOriginalName());
 
         //cek apakah file dengan nama yang sama sudah ada didalam database
-        $cekFileName = LapTtg::where('path_ttg', 'laporan-ttg/' . $fileName)->get();
+        $cekFileName = LapTtg::where('path_ttg', 'laporan-ttg/' . $fileNameTtg)->get();
         if (count($cekFileName) != 0) {
             Alert::toast('File proposal sudah ada', 'error');
             return back()->withInput();
@@ -166,8 +162,14 @@ class LapTtgController extends Controller
         }
 
         //upload file ke folder laporan-ttg
-        $pathTtg = $pathTtg->storeAs('laporan-ttg', $fileName);
-        $pathBukti = $pathBukti->storeAs('laporan-ttg', $fileName);
+        $pathTtg = $pathTtg->storeAs('laporan-ttg', $fileNameTtg);
+        //Ambil original filename dari file bukti sertifikat yang diupload
+        $pathBukti = $request->file('path_bukti_sertifikat');
+        if ($pathBukti) {
+            $fileNameBukti = str_replace(" ", "-", $pathBukti->getClientOriginalName());
+            $pathBukti = $pathBukti->storeAs('laporan-bukti', $fileNameBukti);
+        }
+
         //simpan data ke tabel lap_ttgs
         $newTtg = LapTtg::create([
             'judul' => $judul,
@@ -334,9 +336,9 @@ class LapTtgController extends Controller
                 if (count($lapTtgs) > 0) {
                     //kalau ada, cek data ini apakah diketuai oleh inputan yang dipilih
                     foreach ($lapTtgs as $ttg) {
-                        $ketuaTtg = TimInternTtg::where('lap_ttg_id', $ttg->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->get();
+                        $ketuaTtg = TimInternTtg::where('lap_ttg_id', $ttg->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($ketuaTtg) {
+                        if ($ttg->id != $id && $ketuaTtg) {
                             Alert::toast('Gagal menyimpan, Data yang diinputkan sama dengan data ini', 'warning');
                             return redirect()->route('luaran-ttg.show', $ttg);
                         }
@@ -362,10 +364,10 @@ class LapTtgController extends Controller
                 // kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
                 if (count($lapTtgs) > 0) {
                     foreach ($lapTtgs as $ttg) {
-                        $ketuaTtg = TimExternTtg::where('lap_ttg_id', $ttg->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->get();
+                        $ketuaTtg = TimExternTtg::where('lap_ttg_id', $ttg->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($ketuaTtg) {
-                            Alert::toast('Kami melihat data yang sama, mungkin data ini yang ada maksud.', 'warning');
+                        if ($ttg->id != $id && $ketuaTtg) {
+                            Alert::toast('Kami melihat data yang sama, mungkin data ini yang anda maksud.', 'warning');
                             return redirect()->route('luaran-ttg.show', $ttg);
                         }
                     }
@@ -427,7 +429,7 @@ class LapTtgController extends Controller
         if ($pathBukti != null) {
             Storage::delete($lapTtg->path_bukti_sertifikat);
             $fileName = str_replace(" ", "-", $pathBukti->getClientOriginalName());
-            $pathBukti = $pathBukti->storeAs('laporan-ttg', $fileName);
+            $pathBukti = $pathBukti->storeAs('laporan-bukti', $fileName);
         } else {
             $pathBukti = $lapTtg->path_bukti_sertifikat;
         }

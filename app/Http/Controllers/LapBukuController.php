@@ -327,9 +327,9 @@ class LapBukuController extends Controller
                 if (count($lapBukus) > 0) {
                     //kalau ada, cek data ini apakah diketuai oleh inputan yang dipilih
                     foreach ($lapBukus as $buku) {
-                        $ketuaBuku = TimInternBuku::where('lap_buku_id', $buku->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->get();
+                        $ketuaBuku = TimInternBuku::where('lap_buku_id', $buku->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($ketuaBuku) {
+                        if ($buku->id != $id && $ketuaBuku) {
                             Alert::toast('Gagal menyimpan, Data yang diinputkan sama dengan data ini', 'warning');
                             return redirect()->route('luaran-buku.show', $buku);
                         }
@@ -355,10 +355,10 @@ class LapBukuController extends Controller
                 // kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
                 if (count($lapBukus) > 0) {
                     foreach ($lapBukus as $buku) {
-                        $ketuaBuku = TimExternBuku::where('lap_buku_id', $buku->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->get();
+                        $ketuaBuku = TimExternBuku::where('lap_buku_id', $buku->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($ketuaBuku) {
-                            Alert::toast('Kami melihat data yang sama, mungkin data ini yang ada maksud.', 'warning');
+                        if ($buku->id != $id && $ketuaBuku) {
+                            Alert::toast('Kami melihat data yang sama, mungkin data ini yang anda maksud.', 'warning');
                             return redirect()->route('luaran-buku.show', $buku);
                         }
                     }

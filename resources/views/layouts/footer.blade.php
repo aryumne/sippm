@@ -157,6 +157,12 @@
             setFormValidation('#EditLuaranPublikasi');
             setFormValidation('#AddLuaranHKI');
             setFormValidation('#EditLuaranHKI');
+            setFormValidation('#AddLuaranBuku');
+            setFormValidation('#EditLuaranBuku');
+            setFormValidation('#AddLuaranTtg');
+            setFormValidation('#EditLuaranTtg');
+            setFormValidation('#AddLuaranNaskah');
+            setFormValidation('#EditLuaranNaskah');
 
         });
 

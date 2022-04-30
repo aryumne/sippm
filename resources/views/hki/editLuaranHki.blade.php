@@ -10,13 +10,13 @@
                     </div>
                     <div class="row card-title">
                         <div class="col-12">
-                            <h4 class="fw-400">Tambah Luaran HKI</h4>
+                            <h4 class="fw-400">Edit Luaran HKI</h4>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="pt-2 px-md-3">
-                        <form action="{{route('luaran-hki.update', $lapHki->id)}}" method="POST" enctype="multipart/form-data">
+                        <form class="form" id="AddLuaranHKI" action="{{route('luaran-hki.update', $lapHki->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="row py-2">

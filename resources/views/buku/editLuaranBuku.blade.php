@@ -10,13 +10,13 @@
                     </div>
                     <div class="row card-title">
                         <div class="col-12">
-                            <h4 class="fw-400">Tambah Luaran Buku</h4>
+                            <h4 class="fw-400">Edit Luaran Buku</h4>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="pt-2 px-md-3">
-                        <form class="form" id="EditLuaranPublikasi" action="{{route('luaran-buku.update', $lapBuku->id)}}" method="POST" enctype="multipart/form-data">
+                        <form class="form" id="EditLuaranBuku" action="{{route('luaran-buku.update', $lapBuku->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="row py-2">

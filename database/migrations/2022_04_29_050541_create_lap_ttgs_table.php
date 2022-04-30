@@ -19,7 +19,7 @@ class CreateLapTtgsTable extends Migration
             $table->year('tahun_perolehan');
             $table->year('tahun_penerapan')->nullable();
             $table->text('path_ttg');
-            $table->text('path_bukti-sertifikat')->nullable();
+            $table->text('path_bukti_sertifikat')->nullable();
             $table->foreignId('user_id');
             $table->timestamps();
         });

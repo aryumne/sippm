@@ -151,7 +151,7 @@
                                 </a>
                             </li>
                             <li class="nav-item {{ request()->routeIs('luaran-ttg*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('luaran-hki.index') }}">
+                                <a class="nav-link" href="{{ route('luaran-ttg.index') }}">
                                     <span class="sidebar-mini"> LT </span>
                                     <span class="sidebar-normal">Tekhnologi Tepat Guna </span>
                                 </a>

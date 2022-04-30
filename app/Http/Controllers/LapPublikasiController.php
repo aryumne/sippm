@@ -335,9 +335,9 @@ class LapPublikasiController extends Controller
                 if (count($lapPublikasis) > 0) {
                     //kalau ada, cek data ini apakah diketuai oleh inputan yang dipilih
                     foreach ($lapPublikasis as $publikasi) {
-                        $ketuaPublikasi = TimInternPublikasi::where('lap_publikasi_id', $publikasi->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->get();
+                        $ketuaPublikasi = TimInternPublikasi::where('lap_publikasi_id', $publikasi->id)->where('nidn', $request->nidn_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($ketuaPublikasi) {
+                        if ($publikasi->id != $id && $ketuaPublikasi) {
                             Alert::toast('Gagal menyimpan, Data yang diinputkan sama dengan data ini', 'warning');
                             return redirect()->route('luaran-publikasi.show', $publikasi);
                         }
@@ -363,10 +363,10 @@ class LapPublikasiController extends Controller
                 // kalau ada, cek data ini apakah diketuai oleh inputan yang diisi
                 if (count($lapPublikasis) > 0) {
                     foreach ($lapPublikasis as $publikasi) {
-                        $ketuaPublikasi = TimExternPublikasi::where('lap_publikasi_id', $publikasi->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->get();
+                        $ketuaPublikasi = TimExternPublikasi::where('lap_publikasi_id', $publikasi->id)->where('nama', $request->nama_ketua)->where('isLeader', true)->first();
                         //kalau ada, redirect ke detail data yang sama.
-                        if ($ketuaPublikasi) {
-                            Alert::toast('Kami melihat data yang sama, mungkin data ini yang ada maksud.', 'warning');
+                        if ($publikasi->id != $id && $ketuaPublikasi) {
+                            Alert::toast('Kami melihat data yang sama, mungkin data ini yang anda maksud.', 'warning');
                             return redirect()->route('luaran-publikasi.show', $publikasi);
                         }
                     }
