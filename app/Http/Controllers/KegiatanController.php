@@ -35,7 +35,6 @@ class KegiatanController extends Controller
                 // dd($kegiatan);
                 // FIlter jika ada request
                 $dataKegiatans = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun', 'sumber_dana']))->get();
-
             }
             return view('kegiatan.kegiatans', [
                 'title' => $title,
@@ -55,7 +54,6 @@ class KegiatanController extends Controller
                 $kegiatan->where('jenis_kegiatan', false);
                 // FIlter jika ada request
                 $dataKegiatans = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun', 'sumber_dana']))->get();
-
             }
             return view('kegiatan.kegiatans', [
                 'title' => $title,
@@ -71,7 +69,7 @@ class KegiatanController extends Controller
 
     public function create($jenis)
     {
-        $title = "Tambah ". $jenis;
+        $title = "Tambah " . $jenis;
         $sumberDana = SumberDana::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
         return view('kegiatan.createKegiatan', [
@@ -87,7 +85,7 @@ class KegiatanController extends Controller
         // dd($request->all());
         $validator = Validator::make($request->all(), [
             'jenisKegiatan' => ['required'],
-            'judul' => ['required', 'string','unique:kegiatans'],
+            'judul' => ['required', 'string', 'unique:kegiatans'],
             'sumberDana' => ['required', 'numeric'],
             'dana' => ['required'],
             'tahun' => ['required', 'string'],
@@ -112,7 +110,7 @@ class KegiatanController extends Controller
         // remove "." dari input jumlah dana
         $dana = str_replace(".", "", $request->dana);
         // Jenis kegiatan
-        $jenisKegiatan = $request->jenisKegiatan == "penelitian" ? true : false ;
+        $jenisKegiatan = $request->jenisKegiatan == "penelitian" ? true : false;
         // ambil file yang diunggah
         $path_kegiatan = $request->file('path_kegiatan');
         $filename = $path_kegiatan->getClientOriginalName();
@@ -125,10 +123,9 @@ class KegiatanController extends Controller
         //ambil data nidn anggota
         $agt = $request->nidn_anggota;
         //cek kesamaan nidn pengusul dan anggota yang dipilih
-        if($agt != null)
-        {
+        if ($agt != null) {
             foreach ($agt as $nidn_anggota) {
-                if ($nidn_anggota == $nidn_ketua) {
+                if ($nidn_anggota == $request->nidn_ketua) {
                     Alert::toast('Ketua tidak bisa menjabat sebagai anggota sekaligus', 'error');
                     return back()->withErrors($validator)->withInput();
                 }
@@ -154,8 +151,7 @@ class KegiatanController extends Controller
             'isLeader' => true,
         ]);
 
-        if($agt != null)
-        {
+        if ($agt != null) {
             foreach ($agt as $nidn_anggota) {
                 if ($kegiatan) {
                     TimInternKegiatan::create([
@@ -173,89 +169,80 @@ class KegiatanController extends Controller
             Alert::success('Berhasil', 'Laporan PKM berhasil ditambahkan');
         }
         return redirect()->route('kegiatan.show', $kegiatan);
-
     }
 
     public function show(Kegiatan $kegiatan)
     {
         $jenis = "";
-        if($kegiatan->jenis_kegiatan == true) {
+        if ($kegiatan->jenis_kegiatan == true) {
             $jenis = "Penelitian";
         } else {
             $jenis = "PkM";
         }
 
         // kick user yang bukan bagian dari tim pelaksana kecuali admin
-        if(Auth::user()->role_id >= 2)
-        {
+        if (Auth::user()->role_id >= 2) {
             $isUserTim = TimInternKegiatan::where('kegiatan_id', $kegiatan->id)->where('nidn', Auth::user()->nidn)->get();
-            if($kegiatan->user_id != Auth::user()->id && count($isUserTim) < 1)
-            {
+            if ($kegiatan->user_id != Auth::user()->id && count($isUserTim) < 1) {
                 return abort(403);
             }
         }
-        $title = "Detail ". $jenis;
-        return view('kegiatan.showKegiatan',
+        $title = "Detail " . $jenis;
+        return view(
+            'kegiatan.showKegiatan',
             [
                 'title' => $title,
                 'jenis' => $jenis,
                 'kegiatan' => $kegiatan,
-            ]);
-
+            ]
+        );
     }
 
     public function edit(Kegiatan $kegiatan)
     {
         // cek apakah user ini pengusul
-        if(Auth::user()->role_id >= 2)
-        {
+        if (Auth::user()->role_id >= 2) {
             // cek ketua dari data ini
-            foreach($kegiatan->timIntern as $ketua)
-            {
-                if($ketua->pivot->isLeader == false)
-                {
+            foreach ($kegiatan->timIntern as $ketua) {
+                if ($ketua->pivot->isLeader == false) {
                     // kalau user bukan ketua maka jangan berikan akses
-                    if(Auth::user()->nidn == $ketua->nidn)
-                    {
+                    if (Auth::user()->nidn == $ketua->nidn) {
                         return abort(403);
                     }
                 }
             }
         }
         $jenis = "";
-        if($kegiatan->jenis_kegiatan == 1) {
+        if ($kegiatan->jenis_kegiatan == 1) {
             $jenis = "Penelitian";
         } else {
             $jenis = "PkM";
         }
-        $title = "Edit Data ". $jenis;
+        $title = "Edit Data " . $jenis;
         $sumberDana = SumberDana::all();
         $dosens = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
 
-        return view('kegiatan.editKegiatan',
+        return view(
+            'kegiatan.editKegiatan',
             [
                 'title' => $title,
                 'jenis' => $jenis,
                 'kegiatan' => $kegiatan,
                 'dosens' => $dosens,
                 'sumberDana' => $sumberDana,
-            ]);
-
+            ]
+        );
     }
 
     public function update(Request $request, Kegiatan $kegiatan)
     {
         // cek apakah user ini pengusul atau reviewer
-        if(Auth::user()->role_id >= 2)
-        {
+        if (Auth::user()->role_id >= 2) {
             // cek ketua dari data ini
-            foreach($kegiatan->timIntern as $ketua)
-            {
-                if($ketua->pivot->isLeader == false)
-                {
+            foreach ($kegiatan->timIntern as $ketua) {
+                if ($ketua->pivot->isLeader == false) {
                     // kalau user bukan ketua maka jangan berikan akses
-                    if(Auth::user()->nidn == $ketua->nidn)
-                    {
+                    if (Auth::user()->nidn == $ketua->nidn) {
                         return abort(403);
                     }
                 }
@@ -269,23 +256,24 @@ class KegiatanController extends Controller
             'nidn_anggota.*' => ['string', 'digits:10'],
         ];
 
-        if ($request->path_kegiatan != null)
-        {
+        if ($request->path_kegiatan != null) {
             $rules['path_kegiatan'] = ['required', 'file', 'mimes:pdf', 'max:8192'];
         }
 
-        if($request->judul != $kegiatan->judul_kegiatan)
-        {
+        if ($request->judul != $kegiatan->judul_kegiatan) {
             $rules['judul'] = ['required', 'string', 'unique:kegiatans'];
         }
 
-        $validator = Validator::make($request->all(), $rules,
-        [
-            'judul.unique' => 'Judul kegiatan ini sudah ada',
-            'required' => 'Tidak boleh kosong.',
-            'file' => 'Type file harus .pdf.',
-            'max' => 'Ukuran file maksimal 8 Mb.',
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                'judul.unique' => 'Judul kegiatan ini sudah ada',
+                'required' => 'Tidak boleh kosong.',
+                'file' => 'Type file harus .pdf.',
+                'max' => 'Ukuran file maksimal 8 Mb.',
+            ]
+        );
 
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
@@ -307,8 +295,7 @@ class KegiatanController extends Controller
             $path_kegiatan = $kegiatan->path_kegiatan;
         }
 
-        if($request->nidn_anggota != null)
-        {
+        if ($request->nidn_anggota != null) {
             foreach ($request->nidn_anggota as $nidn_anggota) {
                 if ($nidn_anggota == $request->nidn_ketua) {
                     Alert::toast('Ketua tidak bisa menjabat sebagai anggota sekaligus', 'error');
@@ -338,8 +325,7 @@ class KegiatanController extends Controller
             'isLeader' => true,
         ]);
 
-        if($request->nidn_anggota != null)
-        {
+        if ($request->nidn_anggota != null) {
             foreach ($request->nidn_anggota as $agt) {
                 TimInternKegiatan::create([
                     'kegiatan_id' => $kegiatan->id,
@@ -360,16 +346,12 @@ class KegiatanController extends Controller
     public function destroy(Kegiatan $kegiatan)
     {
         // cek apakah user ini pengusul atau reviewer
-        if(Auth::user()->role_id >= 2)
-        {
+        if (Auth::user()->role_id >= 2) {
             // cek ketua dari data ini
-            foreach($kegiatan->timIntern as $ketua)
-            {
-                if($ketua->pivot->isLeader == false)
-                {
+            foreach ($kegiatan->timIntern as $ketua) {
+                if ($ketua->pivot->isLeader == false) {
                     // kalau user bukan ketua maka jangan berikan akses
-                    if(Auth::user()->nidn == $ketua->nidn)
-                    {
+                    if (Auth::user()->nidn == $ketua->nidn) {
                         return abort(403);
                     }
                 }
@@ -378,8 +360,7 @@ class KegiatanController extends Controller
         $jenis = $kegiatan->jenis_kegiatan == true ? 'penelitian' : 'pkm';
         // hapus data anggota
         $anggotaIntern = TimInternKegiatan::where('kegiatan_id', $kegiatan->id)->get();
-        foreach($anggotaIntern as $intern)
-        {
+        foreach ($anggotaIntern as $intern) {
             $intern->delete();
         }
 
@@ -392,7 +373,5 @@ class KegiatanController extends Controller
         // redirect ke halaman utama
         Alert::success('Success', 'Data Publikasi telah dihapus!');
         return redirect()->route('kegiatan.index', $jenis);
-
     }
-
 }
