@@ -85,7 +85,7 @@ class KegiatanController extends Controller
         // dd($request->all());
         $validator = Validator::make($request->all(), [
             'jenisKegiatan' => ['required'],
-            'judul' => ['required', 'string', 'unique:kegiatans'],
+            'judul' => ['required', 'string', 'unique:kegiatans,judul_kegiatan'],
             'sumberDana' => ['required', 'numeric'],
             'dana' => ['required'],
             'tahun' => ['required', 'string'],
@@ -261,7 +261,7 @@ class KegiatanController extends Controller
         }
 
         if ($request->judul != $kegiatan->judul_kegiatan) {
-            $rules['judul'] = ['required', 'string', 'unique:kegiatans'];
+            $rules['judul'] = ['required', 'string', 'unique:kegiatans,judul_kegiatan'];
         }
 
         $validator = Validator::make(
