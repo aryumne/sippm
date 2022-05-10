@@ -163,6 +163,14 @@
             setFormValidation('#EditLuaranTtg');
             setFormValidation('#AddLuaranNaskah');
             setFormValidation('#EditLuaranNaskah');
+            setFormValidation('#AddSubmberDanaValidation');
+            setFormValidation('#EditSubmberDanaValidation');
+            setFormValidation('#AddMediaPublikasiValidation');
+            setFormValidation('#EditMediaPublikasiValidation');
+            setFormValidation('#AddJenisHkiValidation');
+            setFormValidation('#EditJenisHkiValidation');
+            setFormValidation('#AddNaskahValidation');
+            setFormValidation('#EditNaskahValidation');
 
         });
 

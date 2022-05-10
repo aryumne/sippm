@@ -12,6 +12,7 @@ use App\Http\Controllers\LapTtgController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\LapBukuController;
+use App\Http\Controllers\JenisHkiController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LapAkhirController;
 use App\Http\Controllers\PengusulController;
@@ -23,6 +24,8 @@ use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\SumberDanaController;
 use App\Http\Controllers\LapKemajuanController;
 use App\Http\Controllers\LapPublikasiController;
+use App\Http\Controllers\MediaPublikasiController;
+use App\Http\Controllers\PeruntukanNaskahController;
 use App\Http\Controllers\TeknologiTepatGunaController;
 
 /*
@@ -72,6 +75,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified', 'isAdmin
     Route::resource('/jabatan', JabatanController::class)->only(['index', 'store', 'update']);
     //Sumber Dana
     Route::resource('/sumberDana', SumberDanaController::class)->only(['index', 'store', 'update']);
+    //Media Publikasi Jurnal
+    Route::resource('/mediaPublikasi', MediaPublikasiController::class)->only(['index', 'store', 'update']);
+    //Jenis HKI
+    Route::resource('/jenisHki', JenisHkiController::class)->only(['index', 'store', 'update']);
+    //Peruntukan Naskah
+    Route::resource('/peruntukanNaskah', PeruntukanNaskahController::class)->only(['index', 'store', 'update']);
 });
 
 //ROUTE KHUSUS PENGUSUL

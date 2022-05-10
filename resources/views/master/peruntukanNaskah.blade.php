@@ -11,55 +11,54 @@
                     </div>
                     <div class="row card-title">
                         <div class="col-md-6">
-                            <h4 class="fw-400">Data Sumber Dana</h4>
+                            <h4 class="fw-400">Data Peruntukan Naskah</h4>
                         </div>
                         <div class="col-md-6 text-right">
                             <button type="button" class="btn btn-rose btn-round mt-0" data-toggle="modal" data-target="#addForm">
-                                <span class="material-icons">add</span> Sumber Dana
+                                <span class="material-icons">add</span> peruntukan
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="material-datatables">
-                        <table id="datatables-sumberDana" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                        <table id="peruntukanNaskah" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Sumber Dana</th>
+                                    <th>Peruntukan Naskah</th>
                                     <th class="disabled-sorting text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($sumberDana as $j)
+                                @foreach ($peruntukanNaskahs as $naskah)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $j->sumber }}</td>
+                                    <td>{{ $naskah->nama_peruntukan }}</td>
                                     <td class="text-right">
-                                        <button type="button" class="btn btn-link btn-warning btn-just-icon like" data-toggle="modal" data-target="#editsumberDana{{ $j->id }}">
+                                        <button type="button" class="btn btn-link btn-warning btn-just-icon like" data-toggle="modal" data-target="#EditFormPeruntukanNaskah{{ $naskah->id }}">
                                             <span class="material-icons">mode_edit</span>
                                         </button>
                                         {{-- Modal Edit sumberDana --}}
-                                        <div class="modal fade" id="editsumberDana{{ $j->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="EditFormPeruntukanNaskah{{ $naskah->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel">Edit
-                                                            Sumber Dana
+                                                            Peruntukan Naskah
                                                         </h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <form class="form" id="editSumberDanaValidation" action="{{ route('sumberDana.update', $j->id) }}" method="POST">
+                                                    <form class="form" class="EditNaskahValidation" action="{{ route('peruntukanNaskah.update', $naskah->id) }}" method="POST">
                                                         @csrf
-                                                        @method('PUT')
+                                                        @method('PATCH')
                                                         <div class="modal-body">
                                                             <div class="form-group">
-                                                                <label for="sumber">Sumber
-                                                                    Dana</label>
-                                                                <input type="text" class="form-control pt-4" id="sumber" name="sumber" value="{{ old('sumber', $j->sumber) }}" required>
-                                                                @error('sumber')
+                                                                <label for="sumber">Peruntukan Naskah</label>
+                                                                <input type="text" class="form-control pt-4" id="nama_peruntukan" name="nama_peruntukan" value="{{ old('nama_peruntukan', $naskah->nama_peruntukan) }}" required>
+                                                                @error('nama_peruntukan')
                                                                 <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                                                 @enderror
                                                             </div>
@@ -88,27 +87,27 @@
 
 
 @section('modal')
-<!-- Tambah Data sumberDana -->
+<!-- Tambah Data peruntukan naskah -->
 <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="importForm" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Jenis Sumber Dana</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Peruntukan Naskah </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form" id="AddSumberDanaValidation" action="{{ route('sumberDana.store') }}" method="POST">
+            <form class="form" id="AddNaskahValidation" action="{{ route('peruntukanNaskah.store') }}" method="POST">
                 <div class="modal-body">
                     @csrf
                     <div class="row pt-2 align-items-center">
                         <div class="col-3">
-                            <h6>Sumber Dana</h6>
+                            <h6>Peruntukan Naskah</h6>
                         </div>
                         <div class="col-9">
                             <div class="card-title">
-                                <input type="text" class="form-control pl-2" id="sumber" name="sumber" required value="{{ old('sumber') }}">
-                                @error('sumber')
+                                <input type="text" class="form-control pl-2" id="nama_peruntukan" name="nama_peruntukan" required value="{{ old('nama_peruntukan') }}">
+                                @error('nama_peruntukan')
                                 <span id="category_id-error" class="error text-danger" for="input-id" style="display: block;">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -129,7 +128,7 @@
 <script>
     $(document).ready(function() {
         //datatables
-        $('#datatables-sumberDana').DataTable({
+        $('#peruntukanNaskah').DataTable({
             //pagingType documentation : "https://datatables.net/reference/option/pagingType"
             "pagingType": "first_last_numbers"
             , "lengthMenu": [

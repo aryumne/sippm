@@ -2,53 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SumberDana;
+use App\Models\Jenis_hki;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
 
-class SumberDanaController extends Controller
+class JenisHkiController extends Controller
 {
-    
     public function index()
     {
-        $title = "Daftar Sumber Dana";
-        $sumberDana = SumberDana::all();
-        return view('master.sumberDana', [
+        $title = "Jenis HKI";
+        $jenisHkis = Jenis_hki::all();
+        return view('master.jenisHki', [
             'title' => $title,
-            'sumberDana' => $sumberDana,
+            'jenisHkis' => $jenisHkis,
         ]);
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'sumber' => ['required', 'unique:sumber_danas', 'string'],
+            'hki' => ['required', 'unique:jenis_hkis', 'string'],
         ], [
-            'sumber.unique' => 'Sumber Dana ini sudah ada',
+            'hki.unique' => 'Jenis HKI sudah ada',
         ],);
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
-        SumberDana::create([
-            'sumber' => $request->sumber,
+        Jenis_hki::create([
+            'hki' => $request->hki,
         ]);
-        Alert::success('Berhasil', 'Data Sumber Dana baru telah ditambahkan');
+        Alert::success('Berhasil', 'Jenis HKI baru telah ditambahkan');
         return back();
     }
 
     public function update(Request $request, $id)
     {
-        $sumberDana = SumberDana::find($id);
-        if ($sumberDana->sumber != $request->sumber) {
+        $jenisHki = Jenis_hki::find($id);
+        if ($jenisHki->hki != $request->hki) {
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'sumber' => ['required', 'unique:sumber_danas'],
+                    'hki' => ['required', 'unique:jenis_hkis', 'string'],
                 ],
                 [
-                    'sumber.unique' => 'Sumber Dana ini sudah ada',
+                    'hki.unique' => 'Jenis HKI sudah ada',
                 ],
             );
 
@@ -56,10 +55,10 @@ class SumberDanaController extends Controller
                 Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
                 return back()->withErrors($validator)->withInput();
             }
-            $sumberDana->sumber = $request->sumber;
+            $jenisHki->hki = $request->hki;
         }
-        $sumberDana->save();
-        Alert::success('Berhasil', 'Sumber Dana berhasil diubah');
+        $jenisHki->save();
+        Alert::success('Berhasil', 'Jenis HKI berhasil diubah');
         return back();
     }
 }

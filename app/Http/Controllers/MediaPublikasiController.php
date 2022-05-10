@@ -2,53 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SumberDana;
+use App\Models\Jenis_jurnal;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
 
-class SumberDanaController extends Controller
+class MediaPublikasiController extends Controller
 {
-    
     public function index()
     {
-        $title = "Daftar Sumber Dana";
-        $sumberDana = SumberDana::all();
-        return view('master.sumberDana', [
+        $title = "Media Publikasi";
+        $mediaPublikasis = Jenis_jurnal::all();
+        return view('master.mediaPublikasi', [
             'title' => $title,
-            'sumberDana' => $sumberDana,
+            'mediaPublikasis' => $mediaPublikasis,
         ]);
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'sumber' => ['required', 'unique:sumber_danas', 'string'],
+            'jurnal' => ['required', 'unique:jenis_jurnals', 'string'],
         ], [
-            'sumber.unique' => 'Sumber Dana ini sudah ada',
+            'jurnal.unique' => 'Media publikasi sudah ada',
         ],);
         if ($validator->fails()) {
             Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
             return back()->withErrors($validator)->withInput();
         }
-        SumberDana::create([
-            'sumber' => $request->sumber,
+        Jenis_jurnal::create([
+            'jurnal' => $request->jurnal,
         ]);
-        Alert::success('Berhasil', 'Data Sumber Dana baru telah ditambahkan');
+        Alert::success('Berhasil', 'Media Publikasi baru telah ditambahkan');
         return back();
     }
 
     public function update(Request $request, $id)
     {
-        $sumberDana = SumberDana::find($id);
-        if ($sumberDana->sumber != $request->sumber) {
+        $mediaPublikasi = Jenis_jurnal::find($id);
+        if ($mediaPublikasi->jurnal != $request->jurnal) {
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'sumber' => ['required', 'unique:sumber_danas'],
+                    'jurnal' => ['required', 'unique:jenis_jurnals'],
                 ],
                 [
-                    'sumber.unique' => 'Sumber Dana ini sudah ada',
+                    'jurnal.unique' => 'Media publikasi sudah ada',
                 ],
             );
 
@@ -56,10 +55,10 @@ class SumberDanaController extends Controller
                 Alert::toast('Gagal Menyimpan, cek kembali inputan anda', 'error');
                 return back()->withErrors($validator)->withInput();
             }
-            $sumberDana->sumber = $request->sumber;
+            $mediaPublikasi->jurnal = $request->jurnal;
         }
-        $sumberDana->save();
-        Alert::success('Berhasil', 'Sumber Dana berhasil diubah');
+        $mediaPublikasi->save();
+        Alert::success('Berhasil', 'Media Publikasi berhasil diubah');
         return back();
     }
 }

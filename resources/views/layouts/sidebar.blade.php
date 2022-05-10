@@ -209,14 +209,14 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item {{ request()->routeIs('dosen.*') ||request()->routeIs('faculty.*') ||request()->routeIs('prodi.*') ||request()->routeIs('jabatan.*') ||request()->routeIs('sumberDana.*')? 'active': '' }}">
+                <li class="nav-item {{ request()->routeIs('dosen.*') ||request()->routeIs('faculty.*') ||request()->routeIs('prodi.*') ||request()->routeIs('jabatan.*') ||request()->routeIs('sumberDana.*') || request()->routeIs('mediaPublikasi.*') || request()->routeIs('jenisHki.*') || request()->routeIs('peruntukanNaskah.*') ? 'active': '' }}">
                     <a class="nav-link" data-toggle="collapse" href="#master">
                         <i class="material-icons">storage</i>
                         <p> Data Master
                             <b class="caret"></b>
                         </p>
                     </a>
-                    <div class="collapse {{ request()->routeIs('dosen.*') ||request()->routeIs('faculty.*') ||request()->routeIs('prodi.*') ||request()->routeIs('jabatan.*') ||request()->routeIs('sumberDana.*')? 'show': '' }}" id="master">
+                    <div class="collapse {{ request()->routeIs('dosen.*') ||request()->routeIs('faculty.*') ||request()->routeIs('prodi.*') ||request()->routeIs('jabatan.*') || request()->routeIs('sumberDana.*') || request()->routeIs('mediaPublikasi.*') || request()->routeIs('jenisHki.*') || request()->routeIs('peruntukanNaskah.*') ? 'show': '' }}" id="master">
                         <ul class="nav">
                             <li class="nav-item {{ request()->routeIs('dosen.*') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('dosen.index') }}">
@@ -240,6 +240,24 @@
                                 <a class="nav-link" href="{{ route('sumberDana.index') }}">
                                     <span class="sidebar-mini"> SD </span>
                                     <span class="sidebar-normal">Sumber Dana </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('mediaPublikasi.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('mediaPublikasi.index') }}">
+                                    <span class="sidebar-mini"> MP </span>
+                                    <span class="sidebar-normal">Media Publikasi </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('jenisHki.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('jenisHki.index') }}">
+                                    <span class="sidebar-mini"> JH </span>
+                                    <span class="sidebar-normal">Jenis HKI </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->routeIs('peruntukanNaskah.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('peruntukanNaskah.index') }}">
+                                    <span class="sidebar-mini"> PN </span>
+                                    <span class="sidebar-normal">Peruntukan Naskah </span>
                                 </a>
                             </li>
                         </ul>
