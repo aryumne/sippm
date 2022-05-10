@@ -48,7 +48,7 @@ class Kegiatan extends Model
 
         // cari data proposal berdasarkan filter tahun
         $query->when($filters['tahun'] ?? false, function ($query, $tahun) {
-            return $query->whereYear('tahun', $tahun);
+            return $query->where('tahun', $tahun);
         });
 
         // cari data proposal berdasarkan filter sumber dana
@@ -57,6 +57,5 @@ class Kegiatan extends Model
                 $query->where('sumber', $sumber_dana);
             });
         });
-
     }
 }

@@ -21,8 +21,6 @@ class KegiatanController extends Controller
     {
         $sumberDana = SumberDana::all();
         $faculties = Faculty::all();
-        $dosen = Dosen::where('nidn', 'not like', '%ADMIN%')->get();
-
         if ($jenis == "penelitian") {
             $title = "Daftar Penelitian";
             $kegiatan = Kegiatan::where('jenis_kegiatan', true);
@@ -32,7 +30,6 @@ class KegiatanController extends Controller
                     $query->where('tim_intern_kegiatans.nidn', Auth::user()->nidn)->where('jenis_kegiatan', true);
                 })->orwhere('user_id', Auth::user()->id);
                 $kegiatan->where('jenis_kegiatan', true);
-                // dd($kegiatan);
                 // FIlter jika ada request
                 $dataKegiatans = $kegiatan->FilterPenelitian(request(['faculty_id', 'tahun', 'sumber_dana']))->get();
             }

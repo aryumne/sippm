@@ -24,13 +24,13 @@
                         <div class="card-collapse">
                             <div class="card-header" role="tab" id="headingOne">
                                 <h5 class="mb-0">
-                                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="{{ request('tahun_kegiatan') != null || request('faculty_id') != null || request('sumber_dana') != null? 'true': 'false' }}" aria-controls="collapseOne" class="collapsed">
+                                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="{{ request('tahun') != null || request('faculty_id') != null || request('sumber_dana') != null? 'true': 'false' }}" aria-controls="collapseOne" class="collapsed">
                                         Filter data
                                         <i class="material-icons">filter_alt</i>
                                     </a>
                                 </h5>
                             </div>
-                            <div id="collapseOne" class="collapse {{ request('tahun_kegiatan') != null || request('faculty_id') != null || request('sumber_dana') != null? 'show': '' }}" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                            <div id="collapseOne" class="collapse {{ request('tahun') != null || request('faculty_id') != null || request('sumber_dana') != null? 'show': '' }}" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
                                 <div class="card-body">
                                     <form action="{{ route('kegiatan.index', $jenis) }}" method="GET">
                                         @csrf
@@ -186,6 +186,12 @@
                 , searchPlaceholder: "Search records"
             , }
         });
+
+        $('#onlyYear').datetimepicker({
+            viewMode: 'years'
+            , format: 'Y'
+        });
+
         // Format mata uang.
         $('.dana').mask('000.000.000', {
             reverse: true
