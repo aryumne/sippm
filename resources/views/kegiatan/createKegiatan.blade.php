@@ -38,7 +38,7 @@
                                     <select class="form-control selectpicker" data-style="btn btn-link" id="sumberDana" name="sumberDana" required>
                                         <option disabled selected>Pilih Sumber Dana</option>
                                         @foreach ($sumberDana as $SD)
-                                        <option value="{{ $SD->id }}">
+                                        <option value="{{ $SD->id }}" {{ $SD->id == old('sumberDana') ? 'selected' : '' }}>
                                             {{ $SD->sumber }}
                                         </option>
                                         @endforeach

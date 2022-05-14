@@ -89,12 +89,12 @@ class KegiatanController extends Controller
             'nidn_ketua' => ['required', 'string'],
             'nidn_anggota' => ['array'],
             'nidn_anggota.*' => ['string', 'digits:10'],
-            'path_kegiatan' => ['required', 'file', 'mimes:pdf', 'max:8192'],
+            'path_kegiatan' => ['required', 'file', 'mimes:pdf', 'size:8192'],
         ], [
             'judul.unique' => 'Judul kegiatan ini sudah ada',
             'required' => 'Tidak boleh kosong.',
             'file' => 'Type file harus .pdf.',
-            'max' => 'Ukuran file maksimal 8 Mb.',
+            'size' => 'Ukuran file maksimal 8 Mb.',
         ]);
 
         if ($validator->fails()) {
@@ -254,7 +254,7 @@ class KegiatanController extends Controller
         ];
 
         if ($request->path_kegiatan != null) {
-            $rules['path_kegiatan'] = ['required', 'file', 'mimes:pdf', 'max:8192'];
+            $rules['path_kegiatan'] = ['required', 'file', 'mimes:pdf', 'size:8192'];
         }
 
         if ($request->judul != $kegiatan->judul_kegiatan) {
